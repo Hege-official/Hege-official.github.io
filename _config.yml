@@ -15,7 +15,7 @@ minimal_mistakes_skin    : "default" # "air", "aqua", "contrast", "dark", "dirt"
 
 # Site settings
 # 站点设置
-locale                   : "zh"
+locale                   : "zh-CN"
 rtl                      : false  # true, false (默认) # 是否启用从右到左的布局
 title                    : "和各政府网"
 title_separator          : "-" # 标题分隔符
@@ -34,7 +34,7 @@ enable_copy_code_button  : true # false (默认) # 是否启用代码复制按�
 copyright                : # "copyright" 名称，默认为 site.title
 copyright_url            : # "copyright" URL，默认为 site.url
 comments:
-  provider               : false # (默认), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "giscus", "custom" # 评论系统提供者
+  provider               : "giscus" # (默认), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "giscus", "custom" # 评论系统提供者
   disqus:
     shortname            : # https://help.disqus.com/customer/portal/articles/466208-what-s-a-shortname-
   discourse:
@@ -48,17 +48,17 @@ comments:
     theme                : # "github-light"（默认），"github-dark"
     issue_term           : # "pathname"（默认）
   giscus:
-    repo_id              : # 在 https://giscus.app 设置时显示
-    category_name        : # 分类的完整文本名称
-    category_id          : # 在 https://giscus.app 设置时显示
-    discussion_term      : # "pathname"（默认），"url"，"title"，"og:title"
-    reactions_enabled    : # '1' 表示启用（默认），'0' 表示禁用
-    theme                : # "light"（默认），"dark"，"dark_dimmed"，"transparent_dark"，"preferred_color_scheme"
-    strict               : # 1 表示启用，0 表示禁用（默认）
-    input_position       : # "top"，"bottom" # 评论输入框将放置在评论区的上方或下方
-    emit_metadata        : # 1 表示启用，0 表示禁用（默认） # https://github.com/giscus/giscus/blob/main/ADVANCED-USAGE.md#imetadatamessage
-    lang                 : # "en"（默认）
-    lazy                 : # true, false # 仅当用户滚动到评论容器附近时才加载评论。
+    repo_id              : "R_kgDOPE7kDw" # 在 https://giscus.app 设置时显示
+    category_name        : "Announcements" # 分类的完整文本名称
+    category_id          : "DIC_kwDOPE7kD84CsXkK" # 在 https://giscus.app 设置时显示
+    discussion_term      : "pathname" #（默认），"url"，"title"，"og:title"
+    reactions_enabled    : "1" #表示启用（默认），'0' 表示禁用
+    theme                : "preferred_color_scheme" # "light"（默认），"dark"，"dark_dimmed"，"transparent_dark"，
+    strict               : "0" # 1 表示启用，0 表示禁用（默认）
+    input_position       : "top" # "top"，"bottom" # 评论输入框将放置在评论区的上方或下方
+    emit_metadata        : "0" # 1 表示启用，0 表示禁用（默认） # https://github.com/giscus/giscus/blob/main/ADVANCED-USAGE.md#imetadatamessage
+    lang                 : "zh-CN" # "en"（默认）
+    lazy                 : true # true, false # 仅当用户滚动到评论容器附近时才加载评论。
   staticman:
     branch               : # "master"
     endpoint             : # "https://{你的 Staticman v3 API}/v3/entry/github/"
@@ -192,8 +192,8 @@ exclude:
   - Rakefile
   - README
   - tmp
-  - docs  忽略 Minimal Mistakes /docs
-  - test  忽略 Minimal Mistakes /test
+  - docs  # 忽略 Minimal Mistakes /docs
+  - test  # 忽略 Minimal Mistakes /test
 keep_files:
   - .git
   - .svn
