@@ -15,7 +15,7 @@ minimal_mistakes_skin    : "default" # "air", "aqua", "contrast", "dark", "dirt"
 
 # Site settings
 # 站点设置
-locale                   : "zh-CN"
+locale                   : "zh"
 rtl                      : false  # true, false (默认) # 是否启用从右到左的布局
 title                    : "和各政府网"
 title_separator          : "-" # 标题分隔符
@@ -124,7 +124,7 @@ author:
       url: "mailto:hegecountry@outlook.com"
     - label: "Website"
       icon: "fas fa-fw fa-link"
-      # url: "https://your-website.com"
+      url: "https://hege.mysxl.cn"
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
       # url: "https://twitter.com/"
@@ -192,8 +192,8 @@ exclude:
   - Rakefile
   - README
   - tmp
-#  - docs  忽略 Minimal Mistakes /docs
-#  - test  忽略 Minimal Mistakes /test
+  - docs  忽略 Minimal Mistakes /docs
+  - test  忽略 Minimal Mistakes /test
 keep_files:
   - .git
   - .svn
