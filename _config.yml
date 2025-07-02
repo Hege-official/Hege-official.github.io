@@ -12,7 +12,9 @@
 theme                  : "minimal-mistakes-jekyll"
 #remote_theme           : "mmistakes/minimal-mistakes"远程主题
 minimal_mistakes_skin    : "default" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise" # 皮肤主题选项
-
+plugins:
+  - jekyll-include-cache
+  
 # Site settings
 # 站点设置
 locale                   : "zh-CN"
