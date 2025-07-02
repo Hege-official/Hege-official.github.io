@@ -19,15 +19,15 @@ locale                   : "zh-CN"
 rtl                      : false  # true, false (默认) # 是否启用从右到左的布局
 title                    : "和各政府网"
 title_separator          : "-" # 标题分隔符
-subtitle                 : "和各国政府新闻发言一体化网站"
+subtitle                 : "Hege Republic Government Official Website" # 站点副标题
 name                     : "和各政府网"
 description              : "和各的官方网站"
 url                      : "https://hege-official.github.io/"
-baseurl                  : "/blog"
+baseurl                  : # "/blog"
 repository               : "Hege-official/Hege-official.github.io" # GitHub 用户名/仓库名，例如 "mmistakes/minimal-mistakes"
 teaser                   : # 备用预览图像路径，例如 "/assets/images/500x300.png"
 logo                     : "/assets/images/rhclogo1.png" # 在页眉显示的 logo 图像路径，例如
-masthead_title           : "1标题" # 覆盖显示在页眉的站点标题，使用 " " 表示不显示标题
+masthead_title           : "和各共和国政府新闻发言网" # 覆盖显示在页眉的站点标题，使用 " " 表示不显示标题
 breadcrumbs              : true # 是否启用面包屑导航
 words_per_minute         : 200 # 阅读速度（每分钟字数）
 enable_copy_code_button  : true # false (默认) # 是否启用代码复制按钮
@@ -115,7 +115,7 @@ analytics:
 author:
   name             : "和各共和国 政府"
   avatar           : "/assets/images/rhclogo1.png" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "和各国是**amazing**的政府，和各国政府网是一个**awesome**的政府网站。"
+  bio              : "和各国政府新闻发言一体化网站。和各国是**架空**的政府。"
   location         : "RHC Yikong People's square 2th"
   email            :
   links:
