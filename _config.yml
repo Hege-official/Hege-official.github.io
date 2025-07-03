@@ -58,6 +58,7 @@ comments:
     input_position       : "top" # "top"，"bottom" # 评论输入框将放置在评论区的上方或下方
     emit_metadata        : "0" # 1 表示启用，0 表示禁用（默认） # https://github.com/giscus/giscus/blob/main/ADVANCED-USAGE.md#imetadatamessage
     lang                 : "zh-CN" # "en"（默认
+    environment         : "production" # "production"（默认），"development" # 生产环境或开发环境
     # enable_utterances    : true
     lazy                 : true # true, false # 仅当用户滚动到评论容器附近时才加载评论。
   staticman:
