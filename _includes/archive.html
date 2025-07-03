@@ -1,0 +1,12 @@
+{% if page.type == 'categories' %}
+  {% assign group = site.categories %}
+  {% assign sort_by = 'name' %}
+{% elsif page.type == 'tags' %}
+  {% assign group = site.tags %}
+  {% assign sort_by = 'count' %}
+{% else %}
+  {% assign group = site.posts %}
+  {% assign sort_by = 'date' %}
+{% endif %}
+
+{% include archive-sort.html %}

@@ -1,0 +1,21 @@
+{% if sort_by == 'name' %}
+  {% assign sorted_group = group | sort %}
+{% elsif sort_by == 'count' %}
+  {% assign sorted_group = group | sort: 'last' | reverse %}
+{% elsif sort_by == 'date' %}
+  {% assign sorted_group = group | sort: 'date' | reverse %}
+{% endif %}
+
+<div class="archive__item">
+  {% for item in sorted_group %}
+    {% if page.type == 'categories' or page.type == 'tags' %}
+      {% assign title = item[0] %}
+      {% assign posts = item[1] %}
+    {% else %}
+      {% assign title = item.title %}
+      {% assign posts = item %}
+    {% endif %}
+
+    {% include archive-item.html item=item %}
+  {% endfor %}
+</div>

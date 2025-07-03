@@ -1,0 +1,11 @@
+{% if page.type == 'categories' or page.type == 'tags' %}
+  <h2 class="archive__subtitle">{{ title }}</h2>
+  <p class="archive__item-count">{{ posts | size }} post{{ posts | size | pluralize }}</p>
+  <div class="entries-{{ include.type | default: 'list' }}">
+    {% for post in posts %}
+      {% include archive-single.html post=post type=include.type %}
+    {% endfor %}
+  </div>
+{% else %}
+  {% include archive-single.html post=item type=include.type %}
+{% endif %}

@@ -57,7 +57,8 @@ comments:
     strict               : "0" # 1 表示启用，0 表示禁用（默认）
     input_position       : "top" # "top"，"bottom" # 评论输入框将放置在评论区的上方或下方
     emit_metadata        : "0" # 1 表示启用，0 表示禁用（默认） # https://github.com/giscus/giscus/blob/main/ADVANCED-USAGE.md#imetadatamessage
-    lang                 : "zh-CN" # "en"（默认）
+    lang                 : "zh-CN" # "en"（默认
+    # enable_utterances    : true
     lazy                 : true # true, false # 仅当用户滚动到评论容器附近时才加载评论。
   staticman:
     branch               : # "master"
@@ -68,9 +69,9 @@ reCaptcha:
 atom_feed:
   path                   : # 留空（默认）使用 feed.xml
   hide                   : # true, false（默认）
-search                   : # true, false（默认）
+search                   :  true #, false（默认）
 search_full_content      : # true, false（默认）
-search_provider          : # lunr（默认），algolia，google
+search_provider          : google # lunr（默认），algolia，google
 lunr:
   search_within_pages    : # true, false（默认）
 algolia:
@@ -79,8 +80,8 @@ algolia:
   search_only_api_key    : # 你的 SEARCH_ONLY_API_KEY
   powered_by             : # true（默认），false
 google:
-  search_engine_id       : # 你的 SEARCH_ENGINE_ID
-  instant_search         : # false（默认），true
+  search_engine_id       : "55b25964c9a474055"
+  instant_search         : false # false（默认），true
 # SEO 相关
 google_site_verification :
 bing_site_verification   :
@@ -165,7 +166,7 @@ footer:
 include:
   - .htaccess
   - _pages
-  - docs
+  - _posts
 exclude:
   - "*.sublime-project"
   - "*.sublime-workspace"
@@ -320,6 +321,7 @@ defaults:
       layout: single
       author_profile: true
       read_time: true
-      comments: # true
+      comments: true
       share: true
       related: true
+

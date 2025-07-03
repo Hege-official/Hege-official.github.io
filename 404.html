@@ -1,0 +1,34 @@
+---
+layout: single
+title: "404 - 页面未找到"
+permalink: /404.html
+classes: wide
+---
+
+<div class="error-page">
+  <div class="error-content">
+    <h1 class="error-code">404</h1>
+    <p class="error-message">抱歉，我们找不到您要访问的页面。</p>
+    
+    <div class="error-actions">
+      <a href="{{ '/' | relative_url }}" class="btn btn--primary">
+        <i class="fas fa-home"></i> 返回主页
+      </a>
+      <a href="{{ '/search/' | relative_url }}" class="btn btn--inverse">
+        <i class="fas fa-search"></i> 搜索内容
+      </a>
+    </div>
+    
+    <div class="error-suggestions mt-5">
+      <h3>您可能想查看：</h3>
+      <ul class="related-posts">
+        {% for post in site.posts limit:3 %}
+          <li>
+            <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+            <p class="post-meta">{{ post.date | date: "%B %d, %Y" }}</p>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>

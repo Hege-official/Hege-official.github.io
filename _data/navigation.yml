@@ -2,10 +2,10 @@
 main:
   - title: "主题文档指南"
     url: https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/
-  - title: "About"
+  - title: "主页"
     url: 
-  - title: "Sample Posts"
-    url: /_posts/
+  - title: "归档文章"
+    url: /archive/
   #- title: "Sample Collections"
   #  url: /collection-archive/
   - title: "Sitemap网站地图"
