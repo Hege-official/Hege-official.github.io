@@ -215,6 +215,7 @@ incremental: false
 kramdown:
   input: GFM
   hard_wrap: false
+  math_engine: null
   auto_ids: true
   footnote_nr: 1
   entity_output: as_char
@@ -231,7 +232,7 @@ sass:
 
 # 输出
 permalink: /:categories/:title/
-timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone: Asia/Shanghai # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
 
 # 使用 jekyll-paginate 进行分页

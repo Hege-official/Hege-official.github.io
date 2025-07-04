@@ -3,7 +3,7 @@ main:
   - title: "主题文档指南"
     url: https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/
   - title: "主页"
-    url: 
+    url: /
   - title: "归档文章"
     url: /archive/
   #- title: "Sample Collections"
