@@ -71,7 +71,7 @@ atom_feed:
   path                   : # 留空（默认）使用 feed.xml
   hide                   : # true, false（默认）
 search                   :  true #, false（默认）
-search_full_content      : # true, false（默认）
+search_full_content      : true # true, false（默认）
 search_provider          : google # lunr（默认），algolia，google
 lunr:
   search_within_pages    : # true, false（默认）
@@ -115,11 +115,11 @@ analytics:
 
 # 站点作者
 author:
-  name             : "和各共和国 政府"
+  name             : "和各共和国"
   avatar           : "/assets/images/rhclogo1.png" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio              : "和各国政府新闻发言一体化网站。和各国是**架空世界观**的政府，文学创作与现实无关。"
   location         : "RHC Yikong People's square 2th"
-  email            :
+  email            : "hegecountry@outlook.com"
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
