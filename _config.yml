@@ -72,17 +72,17 @@ atom_feed:
   hide                   : # true, false（默认）
 search                   :  true #, false（默认）
 search_full_content      : true # true, false（默认）
-search_provider          : google # lunr（默认），algolia，google
+search_provider          : lunr # lunr（默认），algolia，google
 lunr:
-  search_within_pages    : # true, false（默认）
+  search_within_pages    : false # true, false（默认）
 algolia:
   application_id         : # 你的 APPLICATION_ID
   index_name             : # 你的 INDEX_NAME
   search_only_api_key    : # 你的 SEARCH_ONLY_API_KEY
   powered_by             : # true（默认），false
 google:
-  search_engine_id       : "55b25964c9a474055"
-  instant_search         : false # false（默认），true
+  search_engine_id       : #"55b25964c9a474055"
+  instant_search         : #false # false（默认），true
 # SEO 相关
 google_site_verification : "lEyY234eGglzE17STQX27xzQ2vcvlxaueQBDi0ba-Y8"
 bing_site_verification   :
