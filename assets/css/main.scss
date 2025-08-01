@@ -7,3 +7,70 @@ search: false
 
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
+
+/* 引入自定义字体（你的定义） */
+@font-face {
+  font-family: "MyCustomFont";
+  src: url('/assets/fonts/Microsoft-YaHei-Semilight.ttc') format('truetype'), /* 修正格式声明，ttc/ttf 对应 truetype */
+       url('/assets/fonts/STZhongsong.ttf') format('truetype'); /* 宋体格式统一为 truetype */
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; /* 优化加载体验 */
+}
+
+/* 全局字体应用 */
+body {
+  font-family: "MyCustomFont", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* 标题类元素 */
+h1, h2, h3, h4, h5, h6,
+.entry-title, /* 文章标题 */
+.page-title,  /* 页面标题 */
+.site-title { /* 网站标题 */
+  font-family: "MyCustomFont", Georgia, serif;
+  font-weight: 600; /* 标题加粗区分 */
+}
+
+/* 导航与菜单 */
+.main-navigation a, /* 主导航链接 */
+.menu-item a,       /* 菜单项 */
+.dropdown-menu a {  /* 下拉菜单 */
+  font-family: "MyCustomFont", sans-serif;
+}
+
+/* 文章内容区域 */
+.entry-content,          /* 文章正文 */
+.entry-content p,        /* 正文段落 */
+.entry-content li,       /* 列表项 */
+.entry-content blockquote { /* 引用块 */
+  font-family: "MyCustomFont", sans-serif;
+  line-height: 1.8; /* 优化行距，适配中文字体 */
+}
+
+/* 侧边栏元素 */
+.sidebar .widget-title, /* 侧边栏标题 */
+.sidebar .widget p,     /* 侧边栏文本 */
+.sidebar .widget li {   /* 侧边栏列表 */
+  font-family: "MyCustomFont", sans-serif;
+}
+
+/* 按钮与交互元素 */
+.btn,                   /* 按钮 */
+.button,                /* 通用按钮 */
+.comment-reply-link {   /* 评论回复链接 */
+  font-family: "MyCustomFont", sans-serif;
+}
+
+/* 评论区 */
+.comment-content p,     /* 评论内容 */
+.comment-author .fn {   /* 评论作者名 */
+  font-family: "MyCustomFont", sans-serif;
+}
+
+/* 页脚 */
+.site-footer,           /* 页脚整体 */
+.site-footer p,         /* 页脚文本 */
+.site-footer a {        /* 页脚链接 */
+  font-family: "MyCustomFont", sans-serif;
+}
