@@ -11,8 +11,8 @@ search: false
 /* 引入自定义字体（你的定义） */
 @font-face {
   font-family: "MyCustomFont";
-  src: url('/assets/fonts/Microsoft-YaHei-Semilight.ttc') format('truetype'), /* 修正格式声明，ttc/ttf 对应 truetype */
-       url('/assets/fonts/STZhongsong.ttf') format('truetype'); /* 宋体格式统一为 truetype */
+  src: url('/assets/fonts/Microsoft-YaHei-Semilight.ttc') format('truetype'), /* 微软雅黑 */
+       url('/assets/fonts/STZhongsong.ttf') format('truetype'); //宋体
   font-weight: normal;
   font-style: normal;
   font-display: swap; /* 优化加载体验 */
@@ -29,7 +29,7 @@ h1, h2, h3, h4, h5, h6,
 .page-title,  /* 页面标题 */
 .site-title { /* 网站标题 */
   font-family: "MyCustomFont", Georgia, serif;
-  font-weight: 600; /* 标题加粗区分 */
+  font-weight: 700; /* 标题加粗区分 */
 }
 
 /* 导航与菜单 */
