@@ -11,7 +11,7 @@ search: false
 /* 引入自定义字体（你的定义） */
 @font-face {
   font-family: "Yahei";
-  src: url('/assets/fonts/Microsoft-YaHei-Semilight.ttc') format('truetype'), /* 微软雅黑 */
+  src: url('/assets/fonts/Microsoft-YaHei-Semilight.ttc') format('truetype'); /* 微软雅黑 */
   font-weight: normal;
   font-style: normal;
   font-display: swap; /* 优化加载体验 */
