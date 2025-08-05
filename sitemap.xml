@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>https://hege-official.github.io//hegepedia-turing/</loc>
+<lastmod>2023-10-27T00:00:00+08:00</lastmod>
+</url>
+<url>
 <loc>https://hege-official.github.io//%E6%96%B0%E9%97%BB/hhjzxlrnunfbsm/</loc>
 <lastmod>2025-07-01T16:50:10+08:00</lastmod>
 </url>
@@ -36,6 +40,9 @@
 <loc>https://hege-official.github.io//_posts/2025-07-31-qgdrdcwhgyzk25/</loc>
 </url>
 <url>
+<loc>https://hege-official.github.io//_posts/2025-08-05-hegepedia-turing/</loc>
+</url>
+<url>
 <loc>https://hege-official.github.io//archive/</loc>
 </url>
 <url>
@@ -49,5 +56,8 @@
 </url>
 <url>
 <loc>https://hege-official.github.io//tags/</loc>
+</url>
+<url>
+<loc>https://hege-official.github.io//page2/</loc>
 </url>
 </urlset>
