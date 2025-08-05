@@ -1,0 +1,26 @@
+{% comment %}
+  A non-floating content box to be used within the article flow.
+  Usage:
+  {% include content_box.html
+      title="你的标题"
+      icon="info-circle" 
+      content="
+      **这里是你的内容**，可以使用 Markdown。
+
+      - 列表项 1
+      - 列表项 2
+      "
+  %}
+{% endcomment %}
+
+<div class="content-box">
+  {% if include.title %}
+    <div class="content-box-header">
+      {% if include.icon %}<i class="fas fa-{{ include.icon }}"></i> {% endif %}
+      {{ include.title }}
+    </div>
+  {% endif %}
+  <div class="content-box-body">
+    {{ include.content | markdownify }}
+  </div>
+</div>

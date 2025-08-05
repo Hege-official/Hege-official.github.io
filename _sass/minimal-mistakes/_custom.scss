@@ -1,0 +1,106 @@
+/* Custom Wikipedia-style Infobox
+   ========================================================================== */
+
+.infobox {
+  float: right;
+  width: 280px;
+  margin: 0.5rem 0 1rem 1.5rem;
+  border: 1px solid #a2a9b1;
+  background-color: #f8f9fa;
+  font-size: 0.8em;
+  line-height: 1.4;
+  clear: right;
+
+  @media screen and (max-width: 768px) {
+    float: none;
+    width: 100%;
+    margin: 1rem 0;
+  }
+}
+
+.infobox-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.infobox-header {
+  font-size: 1.2em;
+  font-weight: bold;
+  text-align: center;
+  padding: 0.5rem;
+  background-color: #eaf3ff; /* A light blue, similar to Wikipedia */
+}
+
+.infobox-image {
+  text-align: center;
+  padding: 0.5rem;
+  img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+  }
+}
+
+.infobox-caption {
+  text-align: center;
+  padding: 0.3rem 0;
+  font-size: 0.9em;
+  color: #555;
+}
+
+.infobox-label,
+.infobox-data {
+  padding: 0.4rem 0.6rem;
+  border-top: 1px solid #eaecf0;
+  vertical-align: top;
+}
+
+.infobox-label {
+  font-weight: bold;
+  text-align: left;
+  white-space: nowrap; /* Prevents long labels from wrapping */
+  width: 35%;
+}
+
+.infobox-data {
+  text-align: left;
+}
+
+/* Custom Content Box (non-floating)
+   ========================================================================== */
+
+.content-box {
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-left: 5px solid #4285f4; // A nice accent color
+  margin: 1.5rem 0;
+  padding: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  font-size: 0.9em;
+  border-radius: 4px;
+  overflow: hidden; /* Ensures the border-radius clips the header */
+}
+
+.content-box-header {
+  font-weight: bold;
+  padding: 0.75rem 1rem;
+  background-color: #f1f1f1;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 1.1em;
+
+  .fas {
+    margin-right: 0.5em;
+    color: #555;
+  }
+}
+
+.content-box-body {
+  padding: 1rem 1.2rem;
+  line-height: 1.6;
+
+  p:last-child,
+  ul:last-child,
+  ol:last-child {
+    margin-bottom: 0;
+  }
+}

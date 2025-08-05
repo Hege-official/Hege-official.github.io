@@ -1,0 +1,42 @@
+{% comment %}
+  Wikipedia-style Infobox for Minimal Mistakes
+  Usage in your markdown:
+  1. Define infobox data in your page's front matter:
+     infobox_data:
+       - label: "本名"
+         value: "艾伦·麦席森·图灵"
+       - label: "出生"
+         value: "1912年6月23日"
+       - label: "职业"
+         value: "数学家、逻辑学家、密码分析学家"
+  2. Include this file in your markdown:
+     {% include infobox.html %}
+{% endcomment %}
+
+{% if page.infobox_data %}
+<aside class="infobox">
+  <table class="infobox-table">
+    {% if page.infobox_header %}
+    <caption class="infobox-header">{{ page.infobox_header }}</caption>
+    {% endif %}
+    
+    {% if page.infobox_image %}
+    <tr>
+      <td colspan="2" class="infobox-image">
+        <img src="{{ page.infobox_image | relative_url }}" alt="{{ page.infobox_caption | default: 'Infobox image' }}">
+        {% if page.infobox_caption %}
+        <div class="infobox-caption">{{ page.infobox_caption }}</div>
+        {% endif %}
+      </td>
+    </tr>
+    {% endif %}
+
+    {% for item in page.infobox_data %}
+      <tr>
+        <th class="infobox-label">{{ item.label }}</th>
+        <td class="infobox-data">{{ item.value }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+</aside>
+{% endif %}
