@@ -4,6 +4,7 @@ excerpt: "前我国NUN主席HHJ在离任NUN之际发表了声明《致N国联合
 header:
   image: /assets/images/hegenews.png
 comments: true
+sidebar: false
 date: 2025-07-01 08:50:10
 categories: [新闻]  # 分类（可多个）
 tags: [新闻,国际,艺通社]  # 标签（可多个）
