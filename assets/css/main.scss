@@ -1,5 +1,4 @@
 ---
-# Only the main Sass file needs front matter (the dashes are enough)
 search: false
 ---
 
@@ -7,7 +6,7 @@ search: false
 
 @import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
 @import "minimal-mistakes"; // main partials
-
+//  Only the main Sass file needs front matter (the dashes are enough)
 /* 引入自定义字体（你的定义） */
 @font-face {
   font-family: "Yahei";
@@ -23,6 +22,15 @@ search: false
   font-weight: normal;
   font-style: normal;
   font-display: swap;
+}
+
+.page {
+  max-width: 9000px; /* 调整为您想要的宽度 */
+}
+
+.page__content {
+  width: 100% !important;
+  margin-right: 0 !important;
 }
 
 /* 全局字体应用 */

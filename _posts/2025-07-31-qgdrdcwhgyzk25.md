@@ -4,7 +4,7 @@ excerpt: "2025年新季度之际，和各国召开第二十五届动人代会议
 header:
   image: /assets/images/latelynews.png
 comments: true
-sidebar: false
+author_profile: false
 date: 2025-08-01 08:50:10
 categories: [公告]  # 分类（可多个）
 tags: [公告,国内,动人代]  # 标签（可多个）
