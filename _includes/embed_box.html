@@ -1,0 +1,19 @@
+<table class="embed-box-table">
+  <thead>
+    <tr>
+      <th class="embed-box-header" colspan="2">
+        {% if include.icon %}
+          <i class="fas fa-{{ include.icon }}"></i>
+        {% endif %}
+        {{ include.title }}
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td colspan="2" class="embed-box-content">
+        {{ include.content | markdownify }}
+      </td>
+    </tr>
+  </tbody>
+</table>

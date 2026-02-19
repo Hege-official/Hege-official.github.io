@@ -105,3 +105,80 @@
   }
 }
 
+/* Wikipedia-Style Table Border Embed Box - Perfect Match Version
+   ========================================================================== */
+
+.embed-box {
+  margin: 1.5rem 0;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  font-size: 0.9em;
+  line-height: 1.6;
+
+  @media screen and (max-width: 768px) {
+    margin: 1rem 0;
+  }
+}
+
+.embed-box-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #a2a9b1; /* 维基百科标准边框色 */
+  background-color: #fff;
+}
+
+.embed-box-header {
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 0.6rem;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #a2a9b1;
+  font-weight: bold;
+  font-size: 1.05em;
+  color: #222;
+
+  .fas {
+    margin-right: 0.4rem;
+    color: #4285f4;
+    font-size: 0.95em;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 1em;
+    font-weight: 600;
+  }
+}
+
+.embed-box-content {
+  padding: 0.5rem 0.6rem;
+  line-height: 1.5;
+
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0.2rem 0;
+
+    li {
+      padding-left: 0.6rem;
+      position: relative;
+      margin-bottom: 0.2rem;
+
+      &::before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        color: #4285f4;
+        font-weight: bold;
+        font-size: 0.75em;
+      }
+    }
+  }
+
+  p:last-child,
+  ul:last-child,
+  ol:last-child {
+    margin-bottom: 0;
+  }
+}

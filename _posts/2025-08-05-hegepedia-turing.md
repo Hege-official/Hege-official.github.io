@@ -35,6 +35,7 @@ infobox_data:
 {% comment %} 
   将 infobox include 放在文章开头，这样它会浮动在右侧 
 {% endcomment %}
+
 {% include infobox.html %}
 
 **艾伦·麦席森·图灵**（Alan Mathison Turing，1912年6月23日—1954年6月7日），是一位英国数学家、逻辑学家，他被广泛认为是理论计算机科学和人工智能的奠基人。[^1] 他的工作对现代计算机的发展产生了深远影响。
@@ -48,37 +49,30 @@ infobox_data:
 {% include figure image_path="/assets/images/turing-statue.jpg" alt="图灵雕像" caption="位于曼彻斯特的图灵雕像。" %}
 
 ## 职业生涯
-{% comment %} 第二个嵌入式内容框 (使用 capture) {% endcomment %}
-{% capture contribution_box %}
+
+{% include embed_box.html
+  title="关键贡献"
+  icon="star"
+  content="
 - **理论层面**: 奠定了可计算性理论的基础。
 - **实践层面**: 破解恩尼格玛密码机，极大地帮助了盟军。
 - **思想层面**: 提出了人工智能的哲学问题（图灵测试）。
-{% endcapture %}
-
-{% include content_box.html
-    title="关键贡献"
-    icon="star"
-    content=contribution_box
-%}
-
+" %}
 
 ### 图灵机
-1936年，图灵发表了论文《论可计算数及其在判定问题上的应用》，提出了“图灵机”的抽象计算模型，为通用计算机的诞生奠定了理论基础。
+1936年，图灵发表了论文《论可计算数及其在判定问题上的应用》，提出了"图灵机"的抽象计算模型，为通用计算机的诞生奠定了理论基础。
 
-{% capture turing_machine_box %}
+{% include embed_box.html
+  title="图灵机核心概念"
+  icon="cogs"
+  content="
 图灵机不是一个实体机器，而是一个抽象的数学模型。它包含：
 
 1.  **一条无限长的纸带** (Tape)
 2.  **一个读写头** (Head)
 3.  **一个状态寄存器** (State Register)
 4.  **一套有限的指令集** (Action Table)
-{% endcapture %}
-
-{% include content_box.html
-    title="图灵机核心概念"
-    icon="cogs"
-    content=turing_machine_box
-%}
+" %}
 
 ### 人工智能
 战后，他在国家物理实验室工作，设计了自动计算机（ACE）。他后来提出的“图灵测试”至今仍是衡量机器智能的重要标准。
