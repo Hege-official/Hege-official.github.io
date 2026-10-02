@@ -193,6 +193,7 @@ exclude:
   - package-lock.json
   - Rakefile
   - README
+  - AGENTS.md
   - tmp
   - docs  # 忽略 Minimal Mistakes /docs
   - test  # 忽略 Minimal Mistakes /test
@@ -238,31 +239,9 @@ date_format: "%Y年%m月%d日"
 
 # 分页已停用：首页为自定义聚合页，完整浏览入口见 /archive/ 与各栏目页
 
-# 使用 jekyll-paginate-v2 进行分页
-# 参见 https://github.com/sverrirs/jekyll-paginate-v2/blob/master/README-GENERATOR.md#site-configuration
-#   获取配置详情
-pagination:
-  # 设置 enabled 为 true 以使用 paginate v2
-  # enabled: true
-  debug: false
-  collection: 'posts'
-  per_page: 10
-  permalink: '/page/:num/'
-  title: ':title - page :num'
-  limit: 0
-  sort_field: 'date'
-  sort_reverse: true
-  category: 'posts'
-  tag: ''
-  locale: ''
-  trail:
-    before: 2
-    after: 2
-
 
 # 插件（以前称为 gems:）
 plugins:
-  - jekyll-paginate
   - jekyll-sitemap
   - jekyll-gist
   - jekyll-feed
@@ -270,7 +249,6 @@ plugins:
 
 # 使用 --safe 模拟 GitHub Pages
 whitelist:
-  - jekyll-paginate
   - jekyll-sitemap
   - jekyll-gist
   - jekyll-feed
@@ -322,6 +300,7 @@ defaults:
       layout: single
       author_profile: false
       read_time: true
+      show_date: true
       comments: false
       share: false
       related: true

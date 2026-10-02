@@ -1,19 +1,17 @@
 ---
 title: "文章归档"
-layout: archive  # 或 layout: single（取决于你的主题配置）
+layout: archive
 permalink: /archive/
 ---
 
-{% assign posts = site.posts %}  
-<!-- # 获取所有文章 -->
-
-{% if posts.size > 0 %}
-  <div class="archive__item">
-    {% for post in posts %}
-      {% include archive-single.html %}  
-      <!-- # 渲染单个文章项 -->
-    {% endfor %}
-  </div>
+{% assign posts_by_year = site.posts | group_by_exp: "post", "post.date | date: '%Y'" %}
+{% if posts_by_year.size > 0 %}
+{% for year in posts_by_year %}
+<h2 class="archive__subtitle">{{ year.name }}</h2>
+{% for post in year.items %}
+{% include archive-single.html %}
+{% endfor %}
+{% endfor %}
 {% else %}
-  <p>暂无文章</p>
+<p>暂无文章</p>
 {% endif %}

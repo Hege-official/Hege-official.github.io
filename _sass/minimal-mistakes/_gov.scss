@@ -14,6 +14,7 @@
 .archive {
   max-width: none;
   width: 100%;
+  padding-inline-end: 0; /* 无侧栏，取消主题为侧栏预留的右侧留白 */
 }
 
 .page__content {
@@ -232,9 +233,7 @@
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
   gap: 2.5rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem;
+  padding: 2rem 0;
 }
 
 /* 头条区 */
@@ -689,4 +688,54 @@
 
 .infobox-label {
   color: $hege-navy;
+}
+
+/* 选中态导航 */
+.masthead__menu-item.selected a {
+  color: $hege-red;
+  box-shadow: inset 0 -2px 0 $hege-red;
+}
+
+/* 栏目页 / 归档 / 搜索 页首藏青标题区 */
+.layout--category .archive > .page__title,
+.layout--archive .archive > .page__title,
+.layout--search .archive > .page__title {
+  background: $hege-navy;
+  color: #fff;
+  padding: 1rem 1.25rem;
+  margin-bottom: 0;
+  font-size: 1.6rem;
+}
+
+.gov-band__desc {
+  margin: 0 0 1.5rem;
+  padding: 0.6rem 1.25rem;
+  color: $hege-muted;
+  border: 1px solid $hege-border;
+  border-top: none;
+  background: $hege-surface;
+  font-size: 0.9rem;
+}
+
+/* 搜索页：大搜索框与结果卡片 */
+.layout--search .archive > .search-input {
+  display: block;
+  width: 100%;
+  max-width: 720px;
+  margin: 1.5rem auto 2rem;
+  padding: 0.75rem 1rem;
+  font-size: 1.05rem;
+  border: 1px solid $hege-border;
+  border-radius: 0;
+  box-shadow: $box-shadow;
+}
+
+.layout--search .results {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.layout--search .results .search-result {
+  border-bottom: 1px solid $hege-border;
+  padding: 1rem 0;
 }

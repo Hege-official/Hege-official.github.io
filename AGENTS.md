@@ -18,12 +18,12 @@
 - `_site/` 与 `.jekyll-cache/` 是生成产物且已被 gitignore，切勿编辑。
 - JS：页面只加载 `assets/js/main.min.js`（见 `_includes/scripts.html`）。`assets/js/_main.js`、`assets/js/plugins/**`、`assets/js/vendor/**` 都被 Jekyll 构建排除。请修改这些源文件后执行 `rake js` 重新生成 `main.min.js`，否则浏览器端看不到改动。
 - 搜索使用 lunr，并开启 `search_full_content: true`。`assets/js/lunr/lunr-store.js` 是一个 Liquid 模板（front matter 为 `layout: none`），构建时会根据全部 collection 文档重新生成，不要手动编辑其中的数据。
-- 评论使用 giscus（配置在 `_config.yml`）。
+- 评论使用 giscus（配置在 `_config.yml`），仅 `/feedback/` 页开启；文章页已移除评论与作者卡。
 - 部署：每次推送到 `main` 会触发 `.github/workflows/jekyll-build.yml`，通过 `peaceiris/actions-gh-pages` 把 `_site/` 发布到 `gh-pages` 分支。切勿直接提交到 `gh-pages`，也不要手动编辑 `_site`。CI 使用 Ruby 3.2（本地版本可能不同）。
 
 ## 内容创作
 
-- 文章放在 `_posts/YYYY-MM-DD-slug.md`，继承 `_config.yml` 中的默认值：`layout: single`、`comments: true`、`author_profile: true`、`related: true`。
+- 文章放在 `_posts/YYYY-MM-DD-slug.md`，继承 `_config.yml` 中的默认值：`layout: single`、`author_profile: false`、`comments: false`、`publisher: "和各政府网"`、`related: true`。发布方可在文章 front matter 用 `publisher` 单独覆盖。
 - 永久链接为 `/:categories/:title/`，因此 front matter 的 `categories`（例如 `categories: [公告]`）决定文章 URL。
 - 站点字体在 `assets/css/main.scss` 中以内联方式定制（微软雅黑）。新增组件样式请写入 `_sass/minimal-mistakes/_custom.scss`，`main.scss` 会在最后导入它。
 - 在原生 Minimal Mistakes 基础上新增的自定义组件 include：

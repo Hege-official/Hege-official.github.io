@@ -3,7 +3,9 @@ layout: default
 author_profile: false
 ---
 
-<div class="gov-home">
+<div id="main" role="main">
+  <h1 class="visually-hidden">{{ site.title | default: "和各政府网" }}</h1>
+  <div class="gov-home">
   <div class="gov-home__main">
     {% include gov/hero.html %}
 
@@ -88,4 +90,5 @@ author_profile: false
       </ul>
     </div>
   </aside>
+  </div>
 </div>

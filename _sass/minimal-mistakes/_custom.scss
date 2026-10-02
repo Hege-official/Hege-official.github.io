@@ -38,7 +38,7 @@
   img {
     max-width: 100%;
     height: auto;
-    border: 1px solid #ccc;
+    border: 1px solid $hege-border;
   }
 }
 
@@ -46,13 +46,13 @@
   text-align: center;
   padding: 0.3rem 0;
   font-size: 0.9em;
-  color: #555;
+  color: $hege-muted;
 }
 
 .infobox-label,
 .infobox-data {
   padding: 0.4rem 0.6rem;
-  border-top: 1px solid #eaecf0;
+  border-top: 1px solid $hege-border;
   vertical-align: top;
 }
 
@@ -71,27 +71,27 @@
    ========================================================================== */
 
 .content-box {
-  background-color: #f9f9f9;
-  border: 1px solid #e0e0e0;
+  background-color: $hege-surface;
+  border: 1px solid $hege-border;
   border-left: 5px solid $hege-red;
   margin: 1.5rem 0;
   padding: 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   font-size: 0.9em;
-  border-radius: 4px;
+  border-radius: 0;
   overflow: hidden; /* Ensures the border-radius clips the header */
 }
 
 .content-box-header {
   font-weight: bold;
   padding: 0.75rem 1rem;
-  background-color: #f1f1f1;
-  border-bottom: 1px solid #e0e0e0;
+  background-color: $hege-surface;
+  border-bottom: 1px solid $hege-border;
   font-size: 1.1em;
 
   .fas {
     margin-right: 0.5em;
-    color: #555;
+    color: $hege-navy;
   }
 }
 
@@ -125,7 +125,7 @@
 .embed-box-table {
   width: 100%;
   border-collapse: collapse;
-  border: 1px solid #a2a9b1; /* 维基百科标准边框色 */
+  border: 1px solid $hege-border;
   background-color: #fff;
 }
 
@@ -133,11 +133,11 @@
   display: flex;
   align-items: center;
   padding: 0.4rem 0.6rem;
-  background-color: #f8f9fa;
-  border-bottom: 1px solid #a2a9b1;
+  background-color: $hege-surface;
+  border-bottom: 1px solid $hege-border;
   font-weight: bold;
   font-size: 1.05em;
-  color: #222;
+  color: $hege-ink;
 
   .fas {
     margin-right: 0.4rem;
