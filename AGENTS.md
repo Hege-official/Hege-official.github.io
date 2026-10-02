@@ -34,3 +34,9 @@
   - `{% include video provider="bilibili|youtube|vimeo|google-drive" id="..." [danmaku=0] %}`。
   - `{% include latex.html %}` —— 加载 MathJax 2.7。
 - `README.md` 是本项目的说明与 TODO 清单（并非上游主题的 README）。
+
+## 世界观正典（外部资料库）
+
+- 网站内容的事实标准是外部 Obsidian 资料库 **Hegewiki**：`D:\Desktop\和各共和国Republic of Hege\数字档案 - 和各维基资料库\Hegewiki\`。写文章前先查该库；机构名、法律名、人名、纪年、统计数据一律以正典为准，不得自造。
+- 网站侧的写作配方、组件矩阵、正典对接与已知口径差异见 `docs/写作与排版规范.md`。
+- 正典库自身规则见该库 `AGENTS.md` 与 `0_档案标准/`；本站只读引用，除非用户明确要求，不修改正典库。
