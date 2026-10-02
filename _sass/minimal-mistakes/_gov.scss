@@ -573,3 +573,103 @@
   font-weight: 700;
   color: $hege-navy;
 }
+
+/* 列表与归档 */
+.archive__item {
+  border-bottom: 1px solid $hege-border;
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.list__item .archive__item {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+.archive__item-teaser {
+  flex: 0 0 220px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+}
+
+.archive__item-title a {
+  font-family: "STZhongsong", serif;
+  color: $hege-navy;
+
+  &:hover {
+    color: $hege-red;
+  }
+}
+
+/* 分页 */
+.pagination {
+  text-align: center;
+
+  li a,
+  li span {
+    border: 1px solid $hege-border;
+    border-radius: 0;
+    padding: 0.3rem 0.7rem;
+  }
+
+  .current {
+    background: $hege-navy;
+    color: #fff;
+    border-color: $hege-navy;
+  }
+
+  a:hover {
+    background: $hege-red;
+    border-color: $hege-red;
+    color: #fff;
+  }
+}
+
+/* 分类 / 标签胶囊 */
+.page__taxonomy-item {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid $hege-navy;
+  border-radius: 0;
+  color: $hege-navy;
+
+  &:hover {
+    background: $hege-red;
+    border-color: $hege-red;
+    color: #fff;
+  }
+}
+
+/* 搜索覆盖层 */
+.search-content {
+  background: $hege-navy;
+}
+
+.search-input {
+  border-radius: 0;
+}
+
+/* 归档年份标题 */
+.archive .taxonomy__section,
+.archive h2.archive__subtitle {
+  border-bottom: 1px solid $hege-gold;
+  color: $hege-navy;
+  font-family: "STZhongsong", serif;
+}
+
+@media (max-width: 600px) {
+  .list__item .archive__item {
+    flex-direction: column;
+  }
+
+  .archive__item-teaser {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+}
