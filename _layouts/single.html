@@ -31,6 +31,13 @@ classes: wide
     <div class="page__inner-wrap">
       {% unless page.header.overlay_color or page.header.overlay_image %}
         <header>
+          {% assign publisher = page.publisher | default: site.name %}
+          <div class="page__badges">
+            {% for category in page.categories %}
+              <a class="page__badge page__badge--cat" href="{{ category | slugify | prepend: '#' | prepend: site.category_archive.path | relative_url }}">{{ category }}</a>
+            {% endfor %}
+            {% if publisher %}<span class="page__badge page__badge--pub">{{ publisher }}</span>{% endif %}
+          </div>
           {% if page.title -%}
           <h1 id="page-title" class="page__title" itemprop="headline">
             <a href="{{ page.url | absolute_url }}" itemprop="url">{{ page.title | markdownify | remove: "<p>" | remove: "</p>" }}</a>
@@ -68,8 +75,6 @@ classes: wide
 
     {% if site.comments.provider and page.comments %}
       {% include comments.html %}
-    {% else %}
-      <p>评论功能不支持</p>
     {% endif %}
   </article>
 

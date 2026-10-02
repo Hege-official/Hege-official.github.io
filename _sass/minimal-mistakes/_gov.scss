@@ -505,3 +505,71 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* 文章页徽章 */
+.page__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.page__badge {
+  font-size: 0.75rem;
+  padding: 0.15rem 0.5rem;
+}
+
+.page__badge--cat {
+  background: $hege-red;
+  color: #fff;
+}
+
+.page__badge--pub {
+  border: 1px solid $hege-navy;
+  color: $hege-navy;
+}
+
+/* 文章排版 */
+.page__title {
+  font-family: "STZhongsong", serif;
+  font-size: 2rem;
+  line-height: 1.35;
+  color: $hege-navy;
+}
+
+.page__content {
+  font-size: 1.0625rem;
+  line-height: 1.9;
+}
+
+.page__content h2 {
+  padding-left: 0.6rem;
+  border-left: 4px solid $hege-red;
+  color: $hege-navy;
+}
+
+.page__content h3,
+.page__content h4 {
+  color: $hege-navy;
+}
+
+.page__content blockquote {
+  padding: 0.75rem 1rem;
+  background: $hege-surface;
+  border-left: 4px solid $hege-navy;
+}
+
+.page__content table th {
+  background: $hege-navy;
+  color: #fff;
+}
+
+.page__content table tr:nth-child(even) {
+  background: $hege-surface;
+}
+
+.page__meta-publisher {
+  font-weight: 700;
+  color: $hege-navy;
+}
