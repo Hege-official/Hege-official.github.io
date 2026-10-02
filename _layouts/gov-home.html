@@ -1,0 +1,91 @@
+---
+layout: default
+author_profile: false
+---
+
+<div class="gov-home">
+  <div class="gov-home__main">
+    {% include gov/hero.html %}
+
+    {% assign news_posts = site.categories["新闻"] %}
+    {% if news_posts.size > 0 %}
+    <section class="gov-section">
+      {% include gov/section-header.html title="新闻中心" url="/news/" %}
+      <div class="gov-cards">
+        {% for post in news_posts limit: 6 %}{% include gov/news-card.html post=post %}{% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    {% assign notice_posts = site.categories["公告"] %}
+    {% assign editorial_posts = site.categories["社论"] %}
+    {% if notice_posts.size > 0 or editorial_posts.size > 0 %}
+    <div class="gov-home__two">
+      {% if notice_posts.size > 0 %}
+      <section class="gov-section">
+        {% include gov/section-header.html title="公告通知" url="/notices/" %}
+        <ul class="gov-notice">
+          {% for post in notice_posts limit: 6 %}
+            <li>
+              <span class="gov-notice__date">{{ post.date | date: "%m-%d" }}</span>
+              <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+      {% endif %}
+
+      {% if editorial_posts.size > 0 %}
+      <section class="gov-section">
+        {% include gov/section-header.html title="社论评论" url="/editorials/" %}
+        <ul class="gov-notice">
+          {% for post in editorial_posts limit: 3 %}
+            <li>
+              <span class="gov-notice__date">社论</span>
+              <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+
+  <aside class="gov-home__aside">
+    <div class="gov-side-block">
+      <h2 class="gov-side-title">站内搜索</h2>
+      <a class="gov-side-search" href="{{ '/search/' | relative_url }}">
+        <span>请输入关键词</span>
+        <span class="gov-side-search__btn">搜索</span>
+      </a>
+    </div>
+
+    <div class="gov-side-block">
+      <h2 class="gov-side-title">栏目导航</h2>
+      <ul class="gov-side-links">
+        <li><a href="{{ '/news/' | relative_url }}">新闻中心</a></li>
+        <li><a href="{{ '/notices/' | relative_url }}">公告通知</a></li>
+        <li><a href="{{ '/editorials/' | relative_url }}">社论评论</a></li>
+        <li><a href="{{ '/archive/' | relative_url }}">全部文章</a></li>
+        <li><a href="{{ '/categories/' | relative_url }}">内容分类</a></li>
+      </ul>
+    </div>
+
+    <div class="gov-side-block">
+      <h2 class="gov-side-title">站点数据</h2>
+      <ul class="gov-side-stats">
+        <li><strong>{{ site.posts.size }}</strong><span>发布文章</span></li>
+        <li><strong>{{ site.categories.size }}</strong><span>内容分类</span></li>
+      </ul>
+    </div>
+
+    <div class="gov-side-block">
+      <h2 class="gov-side-title">联系我们</h2>
+      <ul class="gov-side-links">
+        {% if site.author.email %}<li><a href="mailto:{{ site.author.email }}">{{ site.author.email }}</a></li>{% endif %}
+        {% if site.author.location %}<li>{{ site.author.location }}</li>{% endif %}
+      </ul>
+    </div>
+  </aside>
+</div>

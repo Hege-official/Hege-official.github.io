@@ -1,0 +1,23 @@
+{% assign post = include.post %}
+{% if post.header.teaser %}
+  {% assign card_img = post.header.teaser %}
+{% elsif post.header.image %}
+  {% assign card_img = post.header.image %}
+{% else %}
+  {% assign card_img = '' %}
+{% endif %}
+
+<article class="gov-card">
+  <a class="gov-card__link" href="{{ post.url | relative_url }}">
+    {% if card_img != '' %}
+      <span class="gov-card__media"><img src="{{ card_img | relative_url }}" alt=""></span>
+    {% else %}
+      <span class="gov-card__media gov-card__media--ph"></span>
+    {% endif %}
+    <h3 class="gov-card__title">{{ post.title }}</h3>
+    {% if post.excerpt %}<p class="gov-card__excerpt">{{ post.excerpt | markdownify | strip_html | truncate: 70 }}</p>{% endif %}
+    <div class="gov-card__meta">
+      {{ post.date | date: "%Y-%m-%d" }}{% if post.publisher %} · {{ post.publisher }}{% endif %}
+    </div>
+  </a>
+</article>

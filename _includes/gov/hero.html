@@ -1,0 +1,40 @@
+{% assign featured = site.posts | where_exp: "p", "p.featured == true" | first %}
+{% if featured %}
+  {% assign main_post = featured %}
+{% else %}
+  {% assign main_post = site.posts.first %}
+{% endif %}
+
+{% if main_post %}
+<section class="gov-section gov-hero-section">
+  <div class="gov-section__head">
+    <h2 class="gov-section__title">头条要闻</h2>
+    <a class="gov-section__more" href="{{ '/archive/' | relative_url }}">更多 ›</a>
+  </div>
+
+  <div class="gov-hero">
+    <a class="gov-hero__lead" href="{{ main_post.url | relative_url }}">
+      {% if main_post.header.image %}
+        <img src="{{ main_post.header.image | relative_url }}" alt="{{ main_post.title | escape }}">
+      {% else %}
+        <span class="gov-hero__placeholder"></span>
+      {% endif %}
+      <span class="gov-hero__body">
+        {% for category in main_post.categories %}<span class="gov-hero__cat">{{ category }}</span>{% endfor %}
+        <span class="gov-hero__title">{{ main_post.title }}</span>
+        {% if main_post.excerpt %}<span class="gov-hero__excerpt">{{ main_post.excerpt | markdownify | strip_html | truncate: 90 }}</span>{% endif %}
+      </span>
+    </a>
+
+    <ul class="gov-hero__side">
+      {% assign secondary = site.posts | where_exp: "p", "p.url != main_post.url" %}
+      {% for post in secondary limit: 4 %}
+        <li>
+          <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+          <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endif %}
