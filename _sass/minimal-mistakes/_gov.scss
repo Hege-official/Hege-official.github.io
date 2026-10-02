@@ -1,0 +1,68 @@
+/* ==========================================================================
+   Hege government layout layer
+   仅在 main.scss 中于主题之后导入，可使用主题变量与 $hege-* token。
+   ========================================================================== */
+
+/* 容器与宽度 */
+#main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.page,
+.archive {
+  max-width: none;
+  width: 100%;
+}
+
+.page__content {
+  width: 100% !important;
+  margin-right: 0 !important;
+}
+
+/* 链接 */
+#main a {
+  color: $hege-link;
+
+  &:hover {
+    color: $hege-red;
+  }
+}
+
+/* 栏目分节头：左红竖条 + 标题 + 更多 */
+.gov-section {
+  margin: 2.5rem 0 1rem;
+}
+
+.gov-section__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-bottom: 1px solid $hege-border;
+  padding-bottom: 0.5rem;
+}
+
+.gov-section__title {
+  position: relative;
+  margin: 0;
+  padding-left: 0.75rem;
+  font-family: "STZhongsong", serif;
+  font-size: 1.35rem;
+  color: $hege-navy;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.15em;
+    bottom: 0.15em;
+    width: 3px;
+    background: $hege-red;
+  }
+}
+
+.gov-section__more {
+  font-size: 0.85rem;
+  color: $hege-muted;
+}
