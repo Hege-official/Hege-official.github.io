@@ -16,6 +16,7 @@
 
 - 主题有两套来源：`_config.yml` 设置 `theme: minimal-mistakes-jekyll`（Gemfile 锁定 `~> 4.24.0`），同时本仓库又完整内置了主题源码。本地 `_layouts/`、`_includes/`、`_sass/`、`_data/`、`assets/` 会**覆盖 Gem 主题**，因此请修改本地文件，不要改已安装的 Gem。
 - `_site/` 与 `.jekyll-cache/` 是生成产物且已被 gitignore，切勿编辑。
+- `_includes/masthead.html`、`footer.html` 通过 `include_cached` 加载，缓存键只含 include 路径与传入参数：页面相关内容必须作为参数传入（如 `{% include_cached masthead.html page_url=page.url %}`），否则所有页面会复用首个渲染页的结果。修改被缓存的 include 后若页面未更新，删除 `.jekyll-cache/` 再构建。
 - JS：页面只加载 `assets/js/main.min.js`（见 `_includes/scripts.html`）。`assets/js/_main.js`、`assets/js/plugins/**`、`assets/js/vendor/**` 都被 Jekyll 构建排除。请修改这些源文件后执行 `rake js` 重新生成 `main.min.js`，否则浏览器端看不到改动。
 - 搜索使用 lunr，并开启 `search_full_content: true`。`assets/js/lunr/lunr-store.js` 是一个 Liquid 模板（front matter 为 `layout: none`），构建时会根据全部 collection 文档重新生成，不要手动编辑其中的数据。
 - 评论使用 giscus（配置在 `_config.yml`），仅 `/feedback/` 页开启；文章页已移除评论与作者卡。
