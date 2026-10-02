@@ -1,27 +1,45 @@
-<div class="page__footer-follow">
-  <ul class="social-icons">
-    {% if site.data.ui-text[site.locale].follow_label %}
-      <li><strong>{{ site.data.ui-text[site.locale].follow_label }}</strong></li>
-    {% endif %}
+<div class="gov-footer">
+  <div class="gov-footer__col gov-footer__brand">
+    <img src="{{ site.logo | relative_url }}" alt="{{ site.name }}" class="gov-footer__logo">
+    <h3>{{ site.name | default: site.title }}</h3>
+    <p>{{ site.description }}</p>
+  </div>
 
-    {% if site.footer.links %}
+  <div class="gov-footer__col">
+    <h3>栏目导航</h3>
+    <ul>
+      <li><a href="{{ '/news/' | relative_url }}">新闻中心</a></li>
+      <li><a href="{{ '/notices/' | relative_url }}">公告通知</a></li>
+      <li><a href="{{ '/editorials/' | relative_url }}">社论评论</a></li>
+      <li><a href="{{ '/feedback/' | relative_url }}">意见建议</a></li>
+    </ul>
+  </div>
+
+  <div class="gov-footer__col">
+    <h3>友情链接</h3>
+    <ul>
       {% for link in site.footer.links %}
         {% if link.label and link.url %}
-          <li><a href="{{ link.url }}" rel="nofollow noopener noreferrer"><i class="{{ link.icon | default: 'fas fa-link' }}" aria-hidden="true"></i> {{ link.label }}</a></li>
+          <li><a href="{{ link.url }}" rel="nofollow noopener noreferrer">{{ link.label }}</a></li>
         {% endif %}
       {% endfor %}
-    {% endif %}
+      {% unless site.atom_feed.hide %}
+        <li><a href="{% if site.atom_feed.path %}{{ site.atom_feed.path }}{% else %}{{ '/feed.xml' | relative_url }}{% endif %}">RSS 订阅</a></li>
+      {% endunless %}
+    </ul>
+  </div>
 
-    {% unless site.atom_feed.hide %}
-      <li><a href="{% if site.atom_feed.path %}{{ site.atom_feed.path }}{% else %}{{ '/feed.xml' | relative_url }}{% endif %}"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> {{ site.data.ui-text[site.locale].feed_label | default: "Feed" }}</a></li>
-    {% endunless %}
-  </ul>
+  <div class="gov-footer__col">
+    <h3>联系我们</h3>
+    <ul>
+      {% if site.author.email %}<li><a href="mailto:{{ site.author.email }}">{{ site.author.email }}</a></li>{% endif %}
+      {% if site.author.location %}<li>{{ site.author.location }}</li>{% endif %}
+    </ul>
+  </div>
 </div>
 
-<div class="page__footer-copyright">&copy; {{ site.time | date: '%Y' }} <a href="{{ site.copyright_url | default: site.url }}">{{ site.copyright | default: site.title }}</a>. {{ site.data.ui-text[site.locale].powered_by | default: "Powered by" }} <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
-
-<div class="page__footer-copyright">
-  &copy; {{ site.time | date: '%Y' }} {{ site.name | default: site.title }}.
-  <!-- 添加备案信息 -->
-  <a href="https://icp.gov.moe/?keyword=20252104" target="_blank">萌ICP备20252104号</a>
+<div class="gov-footer__bottom">
+  <p>&copy; {{ site.time | date: '%Y' }} {{ site.name | default: site.title }}。保留所有权利。</p>
+  <p><a href="https://icp.gov.moe/?keyword=20252104" target="_blank" rel="noopener">萌ICP备20252104号</a></p>
+  <p class="gov-footer__disclaimer">免责声明：本站为架空世界观创作，内容与任何现实国家、政府、个人无关。</p>
 </div>

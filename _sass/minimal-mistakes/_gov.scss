@@ -143,3 +143,86 @@
     display: none;
   }
 }
+
+/* 页脚 */
+.page__footer {
+  background: $hege-navy-deep;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 3rem;
+}
+
+.gov-footer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 1.5rem;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 2rem;
+}
+
+.gov-footer h3 {
+  font-family: "STZhongsong", serif;
+  font-size: 1rem;
+  color: #fff;
+  margin: 0 0 0.75rem;
+}
+
+.gov-footer__logo {
+  max-height: 48px;
+  margin-bottom: 0.5rem;
+}
+
+.gov-footer ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.gov-footer li {
+  margin-bottom: 0.4rem;
+}
+
+.gov-footer a {
+  color: rgba(255, 255, 255, 0.8);
+
+  &:hover {
+    color: $hege-gold;
+  }
+}
+
+.gov-footer__bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.6);
+
+  a {
+    color: rgba(255, 255, 255, 0.6);
+
+    &:hover {
+      color: $hege-gold;
+    }
+  }
+
+  p {
+    margin: 0.2rem 0;
+  }
+}
+
+.gov-footer__disclaimer {
+  color: $hege-gold;
+}
+
+@media (max-width: 900px) {
+  .gov-footer {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .gov-footer {
+    grid-template-columns: 1fr;
+  }
+}
