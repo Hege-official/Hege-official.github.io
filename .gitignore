@@ -31,3 +31,6 @@ codekit-config.json
 .sass-cache
 _asset_bundler_cache
 _site
+
+# Agent scratch (superpowers ledgers, briefs, review packages)
+.superpowers/
