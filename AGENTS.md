@@ -5,7 +5,7 @@
 
 ## 常用命令
 
-- 安装依赖：`bundle install`（Gem 源是 `https://gems.ruby-china.com/`，不是 rubygems.org）。
+- 安装依赖：`bundle install`（本地默认 Gem 源是 `https://gems.ruby-china.com/`）。CI 会因为 GitHub runner 访问该镜像 TLS 握手失败，改用 `GEM_SOURCE=https://rubygems.org/`（见 workflow 的 `env`，`Gemfile` 读取该变量）。
 - 本地预览：`bundle exec jekyll serve`。`_config.yml` **不会**热重载，修改后必须重启服务。
 - 构建（CI 使用，产物在 `_site/`）：`bundle exec jekyll build`。构建报错含义不清时加 `--trace`。
 - 修改 `assets/js/_main.js` 或 `assets/js/plugins/*.js` 后需重新打包 JS：`rake js`。

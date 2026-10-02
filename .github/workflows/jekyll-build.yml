@@ -8,6 +8,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # GitHub runner 无法访问 gems.ruby-china.com（TLS 握手失败），CI 改用官方源
+      GEM_SOURCE: "https://rubygems.org/"
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
