@@ -48,4 +48,5 @@
 
 ## 开发手册
 
-`Bundle exec jekyll serve` 在线预览
+- `bundle exec jekyll serve` 在线预览（修改 `_config.yml` 后需重启）
+- `bundle exec jekyll build` 构建，产物在 `_site/`
