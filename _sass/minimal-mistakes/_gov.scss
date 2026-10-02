@@ -241,37 +241,40 @@
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
   gap: 1.25rem;
+  align-items: stretch;
 }
 
 .gov-hero__lead {
-  position: relative;
-  display: block;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   background: $hege-navy-deep;
+
+  &:hover .gov-hero__title {
+    color: $hege-gold;
+  }
 }
 
 .gov-hero__lead img {
   display: block;
   width: 100%;
-  height: 100%;
-  max-height: 360px;
+  height: auto;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
 }
 
 .gov-hero__placeholder {
   display: block;
-  height: 320px;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
   background: linear-gradient(135deg, $hege-navy, $hege-navy-deep);
 }
 
 .gov-hero__body {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 1.25rem;
+  flex: 1 1 auto;
+  padding: 1.1rem 1.25rem 1.25rem;
   color: #fff;
-  background: linear-gradient(transparent, rgba(7, 21, 39, 0.88));
 }
 
 .gov-hero__cat {
@@ -306,6 +309,10 @@
 .gov-hero__side li {
   border-bottom: 1px solid $hege-border;
   padding: 0.7rem 0;
+
+  &:last-child {
+    border-bottom: none;
+  }
 }
 
 .gov-hero__side a {
@@ -662,9 +669,15 @@
 /* 归档年份标题 */
 .archive .taxonomy__section,
 .archive h2.archive__subtitle {
+  margin: 2rem 0 1rem;
+  padding-bottom: 0.4rem;
   border-bottom: 1px solid $hege-gold;
   color: $hege-navy;
   font-family: "STZhongsong", serif;
+
+  &:first-child {
+    margin-top: 0;
+  }
 }
 
 @media (max-width: 600px) {
