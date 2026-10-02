@@ -116,6 +116,18 @@ MathJax.Hub.Config({
 
     
 
+<div class="gov-topbar">
+  <div class="gov-topbar__inner">
+    <span class="gov-topbar__slogan">和各共和国政府新闻发言网 · 官方信息发布平台</span>
+    <span class="gov-topbar__meta">
+      <time datetime="2026-10-02T12:36:11+08:00">2026年10月02日</time>
+      <a href="/search/">站内搜索</a>
+      <a href="/categories/">内容分类</a>
+    </span>
+  </div>
+</div>
+
+
 <div class="masthead">
   <div class="masthead__inner-wrap">
     <div class="masthead__menu">
@@ -132,19 +144,43 @@ MathJax.Hub.Config({
                 href="/"
                 
                 
-              >主页</a>
+                
+              >首页</a>
             </li><li class="masthead__menu-item">
               <a
                 href="/archive/"
                 
                 
-              >归档文章</a>
+                
+              >要闻</a>
             </li><li class="masthead__menu-item">
               <a
-                href="/categories/"
+                href="/news/"
                 
                 
-              >分类</a>
+                
+              >新闻</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/notices/"
+                
+                
+                
+              >公告</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/editorials/"
+                
+                
+                
+              >社论</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/feedback/"
+                
+                
+                
+              >意见建议</a>
             </li></ul>
         
         <button class="search__toggle" type="button">
@@ -180,14 +216,14 @@ MathJax.Hub.Config({
     height: auto;
     max-height: 600px;
     margin-bottom: 2rem;
-    border-radius: 8px;
+    border-radius: 0;
   }
   
   
   .error-title {
     font-size: 5rem;
     font-weight: 700;
-    color: #1a365d;
+    color: #0b1f3a;
     margin: 0 0 1rem 0;
     position: relative;
     display: inline-block;
@@ -200,13 +236,13 @@ MathJax.Hub.Config({
     left: 10%;
     width: 80%;
     height: 4px;
-    background-color: #3182ce;
+    background-color: #a81c1c;
     border-radius: 2px;
   }
   
   .error-message {
     font-size: 1.25rem;
-    color: #4a5568;
+    color: #5b6672;
     max-width: 600px;
     margin-bottom: 2rem;
     line-height: 1.6;
@@ -220,7 +256,7 @@ MathJax.Hub.Config({
   
   .btn {
     padding: 0.75rem 1.5rem;
-    border-radius: 4px;
+    border-radius: 0;
     font-weight: 600;
     text-decoration: none;
     transition: all 0.3s ease;
@@ -228,24 +264,24 @@ MathJax.Hub.Config({
   }
   
   .btn-primary {
-    background-color: #1a365d;
+    background-color: #0b1f3a;
     color: white;
     border: none;
   }
   
   .btn-primary:hover {
-    background-color: #2c5282;
+    background-color: #071527;
     transform: translateY(-2px);
   }
   
   .btn-secondary {
     background-color: transparent;
-    color: #1a365d;
-    border: 2px solid #1a365d;
+    color: #0b1f3a;
+    border: 2px solid #0b1f3a;
   }
   
   .btn-secondary:hover {
-    background-color: #f7fafc;
+    background-color: #f6f7f9;
     transform: translateY(-2px);
   }
   
@@ -301,43 +337,62 @@ MathJax.Hub.Config({
         <!-- start custom footer snippets -->
 
 <!-- end custom footer snippets -->
-        <div class="page__footer-follow">
-  <ul class="social-icons">
-    
-      <li><strong>关注:</strong></li>
-    
+        <div class="gov-footer">
+  <div class="gov-footer__col gov-footer__brand">
+    <img src="/assets/images/rhclogo1.png" alt="和各政府网" class="gov-footer__logo">
+    <h3>和各政府网</h3>
+    <p>和各的官方网站</p>
+  </div>
 
-    
-      
-        
-      
-        
-      
-        
-          <li><a href="https://github.com/Hege-official/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
-        
-      
-        
-      
-        
-      
-        
-      
-    
+  <div class="gov-footer__col">
+    <h3>栏目导航</h3>
+    <ul>
+      <li><a href="/news/">新闻中心</a></li>
+      <li><a href="/notices/">公告通知</a></li>
+      <li><a href="/editorials/">社论评论</a></li>
+      <li><a href="/feedback/">意见建议</a></li>
+    </ul>
+  </div>
 
-    
-      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
-    
-  </ul>
+  <div class="gov-footer__col">
+    <h3>友情链接</h3>
+    <ul>
+      
+        
+      
+        
+      
+        
+          <li><a href="https://github.com/Hege-official/" rel="nofollow noopener noreferrer">GitHub</a></li>
+        
+      
+        
+      
+        
+      
+        
+      
+      
+        <li><a href="/feed.xml">RSS 订阅</a></li>
+      
+    </ul>
+  </div>
+
+  <div class="gov-footer__col">
+    <h3>联系我们</h3>
+    <ul>
+      <li><a href="mailto:hegecountry@outlook.com">hegecountry@outlook.com</a></li>
+      <li>RHC Yikong People's square 2th</li>
+    </ul>
+  </div>
 </div>
 
-<div class="page__footer-copyright">&copy; 2026 <a href="https://hege-official.github.io/">和各政府网</a>. 技术来自于 <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/jekyll-themes/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a>.</div>
-
-<div class="page__footer-copyright">
-  &copy; 2026 和各政府网.
-  <!-- 添加备案信息 -->
-  <a href="https://icp.gov.moe/?keyword=20252104" target="_blank">萌ICP备20252104号</a>
+<div class="gov-footer__bottom">
+  <p>&copy; 2026 和各政府网。保留所有权利。</p>
+  <p><a href="https://icp.gov.moe/?keyword=20252104" target="_blank" rel="noopener">萌ICP备20252104号</a></p>
+  <p class="gov-footer__disclaimer">免责声明：本站为架空世界观创作，内容与任何现实国家、政府、个人无关。</p>
 </div>
+
       </footer>
     </div>
 
