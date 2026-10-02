@@ -5,8 +5,8 @@
   float: right;
   width: 280px;
   margin: 0.5rem 0 1rem 1.5rem;
-  border: 1px solid #a2a9b1;
-  background-color: #f8f9fa;
+  border: 1px solid $hege-border;
+  background-color: $hege-surface;
   font-size: 0.8em;
   line-height: 1.4;
   clear: right;
@@ -28,7 +28,8 @@
   font-weight: bold;
   text-align: center;
   padding: 0.5rem;
-  background-color: #eaf3ff; /* A light blue, similar to Wikipedia */
+  background-color: $hege-surface;
+  color: $hege-navy;
 }
 
 .infobox-image {
@@ -72,7 +73,7 @@
 .content-box {
   background-color: #f9f9f9;
   border: 1px solid #e0e0e0;
-  border-left: 5px solid #4285f4; // A nice accent color
+  border-left: 5px solid $hege-red;
   margin: 1.5rem 0;
   padding: 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -140,7 +141,7 @@
 
   .fas {
     margin-right: 0.4rem;
-    color: #4285f4;
+    color: $hege-navy;
     font-size: 0.95em;
   }
 
@@ -169,7 +170,7 @@
         content: "•";
         position: absolute;
         left: 0;
-        color: #4285f4;
+        color: $hege-red;
         font-weight: bold;
         font-size: 0.75em;
       }

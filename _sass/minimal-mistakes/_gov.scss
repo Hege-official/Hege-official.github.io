@@ -673,3 +673,18 @@
     width: 100%;
   }
 }
+
+/* Infobox 政务化 */
+.infobox {
+  border-color: $hege-border;
+  background: $hege-surface;
+}
+
+.infobox-header {
+  background: $hege-navy;
+  color: #fff;
+}
+
+.infobox-label {
+  color: $hege-navy;
+}
