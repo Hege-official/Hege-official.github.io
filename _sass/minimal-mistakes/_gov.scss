@@ -66,3 +66,80 @@
   font-size: 0.85rem;
   color: $hege-muted;
 }
+
+/* 顶部政务条 */
+.gov-topbar {
+  background: $hege-navy;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.8rem;
+}
+
+.gov-topbar__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.4rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.gov-topbar a {
+  color: rgba(255, 255, 255, 0.85);
+  margin-left: 1rem;
+
+  &:hover {
+    color: #fff;
+  }
+}
+
+/* 主导航 */
+.masthead {
+  border-bottom: 2px solid $hege-navy;
+  box-shadow: 0 1px 0 $hege-gold;
+  background: #fff;
+}
+
+.masthead__inner-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.9rem 1.5rem;
+}
+
+.site-logo img {
+  max-height: 56px;
+}
+
+.site-title {
+  font-family: "STZhongsong", serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $hege-navy;
+}
+
+.site-subtitle {
+  display: block;
+  font-family: "Yahei", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: $hege-muted;
+}
+
+.greedy-nav {
+  background: transparent;
+
+  a {
+    color: $hege-navy;
+    font-weight: 600;
+    font-family: "Yahei", sans-serif;
+  }
+
+  .visible-links a:hover {
+    color: $hege-red;
+  }
+}
+
+@media (max-width: 768px) {
+  .gov-topbar {
+    display: none;
+  }
+}
