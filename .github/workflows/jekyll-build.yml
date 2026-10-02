@@ -27,7 +27,18 @@ jobs:
 
       - name: Build Jekyll Site
         run: |
-          bundle exec jekyll build
+          bundle exec jekyll build --trace
+
+      - name: Verify Build Output
+        run: |
+          set -e
+          for page in index.html news/index.html notices/index.html editorials/index.html feedback/index.html archive/index.html search/index.html 404.html; do
+            if [ ! -s "_site/$page" ]; then
+              echo "::error::缺少或为空的构建产物: _site/$page"
+              exit 1
+            fi
+          done
+          echo "构建产物检查通过（关键页面均已生成）"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
