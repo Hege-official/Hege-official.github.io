@@ -3,14 +3,16 @@
     <script src="{{ script | relative_url }}"></script>
   {% endfor %}
 {% else %}
-  <script src="{{ '/assets/js/main.min.js' | relative_url }}"></script>
+  <script src="{{ '/assets/js/main.min.js' | relative_url }}" defer></script>
 {% endif %}
 
 {% if site.search == true or page.layout == "search" %}
   {%- assign search_provider = site.search_provider | default: "lunr" -%}
+  {%- assign search_eager = false -%}
+  {%- if page.layout == "search" -%}{%- assign search_eager = true -%}{%- endif -%}
   {%- case search_provider -%}
     {%- when "lunr" -%}
-      {% include_cached search/lunr-search-scripts.html %}
+      {% include_cached search/lunr-search-scripts.html eager=search_eager %}
     {%- when "google" -%}
       {% include_cached search/google-search-scripts.html %}
     {%- when "algolia" -%}

@@ -1,0 +1,46 @@
+# 由 tools/optimize-images.py 自动生成，请勿手改。
+# 键为图片在站内的路径，值含宽高与是否存在 WebP 版本。
+"/assets/images/404-image.png":
+  width: 1600
+  height: 1119
+  webp: true
+"/assets/images/alan-turing.jpg":
+  width: 600
+  height: 825
+  webp: true
+"/assets/images/costum_cover_xiaohe.png":
+  width: 2400
+  height: 561
+  webp: true
+"/assets/images/hegegov1.png":
+  width: 1387
+  height: 296
+  webp: true
+"/assets/images/hegegovcoun.png":
+  width: 1600
+  height: 400
+  webp: true
+"/assets/images/hegenews.png":
+  width: 1600
+  height: 400
+  webp: true
+"/assets/images/latelynews.png":
+  width: 1600
+  height: 400
+  webp: true
+"/assets/images/rhclogo1.png":
+  width: 197
+  height: 240
+  webp: true
+"/assets/images/turing-statue.jpg":
+  width: 639
+  height: 426
+  webp: true
+"/assets/images/和各人大.png":
+  width: 179
+  height: 176
+  webp: true
+"/assets/images/站点logo.png":
+  width: 240
+  height: 240
+  webp: true

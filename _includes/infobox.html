@@ -23,7 +23,7 @@
     {% if page.infobox_image %}
     <tr>
       <td colspan="2" class="infobox-image">
-        <img src="{{ page.infobox_image | relative_url }}" alt="{{ page.infobox_caption | default: 'Infobox image' }}">
+        {% include img.html src=page.infobox_image alt=page.infobox_caption %}
         {% if page.infobox_caption %}
         <div class="infobox-caption">{{ page.infobox_caption }}</div>
         {% endif %}

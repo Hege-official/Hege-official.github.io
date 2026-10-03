@@ -107,7 +107,7 @@ infobox_header, infobox_image, infobox_caption, infobox_data: 这些是你为自
 在需要引用的地方使用 \[^1]、\[^2] 等。
 在文章末尾，使用 \[^1]: 参考文献的具体内容 来定义脚注。
 为了美观，我建议在文末创建一个“参考文献”章节，并在其下方列出所有脚注定义。（注意：Markdown 会自动将所有脚注渲染在文章最末尾，但将定义写在参考文献章节下有助于组织你的源文件。）
-图片 {% include figure %}: 使用 Minimal Mistakes 的 figure include 可以方便地插入带标题的图片，比原生 Markdown ![]() 更强大。
+图片 {% include figure %}: 使用 Minimal Mistakes 的 figure include 可以方便地插入带标题的图片，比原生 Markdown `![]()` 更强大。
 
 提示框 .notice--info: Minimal Mistakes 内置了多种提示框样式，如 .notice, .notice--info, .notice--warning, .notice--success, .notice--danger 等。你只需用 <div> 或其他 HTML 标签包裹内容并添加相应的 class 即可。
 

@@ -2,9 +2,52 @@
 {% case lang %}
 {% when "gr" %}
   {% assign lang = "gr" %}
+{% when "zh" %}
+  {% assign lang = "zh" %}
 {% else %}
   {% assign lang = "en" %}
 {% endcase %}
+
+{% comment %}
+  eager=true  —— 搜索页直接加载，保证打开即可用；
+  eager=false —— 其余页面不在首屏加载，等用户点开顶栏搜索框或聚焦搜索框时再按需注入。
+  分词器一律使用 lunr-cjk.js（中文二元组），lunr-zh.js / lunr-en.js 负责建索引与交互。
+{% endcomment %}
+{% if include.eager %}
 <script src="{{ '/assets/js/lunr/lunr.min.js' | relative_url }}"></script>
 <script src="{{ '/assets/js/lunr/lunr-store.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/lunr/lunr-cjk.js' | relative_url }}"></script>
 <script src="{{ '/assets/js/lunr/lunr-' | append: lang | append: '.js' | relative_url }}"></script>
+{% else %}
+<script>
+  (function () {
+    var loaded = false;
+    var srcs = [
+      "{{ '/assets/js/lunr/lunr.min.js' | relative_url }}",
+      "{{ '/assets/js/lunr/lunr-store.js' | relative_url }}",
+      "{{ '/assets/js/lunr/lunr-cjk.js' | relative_url }}",
+      "{{ '/assets/js/lunr/lunr-' | append: lang | append: '.js' | relative_url }}"
+    ];
+    window.HegeLoadSearch = function () {
+      if (loaded) return;
+      loaded = true;
+      (function next(i) {
+        if (i >= srcs.length) return;
+        var el = document.createElement("script");
+        el.src = srcs[i];
+        el.async = false;
+        el.onload = function () { next(i + 1); };
+        el.onerror = function () { next(i + 1); };
+        document.head.appendChild(el);
+      })(0);
+    };
+    document.addEventListener("click", function (e) {
+      var t = e.target;
+      if (t && t.closest && t.closest(".search__toggle")) window.HegeLoadSearch();
+    }, true);
+    document.addEventListener("focusin", function (e) {
+      if (e.target && e.target.id === "search") window.HegeLoadSearch();
+    });
+  })();
+</script>
+{% endif %}

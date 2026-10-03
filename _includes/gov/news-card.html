@@ -10,7 +10,7 @@
 <article class="gov-card">
   <a class="gov-card__link" href="{{ post.url | relative_url }}">
     {% if card_img != '' %}
-      <span class="gov-card__media"><img src="{{ card_img | relative_url }}" alt=""></span>
+      <span class="gov-card__media">{% include img.html src=card_img alt="" %}</span>
     {% else %}
       <span class="gov-card__media gov-card__media--ph"></span>
     {% endif %}

@@ -15,7 +15,7 @@
   <div class="gov-hero">
     <a class="gov-hero__lead" href="{{ main_post.url | relative_url }}">
       {% if main_post.header.image and main_post.header.image != "" %}
-        <img src="{{ main_post.header.image | relative_url }}" alt="{{ main_post.title | escape }}">
+        {% include img.html src=main_post.header.image alt=main_post.title loading="eager" fetchpriority="high" %}
       {% else %}
         <span class="gov-hero__placeholder"></span>
       {% endif %}

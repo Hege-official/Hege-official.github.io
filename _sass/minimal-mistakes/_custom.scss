@@ -152,6 +152,13 @@
   }
 }
 
+/* 图片助手：<picture> 不产生盒子，避免破坏既有 img 尺寸/填充规则
+   ========================================================================== */
+
+picture {
+  display: contents;
+}
+
 .embed-box-content {
   padding: 0.5rem 0.6rem;
   line-height: 1.5;

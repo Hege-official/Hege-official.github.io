@@ -45,10 +45,10 @@ infobox_data:
 
 和各国的标识为“g”中嵌入一个“H”，象征着团结与创新。
 
-![和各logo](https://p.sda1.dev/24/a4bf0e7f27d510f95faddac49b4d009c/PicWish_20240928_144213.png){: width="100px"}
+![和各logo](https://p.sda1.dev/24/a4bf0e7f27d510f95faddac49b4d009c/PicWish_20240928_144213.png){: width="100px" loading="lazy"}
 *和各国标识*
 
-![和各国国徽](https://p.sda1.dev/24/f1ae2767da9875653bf0150242b6c983/IMG_20250529_204643.jpg){: width="100px"}
+![和各国国徽](https://p.sda1.dev/24/f1ae2767da9875653bf0150242b6c983/IMG_20250529_204643.jpg){: width="100px" loading="lazy"}
 *和各国国徽*
 ## 地理位置与自然环境
 

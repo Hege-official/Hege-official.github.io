@@ -10,7 +10,7 @@ categories: [公告]  # 分类（可多个）
 tags: [公告,国内,动人代]  # 标签（可多个）
 ---
 
-![动人代logo](/assets/images/和各人大.png){: width="100px"}
+![动人代logo](/assets/images/和各人大.png){: width="100px" loading="lazy"}
 # 关于召开和各国全国大小动物人民代表大会第十六届会议的通知
 
 各选区：

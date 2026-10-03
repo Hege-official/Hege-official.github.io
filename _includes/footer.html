@@ -1,6 +1,6 @@
 <div class="gov-footer">
   <div class="gov-footer__col gov-footer__brand">
-    <img src="{{ site.logo | relative_url }}" alt="{{ site.name }}" class="gov-footer__logo">
+    {% include img.html src=site.logo alt=site.name class="gov-footer__logo" loading="eager" %}
     <h3>{{ site.name | default: site.title }}</h3>
     <p>{{ site.description }}</p>
   </div>

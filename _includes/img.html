@@ -1,0 +1,19 @@
+{%- comment -%}
+图片输出助手：优先 WebP，带懒加载/异步解码与宽高（减少带宽与布局抖动）。
+用法：
+  {% include img.html src="/assets/images/x.png" alt="说明" %}
+  {% include img.html src=... alt=... loading="eager" fetchpriority="high" class="..." %}
+有尺寸数据（_data/image_variants.yml）时输出 <picture>，否则退化为普通 <img>。
+{%- endcomment -%}
+{%- assign img_src = include.src -%}
+{%- assign img_meta = site.data.image_variants[img_src] -%}
+{%- assign img_webp = img_src | replace: '.jpeg', '.webp' | replace: '.jpg', '.webp' | replace: '.png', '.webp' -%}
+{%- assign img_loading = include.loading | default: 'lazy' -%}
+{%- if img_meta -%}
+<picture>
+  {%- if img_meta.webp %}<source srcset="{{ img_webp | relative_url }}" type="image/webp">{% endif -%}
+  <img src="{{ img_src | relative_url }}" alt="{{ include.alt | default: '' | escape_once }}" width="{{ img_meta.width }}" height="{{ img_meta.height }}" loading="{{ img_loading }}" decoding="async"{% if include.fetchpriority %} fetchpriority="{{ include.fetchpriority }}"{% endif %}{% if include.class %} class="{{ include.class }}"{% endif %}{% if include.itemprop %} itemprop="{{ include.itemprop }}"{% endif %}>
+</picture>
+{%- else -%}
+<img src="{{ img_src | relative_url }}" alt="{{ include.alt | default: '' | escape_once }}" loading="{{ img_loading }}" decoding="async"{% if include.fetchpriority %} fetchpriority="{{ include.fetchpriority }}"{% endif %}{% if include.class %} class="{{ include.class }}"{% endif %}{% if include.itemprop %} itemprop="{{ include.itemprop }}"{% endif %}>
+{%- endif -%}

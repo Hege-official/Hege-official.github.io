@@ -195,6 +195,8 @@ exclude:
   - README
   - AGENTS.md
   - tmp
+  - tools  # 图片优化等本地脚本，不发布
+  - assets/images/.originals  # 图片原图备份，不发布
   - docs  # 忽略 Minimal Mistakes /docs
   - test  # 忽略 Minimal Mistakes /test
 keep_files:

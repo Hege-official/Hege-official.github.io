@@ -21,8 +21,8 @@
 <!-- 如果是 png 格式，type 改成 image/png ，比如 -->
 <!-- <link rel="icon" href="/assets/images/favicon.png" type="image/png"> -->
 <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
-<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"></noscript>
 
 {% if site.head_scripts %}
   {% for script in site.head_scripts %}
@@ -30,6 +30,4 @@
   {% endfor %}
 {% endif %}
 
-{% unless page.no_latex %}
-        {% include latex.html %}
-    {% endunless %}
+{% if page.latex %}{% include latex.html %}{% endif %}
