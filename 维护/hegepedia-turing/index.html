@@ -78,29 +78,12 @@
 <!-- 如果是 png 格式，type 改成 image/png ，比如 -->
 <!-- <link rel="icon" href="/assets/images/favicon.png" type="image/png"> -->
 <link rel="stylesheet" href="/assets/css/main.css">
-<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"></noscript>
 
 
 
 
-        <script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    TeX: {
-        equationNumbers: {
-            autoNumber: "AMS"
-        }
-    },
-    tex2jax: {
-        inlineMath: [ ['$','$'] ],
-        displayMath: [ ['$$','$$'] ],
-        processEscapes: true,
-    }
-});
-</script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-    
     <!-- start custom head snippets -->
 
 <!-- insert favicons. use https://realfavicongenerator.net/ -->
@@ -124,7 +107,7 @@ MathJax.Hub.Config({
   <div class="gov-topbar__inner">
     <span class="gov-topbar__slogan">和各共和国政府新闻发言网 · 官方信息发布平台</span>
     <span class="gov-topbar__meta">
-      <time datetime="2026-10-03T11:12:28+08:00">2026年10月03日</time>
+      <time datetime="2026-10-03T14:41:42+08:00">2026年10月03日</time>
       <a href="/search/">站内搜索</a>
       <a href="/categories/">内容分类</a>
     </span>
@@ -137,7 +120,8 @@ MathJax.Hub.Config({
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
         
-          <a class="site-logo" href="/"><img src="/assets/images/rhclogo1.png" alt="和各共和国政府新闻发言网"></a>
+          <a class="site-logo" href="/"><picture><source srcset="/assets/images/rhclogo1.webp" type="image/webp"><img src="/assets/images/rhclogo1.png" alt="和各共和国政府新闻发言网" width="197" height="240" loading="eager" decoding="async">
+</picture></a>
         
         <a class="site-title" href="/">
           和各共和国政府新闻发言网
@@ -333,7 +317,8 @@ MathJax.Hub.Config({
     
     <tr>
       <td colspan="2" class="infobox-image">
-        <img src="/assets/images/alan-turing.jpg" alt="图灵约摄于1951年" />
+        <picture><source srcset="/assets/images/alan-turing.webp" type="image/webp" /><img src="/assets/images/alan-turing.jpg" alt="图灵约摄于1951年" width="600" height="825" loading="lazy" decoding="async" />
+</picture>
         
         <div class="infobox-caption">图灵约摄于1951年</div>
         
@@ -383,7 +368,8 @@ MathJax.Hub.Config({
 
 <p>图灵出生于伦敦的梅达韦尔。他的父亲是英属印度公务员。图灵在谢伯恩学校就读，并于1931年前往剑桥大学国王学院学习数学。</p>
 
-<figure class=""><img src="/assets/images/turing-statue.jpg" alt="图灵雕像" /><figcaption>
+<figure class=""><picture><source srcset="/assets/images/turing-statue.webp" type="image/webp" /><img src="/assets/images/turing-statue.jpg" alt="图灵雕像" width="639" height="426" loading="lazy" decoding="async" />
+</picture><figcaption>
       位于曼彻斯特的图灵雕像。
 
     </figcaption></figure>
@@ -487,7 +473,8 @@ infobox_header, infobox_image, infobox_caption, infobox_data: 这些是你为自
     
     <tr>
       <td colspan="2" class="infobox-image">
-        <img src="/assets/images/alan-turing.jpg" alt="图灵约摄于1951年" />
+        <picture><source srcset="/assets/images/alan-turing.webp" type="image/webp" /><img src="/assets/images/alan-turing.jpg" alt="图灵约摄于1951年" width="600" height="825" loading="lazy" decoding="async" />
+</picture>
         
         <div class="infobox-caption">图灵约摄于1951年</div>
         
@@ -536,9 +523,8 @@ infobox_header, infobox_image, infobox_caption, infobox_data: 这些是你为自
   <dt>在需要引用的地方使用 [^1]、[^2] 等。</dt>
   <dt>在文章末尾，使用 [^1]: 参考文献的具体内容 来定义脚注。</dt>
   <dt>为了美观，我建议在文末创建一个“参考文献”章节，并在其下方列出所有脚注定义。（注意：Markdown 会自动将所有脚注渲染在文章最末尾，但将定义写在参考文献章节下有助于组织你的源文件。）</dt>
-  <dt>图片 <figure class="">&lt;img src=””</figure></dt>
-  <dt>       alt=””&gt;&lt;/figure&gt;</dt>
-  <dd>使用 Minimal Mistakes 的 figure include 可以方便地插入带标题的图片，比原生 Markdown <img src="" alt="" /> 更强大。</dd>
+  <dt>图片 <figure class=""><img src="" alt="" loading="lazy" decoding="async" /></figure></dt>
+  <dd>使用 Minimal Mistakes 的 figure include 可以方便地插入带标题的图片，比原生 Markdown <code class="language-plaintext highlighter-rouge">![]()</code> 更强大。</dd>
 </dl>
 
 <p>提示框 .notice–info: Minimal Mistakes 内置了多种提示框样式，如 .notice, .notice–info, .notice–warning, .notice–success, .notice–danger 等。你只需用 &lt;div&gt; 或其他 HTML 标签包裹内容并添加相应的 class 即可。</p>
@@ -619,7 +605,8 @@ infobox_header, infobox_image, infobox_caption, infobox_data: 这些是你为自
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <img src="/assets/images/hegegovcoun.png" alt="">
+        <picture><source srcset="/assets/images/hegegovcoun.webp" type="image/webp"><img src="/assets/images/hegegovcoun.png" alt="" width="1600" height="400" loading="lazy" decoding="async">
+</picture>
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
@@ -681,7 +668,8 @@ infobox_header, infobox_image, infobox_caption, infobox_data: 这些是你为自
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <img src="/assets/images/%E5%92%8C%E5%90%84%E4%BA%BA%E5%A4%A7.png" alt="">
+        <picture><source srcset="/assets/images/%E5%92%8C%E5%90%84%E4%BA%BA%E5%A4%A7.webp" type="image/webp"><img src="/assets/images/%E5%92%8C%E5%90%84%E4%BA%BA%E5%A4%A7.png" alt="" width="179" height="176" loading="lazy" decoding="async">
+</picture>
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
@@ -743,7 +731,8 @@ infobox_header, infobox_image, infobox_caption, infobox_data: 这些是你为自
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <img src="/assets/images/latelynews.png" alt="">
+        <picture><source srcset="/assets/images/latelynews.webp" type="image/webp"><img src="/assets/images/latelynews.png" alt="" width="1600" height="400" loading="lazy" decoding="async">
+</picture>
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
@@ -805,7 +794,8 @@ infobox_header, infobox_image, infobox_caption, infobox_data: 这些是你为自
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
       <div class="archive__item-teaser">
-        <img src="/assets/images/hegegovcoun.png" alt="">
+        <picture><source srcset="/assets/images/hegegovcoun.webp" type="image/webp"><img src="/assets/images/hegegovcoun.png" alt="" width="1600" height="400" loading="lazy" decoding="async">
+</picture>
       </div>
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
@@ -888,7 +878,8 @@ infobox_header, infobox_image, infobox_caption, infobox_data: 这些是你为自
 <!-- end custom footer snippets -->
         <div class="gov-footer">
   <div class="gov-footer__col gov-footer__brand">
-    <img src="/assets/images/rhclogo1.png" alt="和各政府网" class="gov-footer__logo">
+    <picture><source srcset="/assets/images/rhclogo1.webp" type="image/webp"><img src="/assets/images/rhclogo1.png" alt="和各政府网" width="197" height="240" loading="eager" decoding="async" class="gov-footer__logo">
+</picture>
     <h3>和各政府网</h3>
     <p>和各的官方网站</p>
   </div>
@@ -946,14 +937,47 @@ infobox_header, infobox_image, infobox_caption, infobox_data: 这些是你为自
     </div>
 
     
-  <script src="/assets/js/main.min.js"></script>
+  <script src="/assets/js/main.min.js" defer></script>
 
 
 
 
-<script src="/assets/js/lunr/lunr.min.js"></script>
-<script src="/assets/js/lunr/lunr-store.js"></script>
-<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+<script>
+  (function () {
+    var loaded = false;
+    var srcs = [
+      "/assets/js/lunr/lunr.min.js",
+      "/assets/js/lunr/lunr-store.js",
+      "/assets/js/lunr/lunr-cjk.js",
+      "/assets/js/lunr/lunr-zh.js"
+    ];
+    window.HegeLoadSearch = function () {
+      if (loaded) return;
+      loaded = true;
+      (function next(i) {
+        if (i >= srcs.length) return;
+        var el = document.createElement("script");
+        el.src = srcs[i];
+        el.async = false;
+        el.onload = function () { next(i + 1); };
+        el.onerror = function () { next(i + 1); };
+        document.head.appendChild(el);
+      })(0);
+    };
+    document.addEventListener("click", function (e) {
+      var t = e.target;
+      if (t && t.closest && t.closest(".search__toggle")) window.HegeLoadSearch();
+    }, true);
+    document.addEventListener("focusin", function (e) {
+      if (e.target && e.target.id === "search") window.HegeLoadSearch();
+    });
+  })();
+</script>
+
+
 
 
 
