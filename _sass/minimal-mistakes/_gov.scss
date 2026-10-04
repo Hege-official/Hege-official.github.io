@@ -108,6 +108,8 @@
 
 .site-logo img {
   max-height: 56px;
+  width: auto; /* 配合 img 的 width 属性，避免被 max-height 横向拉伸 */
+  height: auto;
 }
 
 .site-title {
@@ -170,6 +172,8 @@
 
 .gov-footer__logo {
   max-height: 48px;
+  width: auto;
+  height: auto;
   margin-bottom: 0.5rem;
 }
 

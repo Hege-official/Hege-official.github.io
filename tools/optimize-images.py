@@ -17,6 +17,7 @@
 
 import os
 import sys
+from collections import deque
 
 from PIL import Image
 
@@ -65,6 +66,56 @@ def collect_images():
                 yield full, os.path.relpath(full, IMAGES_DIR)
 
 
+def strip_background(im, tol=40):
+    """把与四角同色的「外部背景」按连通区域抠掉，保留图形内部的白色区域。
+
+    适用于白底 logo：让 logo 能放到深色页脚等任意背景上。
+    """
+    im = im.convert("RGBA")
+    w, h = im.size
+    px = im.load()
+    corners = [px[0, 0], px[w - 1, 0], px[0, h - 1], px[w - 1, h - 1]]
+    bg_r = sum(c[0] for c in corners) / 4.0
+    bg_g = sum(c[1] for c in corners) / 4.0
+    bg_b = sum(c[2] for c in corners) / 4.0
+
+    def is_bg(p):
+        return (abs(p[0] - bg_r) <= tol and
+                abs(p[1] - bg_g) <= tol and
+                abs(p[2] - bg_b) <= tol)
+
+    visited = bytearray(w * h)
+    queue = deque()
+
+    def visit(x, y):
+        i = y * w + x
+        if not visited[i] and is_bg(px[x, y]):
+            visited[i] = 1
+            queue.append((x, y))
+
+    for x in range(w):
+        visit(x, 0)
+        visit(x, h - 1)
+    for y in range(h):
+        visit(0, y)
+        visit(w - 1, y)
+
+    while queue:
+        x, y = queue.popleft()
+        r, g, b, _ = px[x, y]
+        px[x, y] = (r, g, b, 0)
+        if x > 0:
+            visit(x - 1, y)
+        if x + 1 < w:
+            visit(x + 1, y)
+        if y > 0:
+            visit(x, y - 1)
+        if y + 1 < h:
+            visit(x, y + 1)
+
+    return im
+
+
 def process(full, rel):
     name = os.path.basename(rel)
     backup = backup_path(rel)
@@ -82,6 +133,11 @@ def process(full, rel):
 
     with Image.open(source) as im:
         im.load()
+        # 白底 logo 抠成透明底（原图本就没有透明通道时才处理）
+        if "logo" in name.lower():
+            alpha_used = "A" in im.getbands() and im.getchannel("A").getextrema()[0] < 255
+            if not alpha_used:
+                im = strip_background(im)
         new_w, new_h = target_size(name, im.width, im.height)
         work = im
         if (new_w, new_h) != im.size:
