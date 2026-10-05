@@ -5,11 +5,16 @@ date: '2026-10-05 09:00:00'
 episode_type: 播报
 audio: /assets/audio/podcast/hege-news-ep1.mp3
 subtitles: /assets/audio/podcast/hege-news-ep1.vtt
+permalink: /podcast/hege-news-ep1/
+audio_bytes: 616124
+header:
+  og_image: /assets/images/podcast-cover.png
 hosts:
 - 云阳
 guests: []
 related_post: /公告/napc-18th-session-vote-results/
 publisher: 和各中央广播与电视平台
+episode: 1
 duration: 01:43
 transcript: true
 ---

@@ -89,6 +89,30 @@ class LoadEpisodeTest(unittest.TestCase):
         self.assertEqual(ep.intro["file"], "stinger/x.mp3")
         self.assertEqual(ep.intro["fade_out"], 0.5)
 
+    def test_episode_optional(self):
+        path = self._write(
+            "title: 标题\ndate: 2026-10-05\n"
+            "segments:\n  - role: anchor\n    text: '嗨'\n"
+        )
+        ep = config.load_episode(path, VOICES)
+        self.assertIsNone(ep.episode)
+
+    def test_parses_episode_number(self):
+        path = self._write(
+            "title: 标题\ndate: 2026-10-05\nepisode: 3\n"
+            "segments:\n  - role: anchor\n    text: '嗨'\n"
+        )
+        ep = config.load_episode(path, VOICES)
+        self.assertEqual(ep.episode, 3)
+
+    def test_non_integer_episode_raises(self):
+        path = self._write(
+            "title: 标题\ndate: 2026-10-05\nepisode: abc\n"
+            "segments:\n  - role: anchor\n    text: '嗨'\n"
+        )
+        with self.assertRaises(config.ConfigError):
+            config.load_episode(path, VOICES)
+
     def test_no_segments_raises(self):
         path = self._write("title: 标题\ndate: 2026-10-05\nsegments: []\n")
         with self.assertRaises(config.ConfigError):

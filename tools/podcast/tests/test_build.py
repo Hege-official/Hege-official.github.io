@@ -9,6 +9,8 @@ SPEC = importlib.util.spec_from_file_location(
 build = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(build)
 
+from podcast_lib import config  # noqa: E402
+
 
 class ResolveBedTest(unittest.TestCase):
     def setUp(self):
@@ -122,6 +124,38 @@ class ResolveCuesTest(unittest.TestCase):
     def test_missing_file_key_raises(self):
         with self.assertRaises(ValueError):
             build.resolve_cues([{"at": "0"}], self.dir, self.starts)
+
+
+class BuildMetaTest(unittest.TestCase):
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.dir = Path(self._tmp.name)
+        self.audio = self.dir / "ep.mp3"
+        self.audio.write_bytes(b"0123456789")
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def _episode(self, **overrides):
+        values = dict(
+            slug="demo", title="标题", date="2026-10-05 09:00:00",
+            episode_type="播报", excerpt="简介", publisher="和各政府网",
+            related_post="/公告/x/", hosts=["云阳"], guests=[],
+            segments=[], bed=[], cues=[], intro=None, episode=None,
+        )
+        values.update(overrides)
+        return config.Episode(**values)
+
+    def test_includes_podcast_fields(self):
+        meta = build.build_meta(self._episode(), self.audio)
+        self.assertEqual(meta["permalink"], "/podcast/demo/")
+        self.assertEqual(meta["audio_bytes"], 10)
+        self.assertEqual(meta["header"]["og_image"], "/assets/images/podcast-cover.png")
+        self.assertNotIn("episode", meta)
+
+    def test_episode_number_included_when_set(self):
+        meta = build.build_meta(self._episode(episode=1), self.audio)
+        self.assertEqual(meta["episode"], 1)
 
 
 if __name__ == "__main__":

@@ -16,6 +16,7 @@ CACHE_DIR = ROOT / ".cache"
 WORK_DIR = CACHE_DIR / "work"
 AUDIO_OUT_DIR = REPO / "assets" / "audio" / "podcast"
 EPISODE_OUT_DIR = REPO / "_podcasts"
+COVER = "/assets/images/podcast-cover.png"
 
 
 def _safe_stdout():
@@ -56,6 +57,29 @@ def resolve_intro(spec, assets_dir):
         "gain_db": float(spec.get("gain_db", 0)),
         "fade_out": float(spec.get("fade_out", 0)),
     }
+
+
+def build_meta(episode, audio_path, cover=COVER):
+    """构造单集 front matter（网站播客集合所需的机器可读字段）。"""
+    audio_bytes = Path(audio_path).stat().st_size
+    meta = {
+        "title": episode.title,
+        "excerpt": episode.excerpt,
+        "date": episode.date,
+        "episode_type": episode.episode_type,
+        "audio": f"/assets/audio/podcast/{episode.slug}.mp3",
+        "subtitles": f"/assets/audio/podcast/{episode.slug}.vtt",
+        "permalink": f"/podcast/{episode.slug}/",
+        "audio_bytes": audio_bytes,
+        "header": {"og_image": cover},
+        "hosts": episode.hosts,
+        "guests": episode.guests,
+        "related_post": episode.related_post,
+        "publisher": episode.publisher,
+    }
+    if episode.episode is not None:
+        meta["episode"] = episode.episode
+    return meta
 
 
 def resolve_cues(specs, assets_dir, segment_starts):
@@ -127,18 +151,7 @@ def build_episode(script_path, use_cache=True):
         encoding="utf-8",
     )
 
-    meta = {
-        "title": episode.title,
-        "excerpt": episode.excerpt,
-        "date": episode.date,
-        "episode_type": episode.episode_type,
-        "audio": f"/assets/audio/podcast/{episode.slug}.mp3",
-        "subtitles": f"/assets/audio/podcast/{episode.slug}.vtt",
-        "hosts": episode.hosts,
-        "guests": episode.guests,
-        "related_post": episode.related_post,
-        "publisher": episode.publisher,
-    }
+    meta = build_meta(episode, out_audio)
     md = transcript.render_episode_md(
         meta, episode.segments, durations, start_offset=intro_duration
     )

@@ -39,6 +39,7 @@ class Episode:
     bed: list
     cues: list
     intro: dict | None
+    episode: int | None
 
 
 def _read_yaml(path):
@@ -104,6 +105,10 @@ def load_episode(path, voices):
     intro = data.get("intro")
     if intro is not None and not isinstance(intro, dict):
         raise ConfigError(f"{path} 的 intro 必须是映射")
+    episode = data.get("episode")
+    if episode is not None:
+        if isinstance(episode, bool) or not isinstance(episode, int):
+            raise ConfigError(f"{path} 的 episode 必须是整数")
     return Episode(
         slug=data.get("slug") or Path(path).stem,
         title=data["title"],
@@ -118,4 +123,5 @@ def load_episode(path, voices):
         bed=list(data.get("bed") or []),
         cues=list(data.get("cues") or []),
         intro=intro,
+        episode=episode,
     )
