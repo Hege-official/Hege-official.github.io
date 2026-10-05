@@ -58,5 +58,47 @@ class ConcatTest(unittest.TestCase):
             audio.concat_mp3([], self.dir / "out.mp3", self.dir)
 
 
+class MixEpisodeTest(unittest.TestCase):
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.dir = Path(self._tmp.name)
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def _tone(self, name, duration, freq=440):
+        path = self.dir / name
+        make_tone(path, freq, duration)
+        return path
+
+    def test_voice_only_keeps_duration(self):
+        voice = self._tone("voice.mp3", 2.0)
+        out = self.dir / "out.mp3"
+        audio.mix_episode(voice, out, self.dir, [], [])
+        self.assertTrue(out.exists())
+        self.assertAlmostEqual(audio.probe_duration(out), 2.0, delta=0.3)
+
+    def test_bed_shorter_than_voice_does_not_truncate(self):
+        voice = self._tone("voice.mp3", 3.0)
+        bed = self._tone("bed.mp3", 0.5, freq=110)
+        out = self.dir / "out.mp3"
+        audio.mix_episode(
+            voice, out, self.dir,
+            [{"path": bed, "gain_db": -24, "duck": 0.85, "fade_in": 0.2, "fade_out": 0.2}],
+            [],
+        )
+        self.assertAlmostEqual(audio.probe_duration(out), 3.0, delta=0.3)
+
+    def test_cue_does_not_extend_duration(self):
+        voice = self._tone("voice.mp3", 2.0)
+        cue = self._tone("cue.mp3", 0.3, freq=880)
+        out = self.dir / "out.mp3"
+        audio.mix_episode(
+            voice, out, self.dir, [],
+            [{"path": cue, "start": 1.0, "gain_db": -10}],
+        )
+        self.assertAlmostEqual(audio.probe_duration(out), 2.0, delta=0.3)
+
+
 if __name__ == "__main__":
     unittest.main()
