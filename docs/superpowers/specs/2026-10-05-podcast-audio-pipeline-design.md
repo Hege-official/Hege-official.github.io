@@ -19,9 +19,9 @@
 
 B 的成功标准：
 
-1. 一条命令即可把结构化脚本源合成为带背景音乐、音效、多音色的成品 MP3。
+1. 一条命令即可把结构化脚本源合成为带背景音乐、音效、多音色的成品 MP3，并输出逐句 VTT 字幕。
 2. 同一命令同时产出一份逐字稿 Markdown（含真实时间轴），音频与文稿同源、不会不一致。
-3. 产出**一条可听的播报样片**（MP3 + 逐字稿），作为后续 A/C 的基础。
+3. 产出**一条可听的播报样片**（MP3 + VTT + 逐字稿），作为后续 A/C 的基础。
 4. 全流程**零付费、零 API key**。
 
 ## 2. 非目标
@@ -36,6 +36,7 @@ B 的成功标准：
 | 环节 | 方案 | 实测结论 |
 | --- | --- | --- |
 | 语音合成 | `edge-tts` 7.2.8（微软 Edge 神经语音） | ✅ 已成功合成 MP3，联网正常，免费、无 key |
+| 逐句字幕 | edge-tts `SentenceBoundary` → `SubMaker.get_srt()`（分段 SRT） | ✅ 已实测出 SRT，句级时间轴准确 |
 | 音频拼接/混音/测时长 | `imageio-ffmpeg` 自带静态 ffmpeg 7.1 | ✅ 已安装并取到可执行文件，兼容 Python 3.14 |
 | 中文音色 | zh-CN 系列共 8 个音色 | ✅ 含新闻级男/女声 |
 | 环境 | Python 3.14.4 / Node 24 / Windows | ✅ |
@@ -49,7 +50,7 @@ B 的成功标准：
 ```
 tools/podcast/
   voices.yml            # 角色 → {音色, 显示名}
-  build.py              # 合成 → 混音 → 测时长 → 生成 MP3 与逐字稿
+  build.py              # 合成 → 混音 → 测时长 → 生成 MP3、VTT 与逐字稿
   scripts/
     <slug>.yml          # 单集脚本源（唯一事实源）
   assets/
@@ -57,7 +58,7 @@ tools/podcast/
     sfx/                # 转场、提示音
     stinger/            # 片头/片尾台标
     CREDITS.md          # 外部素材来源/作者/协议/日期记录
-  gen-assets.py         # 程序化生成片头/转场等素材（可选运行）
+  gen_assets.py         # 程序化生成片头/转场等素材（可选运行）
   .cache/               # 分段音频缓存（按文本 hash），gitignore
   README.md             # 命令行用法
 ```
@@ -66,6 +67,7 @@ tools/podcast/
 
 ```
 assets/audio/podcast/<slug>.mp3      # 成品音频
+assets/audio/podcast/<slug>.vtt      # 逐句字幕（WebVTT）
 _podcasts/YYYY-MM-DD-<slug>.md       # front matter + 逐字稿 + 时间轴
 ```
 
@@ -166,11 +168,12 @@ defaults:
 ## 9. `build.py` 流程
 
 1. 读入 `scripts/<slug>.yml` 与 `voices.yml`（`--all` 时遍历全部脚本）。
-2. 逐段调用 edge-tts 合成临时 MP3；缓存键 = 文本 + 音色 + rate/volume/pitch 的 hash，命中则复用（改文本或音色会自动失效）。
+2. 逐段调用 edge-tts 合成临时 MP3，并同时取 `SentenceBoundary` 生成该段 SRT；缓存键 = 文本 + 音色 + rate/volume/pitch 的 hash，命中则复用（改文本或音色会自动失效，缓存同时校验 mp3 与 srt 均存在）。
 3. 拼接人声轨，叠加 `bed` 与 `cues` 混音，输出 `assets/audio/podcast/<slug>.mp3`。
 4. 用 ffprobe 读每段与总时长 → 计算累计**时间轴**。
-5. 渲染逐字稿 Markdown（front matter + 分段内容 + 时间戳）写到 `_podcasts/YYYY-MM-DD-<slug>.md`。
-6. 打印结果摘要（时长、体积、输出路径）。
+5. 读取各段 SRT，按时间轴偏移后合并为整集 `assets/audio/podcast/<slug>.vtt`（WebVTT）。
+6. 渲染逐字稿 Markdown（front matter + 分段内容 + 时间戳）写到 `_podcasts/YYYY-MM-DD-<slug>.md`。
+7. 打印结果摘要（时长、体积、输出路径）。
 
 命令行：
 
@@ -191,6 +194,7 @@ excerpt: "……"
 date: 2026-10-05 09:00:00
 episode_type: 播报
 audio: /assets/audio/podcast/<slug>.mp3
+subtitles: /assets/audio/podcast/<slug>.vtt
 duration: "05:32"
 hosts: ["云阳"]
 guests: []
@@ -223,8 +227,9 @@ publisher: "和各中央广播与电视平台"
 
 1. `python tools/podcast/build.py <slug>` 成功退出，无异常。
 2. `assets/audio/podcast/<slug>.mp3` 存在且 ffprobe 报时长 > 0、可正常播放。
-3. `_podcasts/YYYY-MM-DD-<slug>.md` 生成，时间轴递增、段落与脚本源一致。
-4. 人工试听：人声清晰、背景音乐存在且在人声处明显闪避、片头/转场音效落在预期位置。
+3. `assets/audio/podcast/<slug>.vtt` 存在，以 `WEBVTT` 开头，时间码递增且不超出音频时长。
+4. `_podcasts/YYYY-MM-DD-<slug>.md` 生成，时间轴递增、段落与脚本源一致。
+5. 人工试听：人声清晰、背景音乐存在且在人声处明显闪避、片头/转场音效落在预期位置。
 
 ## 13. 风险与取舍
 
@@ -234,6 +239,7 @@ publisher: "和各中央广播与电视平台"
 - **仓库体积**：MP3 入库会持续增大 git 体积，量大后需迁外链。
 - **音质**：edge-tts 为通用神经语音，非“政府播音员”专用音色，观感以可用为先。
 - **素材版权**：程序化生成无风险；外部素材必须留授权记录，否则不得入库。
+- **字幕时间**：SRT 来自 edge-tts 句边界，句间可能有数十毫秒重叠或空隙；合并成 VTT 时保留原边界，不做强制对齐。
 
 ## 14. 决策记录
 
@@ -242,10 +248,11 @@ publisher: "和各中央广播与电视平台"
 - 音色构成：播报与访谈两种都要（用户选择）。
 - 音乐/音效素材：程序化生成为主，另可搜索 CC0 素材（用户选择）。
 - 音频引擎：edge-tts；ffmpeg 走 imageio-ffmpeg（实测决定）。
+- 字幕：B 阶段即产出逐句 VTT（edge-tts 句边界合并）（用户选择）。
 - 网站承载：独立播客栏目（用户选择，属 A 阶段）。
 
 ## 15. 后续（非本规格范围）
 
-- **A. 网站播客栏目**：`_config.yml` 注册 `collections.podcasts`；`_layouts/podcast.html`；`_includes/podcast-player.html`；`_pages/podcast.md`；导航入口；独立 `podcast.xml`（含 `<enclosure>`）；样式入 `_sass/minimal-mistakes/_custom.scss`。
+- **A. 网站播客栏目**：`_config.yml` 注册 `collections.podcasts`；`_layouts/podcast.html`；`_includes/podcast-player.html`（含 `<track>` 挂 VTT 字幕）；`_pages/podcast.md`；导航入口；独立 `podcast.xml`（含 `<enclosure>` 的 `url/length/type`、iTunes 标签与章节，字段参考 Podcast Automation 技能）；样式入 `_sass/minimal-mistakes/_custom.scss`。
 - **C. 内容生产**：从既有 `_posts` 与 Hegewiki 正典改写播报稿；设计访谈选题与虚构嘉宾；遵守 `docs/写作与排版规范.md`。
 - **配套文档**：`docs/播客制作规范.md`（音色表、脚本写法、音效/BGM 规则与版权、命名、发布流程），与 `docs/写作与排版规范.md` 并列。

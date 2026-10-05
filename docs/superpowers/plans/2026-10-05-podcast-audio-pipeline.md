@@ -33,6 +33,7 @@
 3. **未知角色 role / 缺必填字段（title、date）/ role 缺 voice 或 name** → 应给出可定位的报错。
 4. **bed/cue 引用的素材文件不存在** → 应给出含路径的清晰报错。
 5. **重复构建（缓存命中、输出已存在）** → 应幂等：复用缓存、覆盖输出，不追加、不报错。
+6. **字幕缺失或为空** → 应视为缓存失效并重合成；仍拿不到字幕则明确报错。
 
 ---
 
@@ -53,7 +54,7 @@ tools/podcast/
     config.py              # 加载 voices.yml / 脚本，解析为 Segment / Episode
     synth.py               # edge-tts 合成 + 缓存
     audio.py               # ffmpeg：probe_duration / concat_mp3 / mix_episode
-    transcript.py          # format_timestamp / parse_timecode / build_timeline / render_episode_md
+    transcript.py          # 时间轴、字幕（parse_srt→cues_to_vtt/merge_subtitles）与逐字稿渲染
   tests/
     __init__.py
     test_config.py
@@ -65,6 +66,7 @@ tools/podcast/
 
 产物（仓库根，入库）：
   assets/audio/podcast/<slug>.mp3
+  assets/audio/podcast/<slug>.vtt
   _podcasts/YYYY-MM-DD-<slug>.md
 
 文档：
@@ -368,8 +370,9 @@ git commit -m "feat: 播客流水线脚手架、音色表与脚本解析"
 - Consumes: `podcast_lib.config.Segment`
 - Produces:
   - `podcast_lib.synth.cache_key(seg) -> str`（16 位 hex）
-  - `podcast_lib.synth.default_synth(seg, out_path) -> None`（调用 edge-tts）
-  - `podcast_lib.synth.synthesize(seg, cache_dir, synth_fn=None, use_cache=True) -> pathlib.Path`
+  - `podcast_lib.synth.default_synth(seg, out_path) -> None`（调用 edge-tts，同时写出同级 `.srt` 字幕）
+  - `podcast_lib.synth.subtitles_for(media_path) -> pathlib.Path`（返回同级 `.srt` 路径）
+  - `podcast_lib.synth.synthesize(seg, cache_dir, synth_fn=None, use_cache=True) -> pathlib.Path`（返回 mp3 路径，字幕为同级 `.srt`）
 
 - [ ] **Step 1: 写失败的测试**
 
@@ -420,11 +423,15 @@ class SynthesizeTest(unittest.TestCase):
     def _fake_synth(self, seg, out_path):
         self.calls.append(seg.text)
         Path(out_path).write_bytes(b"fake-audio-bytes")
+        Path(out_path).with_suffix(".srt").write_text(
+            "1\n00:00:00,000 --> 00:00:01,000\n测试字幕\n", encoding="utf-8"
+        )
 
-    def test_creates_audio_and_calls_synth_once(self):
+    def test_creates_audio_and_subtitles(self):
         seg = make_segment()
         path = synth.synthesize(seg, self.dir, synth_fn=self._fake_synth)
         self.assertTrue(path.exists())
+        self.assertTrue(synth.subtitles_for(path).exists())
         self.assertEqual(len(self.calls), 1)
 
     def test_second_call_hits_cache(self):
@@ -437,6 +444,13 @@ class SynthesizeTest(unittest.TestCase):
         path = synth.synthesize(seg, self.dir, synth_fn=boom)
         self.assertTrue(path.exists())
 
+    def test_missing_subtitles_triggers_resynth(self):
+        seg = make_segment()
+        path = synth.synthesize(seg, self.dir, synth_fn=self._fake_synth)
+        synth.subtitles_for(path).unlink()
+        synth.synthesize(seg, self.dir, synth_fn=self._fake_synth)
+        self.assertEqual(len(self.calls), 2)
+
     def test_no_cache_forces_resynth(self):
         seg = make_segment()
         synth.synthesize(seg, self.dir, synth_fn=self._fake_synth)
@@ -446,9 +460,20 @@ class SynthesizeTest(unittest.TestCase):
     def test_empty_output_raises(self):
         def empty_synth(seg, out_path):
             Path(out_path).write_bytes(b"")
+            Path(out_path).with_suffix(".srt").write_text(
+                "1\n00:00:00,000 --> 00:00:01,000\nx\n", encoding="utf-8"
+            )
 
         with self.assertRaises(RuntimeError):
             synth.synthesize(make_segment(), self.dir, synth_fn=empty_synth)
+
+    def test_empty_subtitles_raise(self):
+        def no_sub_synth(seg, out_path):
+            Path(out_path).write_bytes(b"audio")
+            Path(out_path).with_suffix(".srt").write_text("", encoding="utf-8")
+
+        with self.assertRaises(RuntimeError):
+            synth.synthesize(make_segment(), self.dir, synth_fn=no_sub_synth)
 
 
 if __name__ == "__main__":
@@ -465,7 +490,7 @@ Expected: FAIL（`No module named 'podcast_lib.synth'`）。
 Create `tools/podcast/podcast_lib/synth.py`：
 
 ```python
-"""逐段调用 edge-tts 合成音频，并按参数 hash 缓存。"""
+"""逐段调用 edge-tts 合成音频与字幕，并按参数 hash 缓存。"""
 from __future__ import annotations
 
 import asyncio
@@ -491,15 +516,28 @@ def cache_key(seg) -> str:
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:16]
 
 
-async def _edge_synth(text, voice, rate, volume, pitch, out_path):
+def subtitles_for(media_path):
+    return Path(media_path).with_suffix(".srt")
+
+
+async def _edge_synth(text, voice, rate, volume, pitch, media_path, srt_path):
     communicate = edge_tts.Communicate(text, voice, rate=rate, volume=volume, pitch=pitch)
-    await communicate.save(str(out_path))
+    submaker = edge_tts.SubMaker()
+    with open(media_path, "wb") as media:
+        async for chunk in communicate.stream():
+            if chunk["type"] == "audio":
+                media.write(chunk["data"])
+            elif chunk["type"] in ("WordBoundary", "SentenceBoundary"):
+                submaker.feed(chunk)
+    Path(srt_path).write_text(submaker.get_srt(), encoding="utf-8")
 
 
 def default_synth(seg, out_path):
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    asyncio.run(_edge_synth(seg.text, seg.voice, seg.rate, seg.volume, seg.pitch, out_path))
+    asyncio.run(
+        _edge_synth(seg.text, seg.voice, seg.rate, seg.volume, seg.pitch, out_path, subtitles_for(out_path))
+    )
 
 
 def synthesize(seg, cache_dir, synth_fn=None, use_cache=True):
@@ -507,15 +545,25 @@ def synthesize(seg, cache_dir, synth_fn=None, use_cache=True):
     cache_dir = Path(cache_dir)
     cache_dir.mkdir(parents=True, exist_ok=True)
     target = cache_dir / f"{cache_key(seg)}.mp3"
-    if use_cache and target.exists() and target.stat().st_size > 0:
+    target_srt = subtitles_for(target)
+    if (
+        use_cache
+        and target.exists() and target.stat().st_size > 0
+        and target_srt.exists() and target_srt.stat().st_size > 0
+    ):
         return target
     tmp = target.with_suffix(".part.mp3")
-    if tmp.exists():
-        tmp.unlink()
+    tmp_srt = subtitles_for(tmp)
+    for stale in (tmp, tmp_srt):
+        if stale.exists():
+            stale.unlink()
     synth_fn(seg, tmp)
     if not tmp.exists() or tmp.stat().st_size == 0:
         raise RuntimeError(f"合成未产生有效音频：{seg.text[:20]}…")
+    if not tmp_srt.exists() or tmp_srt.stat().st_size == 0:
+        raise RuntimeError(f"合成未产生字幕：{seg.text[:20]}…")
     tmp.replace(target)
+    tmp_srt.replace(target_srt)
     return target
 ```
 
@@ -845,6 +893,10 @@ git commit -m "feat: 播客铺底音乐与音效混音"
   - `podcast_lib.transcript.format_timestamp(seconds) -> str`（`"MM:SS"`）
   - `podcast_lib.transcript.parse_timecode(value) -> float`（支持 `"45"` / `"1:02"` / `"00:45.000"` / `"1:02:03.5"`）
   - `podcast_lib.transcript.build_timeline(durations) -> list[float]`
+  - `podcast_lib.transcript.parse_srt(text) -> list[dict]`（键 `start`/`end`/`text`，秒）
+  - `podcast_lib.transcript.format_vtt_timestamp(seconds) -> str`（`"HH:MM:SS.mmm"`）
+  - `podcast_lib.transcript.cues_to_vtt(cues) -> str`
+  - `podcast_lib.transcript.merge_subtitles(srt_paths, offsets) -> str`
   - `podcast_lib.transcript.render_episode_md(meta, segments, durations) -> str`
 
 - [ ] **Step 1: 写失败的测试**
@@ -852,7 +904,9 @@ git commit -m "feat: 播客铺底音乐与音效混音"
 Create `tools/podcast/tests/test_transcript.py`：
 
 ```python
+import tempfile
 import unittest
+from pathlib import Path
 
 from podcast_lib import transcript
 from podcast_lib.config import Segment
@@ -914,6 +968,40 @@ class RenderEpisodeTest(unittest.TestCase):
         self.assertIn("**00:01｜嘉宾**　乙", md)
 
 
+SRT_SAMPLE = (
+    "1\n00:00:00,100 --> 00:00:02,062\n各位听众，大家好。\n\n"
+    "2\n00:00:02,012 --> 00:00:04,100\n这里是和各新闻。\n"
+)
+
+
+class SubtitleTest(unittest.TestCase):
+    def test_parse_srt(self):
+        cues = transcript.parse_srt(SRT_SAMPLE)
+        self.assertEqual(len(cues), 2)
+        self.assertAlmostEqual(cues[0]["start"], 0.1, places=3)
+        self.assertAlmostEqual(cues[0]["end"], 2.062, places=3)
+        self.assertEqual(cues[1]["text"], "这里是和各新闻。")
+
+    def test_format_vtt_timestamp(self):
+        self.assertEqual(transcript.format_vtt_timestamp(0.1), "00:00:00.100")
+        self.assertEqual(transcript.format_vtt_timestamp(3723.5), "01:02:03.500")
+
+    def test_cues_to_vtt(self):
+        vtt = transcript.cues_to_vtt(transcript.parse_srt(SRT_SAMPLE))
+        self.assertTrue(vtt.startswith("WEBVTT"))
+        self.assertIn("00:00:00.100 --> 00:00:02.062", vtt)
+        self.assertIn("这里是和各新闻。", vtt)
+
+    def test_merge_subtitles_shifts(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            a = Path(tmp) / "a.srt"
+            b = Path(tmp) / "b.srt"
+            a.write_text(SRT_SAMPLE, encoding="utf-8")
+            b.write_text(SRT_SAMPLE, encoding="utf-8")
+            vtt = transcript.merge_subtitles([a, b], [0.0, 10.0])
+        self.assertIn("00:00:10.100 --> 00:00:12.062", vtt)
+
+
 if __name__ == "__main__":
     unittest.main()
 ```
@@ -928,8 +1016,11 @@ Expected: FAIL（`No module named 'podcast_lib.transcript'`）。
 Create `tools/podcast/podcast_lib/transcript.py`：
 
 ```python
-"""时间轴计算与逐字稿 Markdown 渲染。"""
+"""时间轴计算、字幕合并与逐字稿 Markdown 渲染。"""
 from __future__ import annotations
+
+import re
+from pathlib import Path
 
 import yaml
 
@@ -962,6 +1053,64 @@ def build_timeline(durations):
         starts.append(cursor)
         cursor += float(duration)
     return starts
+
+
+_SRT_TIME_RE = re.compile(r"(\d+):(\d+):(\d+)[,.](\d+)")
+
+
+def _srt_seconds(parts):
+    hours, minutes, seconds, millis = parts
+    return int(hours) * 3600 + int(minutes) * 60 + int(seconds) + int(millis.ljust(3, "0")[:3]) / 1000
+
+
+def parse_srt(text):
+    cues = []
+    for block in re.split(r"\n\s*\n", text.strip()):
+        lines = [line for line in block.splitlines() if line.strip()]
+        if len(lines) < 2:
+            continue
+        time_index = 1 if _SRT_TIME_RE.search(lines[1]) else 0
+        if time_index == 0 and not _SRT_TIME_RE.search(lines[0]):
+            continue
+        matches = _SRT_TIME_RE.findall(lines[time_index])
+        if len(matches) < 2:
+            continue
+        cues.append({
+            "start": _srt_seconds(matches[0]),
+            "end": _srt_seconds(matches[1]),
+            "text": " ".join(lines[time_index + 1:]).strip(),
+        })
+    return cues
+
+
+def format_vtt_timestamp(seconds) -> str:
+    total_ms = int(round(float(seconds) * 1000))
+    hours, rem = divmod(total_ms, 3600000)
+    minutes, rem = divmod(rem, 60000)
+    secs, millis = divmod(rem, 1000)
+    return f"{hours:02d}:{minutes:02d}:{secs:02d}.{millis:03d}"
+
+
+def cues_to_vtt(cues) -> str:
+    lines = ["WEBVTT", ""]
+    for number, cue in enumerate(cues, start=1):
+        lines.append(str(number))
+        lines.append(f"{format_vtt_timestamp(cue['start'])} --> {format_vtt_timestamp(cue['end'])}")
+        lines.append(cue["text"])
+        lines.append("")
+    return "\n".join(lines)
+
+
+def merge_subtitles(srt_paths, offsets) -> str:
+    cues = []
+    for path, offset in zip(srt_paths, offsets):
+        for cue in parse_srt(Path(path).read_text(encoding="utf-8")):
+            cues.append({
+                "start": cue["start"] + float(offset),
+                "end": cue["end"] + float(offset),
+                "text": cue["text"],
+            })
+    return cues_to_vtt(cues)
 
 
 def render_episode_md(meta, segments, durations) -> str:
@@ -1195,7 +1344,7 @@ git commit -m "feat: 程序化生成播客音效与铺底音乐"
 - Produces:
   - `tools/podcast/build.py::resolve_bed(specs, assets_dir) -> list[dict]`
   - `tools/podcast/build.py::resolve_cues(specs, assets_dir, segment_starts) -> list[dict]`
-  - `tools/podcast/build.py::build_episode(script_path, use_cache=True) -> tuple[Path, Path]`
+  - `tools/podcast/build.py::build_episode(script_path, use_cache=True) -> tuple[Path, Path, Path]`（音频、VTT、逐字稿）
 
 - [ ] **Step 1: 写失败的测试**
 
@@ -1354,12 +1503,17 @@ def build_episode(script_path, use_cache=True):
     out_audio = AUDIO_OUT_DIR / f"{episode.slug}.mp3"
     audio.mix_episode(voice_track, out_audio, WORK_DIR, bed, cues)
 
+    srt_paths = [synth.subtitles_for(p) for p in segment_paths]
+    out_vtt = AUDIO_OUT_DIR / f"{episode.slug}.vtt"
+    out_vtt.write_text(transcript.merge_subtitles(srt_paths, starts), encoding="utf-8")
+
     meta = {
         "title": episode.title,
         "excerpt": episode.excerpt,
         "date": episode.date,
         "episode_type": episode.episode_type,
         "audio": f"/assets/audio/podcast/{episode.slug}.mp3",
+        "subtitles": f"/assets/audio/podcast/{episode.slug}.vtt",
         "hosts": episode.hosts,
         "guests": episode.guests,
         "related_post": episode.related_post,
@@ -1372,8 +1526,9 @@ def build_episode(script_path, use_cache=True):
     total = audio.probe_duration(out_audio)
     print(f"✔ {episode.slug}")
     print(f"  音频：{out_audio}（{transcript.format_timestamp(total)}，{out_audio.stat().st_size / 1024:.0f} KB）")
+    print(f"  字幕：{out_vtt}")
     print(f"  逐字稿：{out_md}")
-    return out_audio, out_md
+    return out_audio, out_vtt, out_md
 
 
 def main(argv=None):
@@ -1479,6 +1634,7 @@ python -m unittest discover -s tools/podcast/tests -t tools/podcast -v
 ## 产物
 
 - `assets/audio/podcast/<slug>.mp3`
+- `assets/audio/podcast/<slug>.vtt`（逐句字幕，WebVTT）
 - `_podcasts/YYYY-MM-DD-<slug>.md`（含逐字稿与时间轴）
 ```
 
@@ -1542,7 +1698,7 @@ cues:
 ## 五、命名与发布
 
 - `slug` 用英文小写 `-` 连接；文件名即 URL 片段。
-- 产物：`assets/audio/podcast/<slug>.mp3` 与 `_podcasts/YYYY-MM-DD-<slug>.md`，均提交入库。
+- 产物：`assets/audio/podcast/<slug>.mp3`、`assets/audio/podcast/<slug>.vtt` 与 `_podcasts/YYYY-MM-DD-<slug>.md`，均提交入库。
 - 生成 md 的 front matter 已按网站播客集合设计，接入栏目后即可显示。
 - 素材源与 `.cache/` 不入库（见 `.gitignore`）。
 
@@ -1569,7 +1725,8 @@ python tools/podcast/build.py hege-news-ep1
 ```
 Expected:
 - `assets/audio/podcast/hege-news-ep1.mp3` 生成，时长 > 0。
-- `_podcasts/2026-10-05-hege-news-ep1.md` 生成，含 `duration`、递增时间轴、8 段逐字稿。
+- `assets/audio/podcast/hege-news-ep1.vtt` 生成，以 `WEBVTT` 开头，末条时间码不超出音频时长。
+- `_podcasts/2026-10-05-hege-news-ep1.md` 生成，含 `duration`、`subtitles`、递增时间轴、8 段逐字稿。
 - 再次运行同一命令应复用缓存（合成阶段不再联网），输出覆盖、不报错。
 
 人工试听：人声清晰，背景音乐存在且在人声处闪避，结尾台标落在第 8 段起点。
@@ -1598,6 +1755,7 @@ git commit -m "feat: 播客端到端构建、播报样片与制作规范"
 | 混音实现（循环、闪避、定点、loudnorm） | Task 4 |
 | build.py 流程与 CLI | Task 7 |
 | 逐字稿输出格式与时间轴 | Task 5、7 |
+| 逐句 VTT 字幕 | Task 2（分段 SRT）、Task 5（合并 VTT）、Task 7（产物与 front matter） |
 | 命名/体积/入库规则 | Task 1（.gitignore）、Task 7 |
 | 验证方式 | 各任务 Step 4 + Task 7 Step 5 |
 | 播客制作规范文档 | Task 7 |
@@ -1606,4 +1764,4 @@ git commit -m "feat: 播客端到端构建、播报样片与制作规范"
 
 **3. 类型一致性**：`Segment` 字段（role/text/voice/name/rate/volume/pitch）在 config/synth/transcript 一致；`mix_episode` 的 `bed_specs`/`cues_specs` 键名与 `resolve_bed`/`resolve_cues` 产出键名一致（`path/gain_db/duck/fade_in/fade_out` 与 `path/start/gain_db`）；`build_timeline` 输出用作 `resolve_cues` 的 `segment_starts`。
 
-**4. Review Focus 覆盖**：①空文本→Task 1；②`at_segment` 越界/非法时间码→Task 5、7；③未知角色/缺字段→Task 1；④素材缺失→Task 7；⑤重复构建幂等→Task 2、Task 7 Step 5。
+**4. Review Focus 覆盖**：①空文本→Task 1；②`at_segment` 越界/非法时间码→Task 5、7；③未知角色/缺字段→Task 1；④素材缺失→Task 7；⑤重复构建幂等→Task 2、Task 7 Step 5；⑥字幕缺失/为空→Task 2。
