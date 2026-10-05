@@ -1,0 +1,68 @@
+import importlib.util
+import tempfile
+import unittest
+from pathlib import Path
+
+SPEC = importlib.util.spec_from_file_location(
+    "build", Path(__file__).resolve().parents[1] / "build.py"
+)
+build = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(build)
+
+
+class ResolveBedTest(unittest.TestCase):
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.dir = Path(self._tmp.name)
+        (self.dir / "bgm").mkdir()
+        (self.dir / "bgm" / "bed.mp3").write_bytes(b"x")
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def test_missing_file_raises(self):
+        with self.assertRaises(FileNotFoundError):
+            build.resolve_bed([{"file": "bgm/nope.mp3"}], self.dir)
+
+    def test_resolves_defaults(self):
+        specs = build.resolve_bed([{"file": "bgm/bed.mp3"}], self.dir)
+        self.assertEqual(specs[0]["gain_db"], 0.0)
+        self.assertEqual(specs[0]["duck"], 0.85)
+
+
+class ResolveCuesTest(unittest.TestCase):
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.dir = Path(self._tmp.name)
+        (self.dir / "sfx").mkdir()
+        (self.dir / "sfx" / "c.mp3").write_bytes(b"x")
+        self.starts = [0.0, 5.0, 10.0]
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def test_at_segment_maps_to_start(self):
+        specs = build.resolve_cues(
+            [{"file": "sfx/c.mp3", "at_segment": 1}], self.dir, self.starts
+        )
+        self.assertEqual(specs[0]["start"], 5.0)
+
+    def test_at_segment_out_of_range_raises(self):
+        with self.assertRaises(ValueError):
+            build.resolve_cues(
+                [{"file": "sfx/c.mp3", "at_segment": 9}], self.dir, self.starts
+            )
+
+    def test_at_timecode(self):
+        specs = build.resolve_cues(
+            [{"file": "sfx/c.mp3", "at": "00:07.500"}], self.dir, self.starts
+        )
+        self.assertEqual(specs[0]["start"], 7.5)
+
+    def test_missing_file_raises(self):
+        with self.assertRaises(FileNotFoundError):
+            build.resolve_cues([{"file": "sfx/nope.mp3", "at": "0"}], self.dir, self.starts)
+
+
+if __name__ == "__main__":
+    unittest.main()
