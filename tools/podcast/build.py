@@ -28,6 +28,8 @@ def _safe_stdout():
 def resolve_bed(specs, assets_dir):
     resolved = []
     for spec in specs:
+        if not isinstance(spec, dict) or "file" not in spec:
+            raise ValueError(f"bed 条目必须是含 file 键的映射：{spec!r}")
         path = Path(assets_dir) / spec["file"]
         if not path.exists():
             raise FileNotFoundError(f"背景音乐不存在：{path}")
@@ -44,16 +46,26 @@ def resolve_bed(specs, assets_dir):
 def resolve_cues(specs, assets_dir, segment_starts):
     resolved = []
     for spec in specs:
+        if not isinstance(spec, dict) or "file" not in spec:
+            raise ValueError(f"cue 条目必须是含 file 键的映射：{spec!r}")
         path = Path(assets_dir) / spec["file"]
         if not path.exists():
             raise FileNotFoundError(f"音效不存在：{path}")
-        if "at" in spec:
+        has_at = "at" in spec
+        has_segment = "at_segment" in spec
+        if has_at == has_segment:
+            raise ValueError(f"cue 必须且只能指定 at 或 at_segment：{spec!r}")
+        if has_at:
             start = transcript.parse_timecode(spec["at"])
+            if start < 0:
+                raise ValueError(f"cue 时间码不能为负：{spec['at']!r}")
         else:
-            index = int(spec.get("at_segment", 0))
-            if index < 0 or index >= len(segment_starts):
-                raise ValueError(f"at_segment 超出范围：{index}（共 {len(segment_starts)} 段）")
-            start = segment_starts[index]
+            raw_index = spec["at_segment"]
+            if not isinstance(raw_index, int) or isinstance(raw_index, bool):
+                raise ValueError(f"at_segment 必须是整数：{raw_index!r}")
+            if raw_index < 0 or raw_index >= len(segment_starts):
+                raise ValueError(f"at_segment 超出范围：{raw_index}（共 {len(segment_starts)} 段）")
+            start = segment_starts[raw_index]
         resolved.append({"path": path, "start": start, "gain_db": float(spec.get("gain_db", 0))})
     return resolved
 
@@ -80,7 +92,12 @@ def build_episode(script_path, use_cache=True):
 
     srt_paths = [synth.subtitles_for(p) for p in segment_paths]
     out_vtt = AUDIO_OUT_DIR / f"{episode.slug}.vtt"
-    out_vtt.write_text(transcript.merge_subtitles(srt_paths, starts), encoding="utf-8")
+    out_vtt.write_text(
+        transcript.merge_subtitles(
+            srt_paths, starts, source_texts=[s.text for s in episode.segments]
+        ),
+        encoding="utf-8",
+    )
 
     meta = {
         "title": episode.title,

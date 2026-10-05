@@ -76,6 +76,29 @@ class SynthesizeTest(unittest.TestCase):
         synth.synthesize(seg, self.dir, synth_fn=self._fake_synth, use_cache=False)
         self.assertEqual(len(self.calls), 2)
 
+    def test_whitespace_subtitles_raise(self):
+        def ws_synth(seg, out_path):
+            Path(out_path).write_bytes(b"audio")
+            Path(out_path).with_suffix(".srt").write_text("   \n\n", encoding="utf-8")
+
+        with self.assertRaises(RuntimeError):
+            synth.synthesize(make_segment(), self.dir, synth_fn=ws_synth)
+
+    def test_structurally_invalid_subtitles_raise(self):
+        def bad_synth(seg, out_path):
+            Path(out_path).write_bytes(b"audio")
+            Path(out_path).with_suffix(".srt").write_text("not a subtitle", encoding="utf-8")
+
+        with self.assertRaises(RuntimeError):
+            synth.synthesize(make_segment(), self.dir, synth_fn=bad_synth)
+
+    def test_whitespace_subtitles_trigger_resynth(self):
+        seg = make_segment()
+        path = synth.synthesize(seg, self.dir, synth_fn=self._fake_synth)
+        synth.subtitles_for(path).write_text("  \n", encoding="utf-8")
+        synth.synthesize(seg, self.dir, synth_fn=self._fake_synth)
+        self.assertEqual(len(self.calls), 2)
+
     def test_empty_output_raises(self):
         def empty_synth(seg, out_path):
             Path(out_path).write_bytes(b"")

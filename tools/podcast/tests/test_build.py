@@ -29,6 +29,14 @@ class ResolveBedTest(unittest.TestCase):
         self.assertEqual(specs[0]["gain_db"], 0.0)
         self.assertEqual(specs[0]["duck"], 0.85)
 
+    def test_missing_file_key_raises(self):
+        with self.assertRaises(ValueError):
+            build.resolve_bed([{"gain_db": -20}], self.dir)
+
+    def test_non_mapping_entry_raises(self):
+        with self.assertRaises(ValueError):
+            build.resolve_bed(["bgm/bed.mp3"], self.dir)
+
 
 class ResolveCuesTest(unittest.TestCase):
     def setUp(self):
@@ -62,6 +70,30 @@ class ResolveCuesTest(unittest.TestCase):
     def test_missing_file_raises(self):
         with self.assertRaises(FileNotFoundError):
             build.resolve_cues([{"file": "sfx/nope.mp3", "at": "0"}], self.dir, self.starts)
+
+    def test_missing_locator_raises(self):
+        with self.assertRaises(ValueError):
+            build.resolve_cues([{"file": "sfx/c.mp3"}], self.dir, self.starts)
+
+    def test_both_locators_raise(self):
+        with self.assertRaises(ValueError):
+            build.resolve_cues(
+                [{"file": "sfx/c.mp3", "at": "0", "at_segment": 1}], self.dir, self.starts
+            )
+
+    def test_negative_timecode_raises(self):
+        with self.assertRaises(ValueError):
+            build.resolve_cues([{"file": "sfx/c.mp3", "at": "-5"}], self.dir, self.starts)
+
+    def test_non_integer_at_segment_raises(self):
+        with self.assertRaises(ValueError):
+            build.resolve_cues(
+                [{"file": "sfx/c.mp3", "at_segment": "abc"}], self.dir, self.starts
+            )
+
+    def test_missing_file_key_raises(self):
+        with self.assertRaises(ValueError):
+            build.resolve_cues([{"at": "0"}], self.dir, self.starts)
 
 
 if __name__ == "__main__":

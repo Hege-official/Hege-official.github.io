@@ -83,10 +83,32 @@ def cues_to_vtt(cues) -> str:
     return "\n".join(lines)
 
 
-def merge_subtitles(srt_paths, offsets) -> str:
+def split_sentences(text):
+    sentences = []
+    current = []
+    for char in str(text):
+        current.append(char)
+        if char in "。！？!?":
+            sentence = "".join(current).strip()
+            if sentence:
+                sentences.append(sentence)
+            current = []
+    tail = "".join(current).strip()
+    if tail:
+        sentences.append(tail)
+    return sentences
+
+
+def merge_subtitles(srt_paths, offsets, source_texts=None) -> str:
     cues = []
-    for path, offset in zip(srt_paths, offsets):
-        for cue in parse_srt(Path(path).read_text(encoding="utf-8")):
+    for index, (path, offset) in enumerate(zip(srt_paths, offsets)):
+        segment_cues = parse_srt(Path(path).read_text(encoding="utf-8"))
+        if source_texts is not None and index < len(source_texts):
+            sentences = split_sentences(source_texts[index])
+            if len(sentences) == len(segment_cues):
+                for cue, sentence in zip(segment_cues, sentences):
+                    cue["text"] = sentence
+        for cue in segment_cues:
             cues.append({
                 "start": cue["start"] + float(offset),
                 "end": cue["end"] + float(offset),

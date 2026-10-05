@@ -28,6 +28,13 @@ def subtitles_for(media_path):
     return Path(media_path).with_suffix(".srt")
 
 
+def _has_cues(path) -> bool:
+    try:
+        return "-->" in Path(path).read_text(encoding="utf-8")
+    except OSError:
+        return False
+
+
 async def _edge_synth(text, voice, rate, volume, pitch, media_path, srt_path):
     communicate = edge_tts.Communicate(text, voice, rate=rate, volume=volume, pitch=pitch)
     submaker = edge_tts.SubMaker()
@@ -57,7 +64,7 @@ def synthesize(seg, cache_dir, synth_fn=None, use_cache=True):
     if (
         use_cache
         and target.exists() and target.stat().st_size > 0
-        and target_srt.exists() and target_srt.stat().st_size > 0
+        and _has_cues(target_srt)
     ):
         return target
     tmp = target.with_suffix(".part.mp3")
@@ -68,8 +75,8 @@ def synthesize(seg, cache_dir, synth_fn=None, use_cache=True):
     synth_fn(seg, tmp)
     if not tmp.exists() or tmp.stat().st_size == 0:
         raise RuntimeError(f"合成未产生有效音频：{seg.text[:20]}…")
-    if not tmp_srt.exists() or tmp_srt.stat().st_size == 0:
-        raise RuntimeError(f"合成未产生字幕：{seg.text[:20]}…")
+    if not _has_cues(tmp_srt):
+        raise RuntimeError(f"合成未产生有效字幕：{seg.text[:20]}…")
     tmp.replace(target)
     tmp_srt.replace(target_srt)
     return target

@@ -95,6 +95,37 @@ class SubtitleTest(unittest.TestCase):
             vtt = transcript.merge_subtitles([a, b], [0.0, 10.0])
         self.assertIn("00:00:10.100 --> 00:00:12.062", vtt)
 
+    def test_split_sentences(self):
+        self.assertEqual(
+            transcript.split_sentences("甲。乙！丙？丁"),
+            ["甲。", "乙！", "丙？", "丁"],
+        )
+
+    def test_merge_aligns_text_to_source(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            a = Path(tmp) / "a.srt"
+            a.write_text(
+                "1\n00:00:00,000 --> 00:00:01,000\n和各国刑法》修正案。\n",
+                encoding="utf-8",
+            )
+            vtt = transcript.merge_subtitles(
+                [a], [0.0], source_texts=["《和各国刑法》修正案。"]
+            )
+        self.assertIn("《和各国刑法》修正案。", vtt)
+
+    def test_merge_keeps_raw_text_on_count_mismatch(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            a = Path(tmp) / "a.srt"
+            a.write_text(
+                "1\n00:00:00,000 --> 00:00:01,000\n原样。\n",
+                encoding="utf-8",
+            )
+            vtt = transcript.merge_subtitles(
+                [a], [0.0], source_texts=["第一句。第二句。"]
+            )
+        self.assertIn("原样。", vtt)
+        self.assertNotIn("第二句。", vtt)
+
 
 if __name__ == "__main__":
     unittest.main()
