@@ -13,7 +13,7 @@ jobs:
       GEM_SOURCE: "https://rubygems.org/"
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -41,7 +41,7 @@ jobs:
           echo "构建产物检查通过（关键页面均已生成）"
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./_site  # Jekyll 构建输出目录
