@@ -1,0 +1,35 @@
+---
+layout: null
+permalink: /podcast.xml
+sitemap: false
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+     xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+     xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ site.title | xml_escape }} · 播客</title>
+    <link>{{ '/' | absolute_url | xml_escape }}</link>
+    <description>{{ site.description | xml_escape }}</description>
+    <language>zh-cn</language>
+    <itunes:author>和各中央广播与电视平台</itunes:author>
+    <itunes:explicit>no</itunes:explicit>
+    <itunes:category text="News" />
+    <itunes:image href="{{ '/assets/images/podcast-cover.png' | absolute_url | xml_escape }}" />
+    <atom:link href="{{ '/podcast.xml' | absolute_url | xml_escape }}" rel="self" type="application/rss+xml" />
+    {% for ep in site.podcasts %}
+    <item>
+      <title>{{ ep.title | xml_escape }}</title>
+      <link>{{ ep.url | absolute_url | xml_escape }}</link>
+      <guid isPermaLink="true">{{ ep.url | absolute_url | xml_escape }}</guid>
+      <pubDate>{{ ep.date | date_to_rfc822 }}</pubDate>
+      <description>{{ ep.excerpt | xml_escape }}</description>
+      <enclosure url="{{ ep.audio | absolute_url | xml_escape }}" length="{{ ep.audio_bytes }}" type="audio/mpeg" />
+      <itunes:duration>{{ ep.duration | xml_escape }}</itunes:duration>
+      <itunes:episodeType>full</itunes:episodeType>
+      {% if ep.episode %}<itunes:episode>{{ ep.episode }}</itunes:episode>{% endif %}
+      <itunes:image href="{{ '/assets/images/podcast-cover.png' | absolute_url | xml_escape }}" />
+    </item>
+    {% endfor %}
+  </channel>
+</rss>
