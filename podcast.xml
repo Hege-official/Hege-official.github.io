@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+     xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+     xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>和各政府网 · 播客</title>
+    <link>https://hege-official.github.io/</link>
+    <description>和各的官方网站</description>
+    <language>zh-cn</language>
+    <itunes:author>和各中央广播与电视平台</itunes:author>
+    <itunes:explicit>no</itunes:explicit>
+    <itunes:category text="News" />
+    <itunes:image href="https://hege-official.github.io/assets/images/podcast-cover.png" />
+    <atom:link href="https://hege-official.github.io/podcast.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>第 1 期｜和各新闻：全国动人代第18届一次会议表决结果公布</title>
+      <link>https://hege-official.github.io/podcast/hege-news-ep1/</link>
+      <guid isPermaLink="true">https://hege-official.github.io/podcast/hege-news-ep1/</guid>
+      <pubDate>Mon, 05 Oct 2026 09:00:00 +0800</pubDate>
+      <description>和各新闻第 1 期：全国动人代第18届一次会议七项议程全部通过，三部法律公布生效。</description>
+      <enclosure url="https://hege-official.github.io/assets/audio/podcast/hege-news-ep1.mp3" length="616124" type="audio/mpeg" />
+      <itunes:duration>01:43</itunes:duration>
+      <itunes:episodeType>full</itunes:episodeType>
+      <itunes:episode>1</itunes:episode>
+      <itunes:image href="https://hege-official.github.io/assets/images/podcast-cover.png" />
+    </item>
+    
+  </channel>
+</rss>
