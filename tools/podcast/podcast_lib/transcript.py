@@ -117,6 +117,26 @@ def merge_subtitles(srt_paths, offsets, source_texts=None) -> str:
     return cues_to_vtt(cues)
 
 
+_DURATION_RE = re.compile(r"^\d{1,2}:\d{2}(:\d{2})?$")
+
+
+class _FrontMatterDumper(yaml.SafeDumper):
+    """逐字稿 front matter 输出器。
+
+    时长形如 ``01:43``；PyYAML 会按纯量原样输出，但 Ruby Psych（Jekyll 读取端）
+    会把它当作六十进制数字（``01:43`` -> ``103.0``）。这里对时长强制加引号，
+    保证下游始终读成字符串。
+    """
+
+
+def _represent_str(dumper, data):
+    style = "'" if _DURATION_RE.match(data) else None
+    return dumper.represent_scalar("tag:yaml.org,2002:str", data, style=style)
+
+
+_FrontMatterDumper.add_representer(str, _represent_str)
+
+
 def render_episode_md(meta, segments, durations, start_offset=0.0) -> str:
     base_starts = build_timeline(durations)
     starts = [float(start_offset) + s for s in base_starts]
@@ -124,7 +144,9 @@ def render_episode_md(meta, segments, durations, start_offset=0.0) -> str:
     front = dict(meta)
     front["duration"] = format_timestamp(total)
     front["transcript"] = True
-    header = yaml.safe_dump(front, allow_unicode=True, sort_keys=False).strip()
+    header = yaml.dump(
+        front, Dumper=_FrontMatterDumper, allow_unicode=True, sort_keys=False
+    ).strip()
     lines = ["---", header, "---", "", "> 本页为播客逐字稿，音频见上方播放器。", ""]
     for segment, start in zip(segments, starts):
         lines.append(f"**{format_timestamp(start)}｜{segment.name}**　{segment.text}")

@@ -57,16 +57,22 @@ class RenderEpisodeTest(unittest.TestCase):
         }
         md = transcript.render_episode_md(meta, [seg("主播", "甲"), seg("嘉宾", "乙")], [1.0, 2.0])
         self.assertTrue(md.startswith("---"))
-        self.assertIn("duration: 00:03", md)
+        self.assertIn("duration: '00:03'", md)
         self.assertIn("**00:00｜主播**　甲", md)
         self.assertIn("**00:01｜嘉宾**　乙", md)
+
+    def test_duration_is_quoted_for_yaml(self):
+        # 时长形如 01:43，若不加引号，Ruby Psych 会按六十进制读成数字（103.0）。
+        meta = {"title": "第 1 期", "date": "2026-10-05", "audio": "/a.mp3"}
+        md = transcript.render_episode_md(meta, [seg("主播", "甲")], [103.0])
+        self.assertIn("duration: '01:43'", md)
 
     def test_start_offset_shifts_timestamps_and_duration(self):
         meta = {"title": "第 1 期", "date": "2026-10-05", "audio": "/a.mp3"}
         md = transcript.render_episode_md(
             meta, [seg("主播", "甲")], [2.0], start_offset=9.0
         )
-        self.assertIn("duration: 00:11", md)
+        self.assertIn("duration: '00:11'", md)
         self.assertIn("**00:09｜主播**　甲", md)
 
 

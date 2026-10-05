@@ -15,7 +15,7 @@ guests: []
 related_post: /公告/napc-18th-session-vote-results/
 publisher: 和各中央广播与电视平台
 episode: 1
-duration: 01:43
+duration: '01:43'
 transcript: true
 ---
 
