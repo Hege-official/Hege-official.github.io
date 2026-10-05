@@ -67,6 +67,12 @@ class RenderEpisodeTest(unittest.TestCase):
         md = transcript.render_episode_md(meta, [seg("主播", "甲")], [103.0])
         self.assertIn("duration: '01:43'", md)
 
+    def test_duration_quoted_for_long_episode(self):
+        # 超过 99 分钟时时长为 100:00，同样必须加引号。
+        meta = {"title": "第 1 期", "date": "2026-10-05", "audio": "/a.mp3"}
+        md = transcript.render_episode_md(meta, [seg("主播", "甲")], [6000.0])
+        self.assertIn("duration: '100:00'", md)
+
     def test_start_offset_shifts_timestamps_and_duration(self):
         meta = {"title": "第 1 期", "date": "2026-10-05", "audio": "/a.mp3"}
         md = transcript.render_episode_md(

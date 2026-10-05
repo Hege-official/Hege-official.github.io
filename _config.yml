@@ -22,7 +22,7 @@ title_separator          : "-" # 标题分隔符
 subtitle                 : "Hege Republic Government Official Website" # 站点副标题
 name                     : "和各政府网"
 description              : "和各的官方网站"
-url                      : "https://hege-official.github.io/"
+url                      : "https://hege-official.github.io"
 baseurl                  : # "/blog"
 repository               : "Hege-official/Hege-official.github.io" # GitHub 用户名/仓库名，例如 "mmistakes/minimal-mistakes"
 teaser                   : # 备用预览图像路径，例如 "/assets/images/500x300.png"

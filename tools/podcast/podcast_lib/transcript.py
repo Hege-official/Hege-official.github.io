@@ -117,14 +117,14 @@ def merge_subtitles(srt_paths, offsets, source_texts=None) -> str:
     return cues_to_vtt(cues)
 
 
-_DURATION_RE = re.compile(r"^\d{1,2}:\d{2}(:\d{2})?$")
+_DURATION_RE = re.compile(r"^\d+:\d{2}(:\d{2})?$")
 
 
 class _FrontMatterDumper(yaml.SafeDumper):
     """逐字稿 front matter 输出器。
 
     时长形如 ``01:43``；PyYAML 会按纯量原样输出，但 Ruby Psych（Jekyll 读取端）
-    会把它当作六十进制数字（``01:43`` -> ``103.0``）。这里对时长强制加引号，
+    会把它当作六十进制数字，解析结果错误。这里对时长强制加引号，
     保证下游始终读成字符串。
     """
 
