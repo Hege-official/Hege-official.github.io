@@ -10,5 +10,7 @@ main:
     url: /notices/
   - title: "社论"
     url: /editorials/
+  - title: "播客"
+    url: /podcast/
   - title: "意见建议"
     url: /feedback/
