@@ -1,0 +1,41 @@
+---
+layout: default
+classes: wide
+---
+
+<div id="main" role="main">
+  <article class="page podcast-episode" itemscope itemtype="https://schema.org/CreativeWork"{% if page.locale %} lang="{{ page.locale }}"{% endif %}>
+    {% if page.title %}<meta itemprop="headline" content="{{ page.title | replace: '|', '&#124;' | markdownify | strip_html | strip_newlines | escape_once }}">{% endif %}
+    {% if page.excerpt %}<meta itemprop="description" content="{{ page.excerpt | markdownify | strip_html | strip_newlines | escape_once }}">{% endif %}
+    {% if page.date %}<meta itemprop="datePublished" content="{{ page.date | date_to_xmlschema }}">{% endif %}
+
+    <div class="page__inner-wrap">
+      <p class="podcast-back"><a href="{{ '/podcast/' | relative_url }}">← 返回播客</a></p>
+      <header>
+        <h1 id="page-title" class="page__title" itemprop="headline">{{ page.title | markdownify | remove: "<p>" | remove: "</p>" }}</h1>
+        <p class="podcast-meta">
+          {%- if page.episode %}<span class="podcast-meta__item">第 {{ page.episode }} 期</span>{% endif -%}
+          {%- if page.episode_type %}<span class="podcast-meta__item">{{ page.episode_type }}</span>{% endif -%}
+          {%- if page.date %}<span class="podcast-meta__item">{{ page.date | date: site.date_format }}</span>{% endif -%}
+          {%- if page.duration %}<span class="podcast-meta__item">时长 {{ page.duration }}</span>{% endif -%}
+          {%- if page.hosts.size > 0 %}<span class="podcast-meta__item">主持：{{ page.hosts | join: "、" }}</span>{% endif -%}
+          {%- if page.guests.size > 0 %}<span class="podcast-meta__item">嘉宾：{{ page.guests | join: "、" }}</span>{% endif -%}
+        </p>
+      </header>
+
+      <section class="page__content" itemprop="text">
+        {% include podcast-player.html %}
+        {{ content }}
+        {% if page.related_post %}
+          {% assign related = nil %}
+          {% assign related_target = page.related_post | url_decode %}
+          {% for post in site.posts %}
+            {% assign post_url_dec = post.url | url_decode %}
+            {% if post_url_dec == related_target %}{% assign related = post %}{% endif %}
+          {% endfor %}
+          <p class="podcast-related">相关报道：<a href="{{ page.related_post | relative_url }}">{{ related.title | default: page.related_post }}</a></p>
+        {% endif %}
+      </section>
+    </div>
+  </article>
+</div>

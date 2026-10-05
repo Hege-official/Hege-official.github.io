@@ -257,6 +257,12 @@ whitelist:
   - jekyll-include-cache
 
 
+# 播客集合（内容与播放页）
+collections:
+  podcasts:
+    output: true
+
+
 # 归档
 #  类型
 #  - GitHub Pages 兼容的归档页面，使用 Liquid ~> type: liquid（默认）
@@ -307,4 +313,14 @@ defaults:
       share: false
       related: true
       publisher: "和各政府网"
+  # _podcasts
+  - scope:
+      path: ""
+      type: podcasts
+    values:
+      layout: podcast
+      author_profile: false
+      comments: false
+      share: false
+      related: false
 

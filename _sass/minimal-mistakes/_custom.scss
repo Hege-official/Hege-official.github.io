@@ -190,3 +190,35 @@ picture {
     margin-bottom: 0;
   }
 }
+
+/* 播客：播放器与元信息
+   ========================================================================== */
+
+.podcast-player {
+  display: block;
+  width: 100%;
+  margin: 0 0 1.25rem;
+}
+
+.podcast-meta {
+  margin: 0.25rem 0 1rem;
+  font-size: 0.85em;
+  color: $hege-muted;
+}
+
+.podcast-meta__item {
+  margin-right: 0.9em;
+  white-space: nowrap;
+}
+
+.podcast-back {
+  margin: 0 0 0.5rem;
+  font-size: 0.85em;
+}
+
+.podcast-related {
+  margin-top: 1.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid $hege-border;
+  font-size: 0.9em;
+}

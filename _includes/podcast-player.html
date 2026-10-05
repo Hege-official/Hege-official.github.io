@@ -1,0 +1,7 @@
+{% if page.audio %}
+<audio class="podcast-player" controls preload="metadata" src="{{ page.audio | relative_url }}">
+  {% if page.subtitles %}<track kind="captions" src="{{ page.subtitles | relative_url }}" srclang="zh" label="中文" default>{% endif %}
+  您的浏览器不支持音频播放，请
+  <a href="{{ page.audio | relative_url }}">下载音频</a>。
+</audio>
+{% endif %}
