@@ -38,6 +38,34 @@ class ResolveBedTest(unittest.TestCase):
             build.resolve_bed(["bgm/bed.mp3"], self.dir)
 
 
+class ResolveIntroTest(unittest.TestCase):
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.dir = Path(self._tmp.name)
+        (self.dir / "stinger").mkdir()
+        (self.dir / "stinger" / "intro.mp3").write_bytes(b"x")
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def test_none_when_absent(self):
+        self.assertIsNone(build.resolve_intro(None, self.dir))
+
+    def test_resolves_defaults(self):
+        spec = build.resolve_intro({"file": "stinger/intro.mp3"}, self.dir)
+        self.assertEqual(spec["gain_db"], 0.0)
+        self.assertEqual(spec["fade_out"], 0.0)
+        self.assertTrue(spec["path"].exists())
+
+    def test_missing_file_raises(self):
+        with self.assertRaises(FileNotFoundError):
+            build.resolve_intro({"file": "stinger/nope.mp3"}, self.dir)
+
+    def test_missing_file_key_raises(self):
+        with self.assertRaises(ValueError):
+            build.resolve_intro({"gain_db": -3}, self.dir)
+
+
 class ResolveCuesTest(unittest.TestCase):
     def setUp(self):
         self._tmp = tempfile.TemporaryDirectory()

@@ -8,6 +8,11 @@ related_post: "/公告/napc-18th-session-vote-results/"
 hosts: ["云阳"]
 guests: []
 
+intro:
+  file: stinger/intro-news-short.mp3
+  gain_db: 0
+  fade_out: 0.6
+
 segments:
   - role: anchor
     text: "各位听众，大家好，这里是和各中央广播与电视平台，欢迎收听《和各新闻》。今天是和各共和国通用纪年十月五日。"
@@ -32,8 +37,3 @@ bed:
     duck: 0.85
     fade_in: 1.0
     fade_out: 2.0
-
-cues:
-  - at_segment: 7
-    file: stinger/close.mp3
-    gain_db: -10

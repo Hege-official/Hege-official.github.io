@@ -117,9 +117,10 @@ def merge_subtitles(srt_paths, offsets, source_texts=None) -> str:
     return cues_to_vtt(cues)
 
 
-def render_episode_md(meta, segments, durations) -> str:
-    starts = build_timeline(durations)
-    total = starts[-1] + float(durations[-1]) if durations else 0.0
+def render_episode_md(meta, segments, durations, start_offset=0.0) -> str:
+    base_starts = build_timeline(durations)
+    starts = [float(start_offset) + s for s in base_starts]
+    total = (starts[-1] + float(durations[-1])) if durations else 0.0
     front = dict(meta)
     front["duration"] = format_timestamp(total)
     front["transcript"] = True

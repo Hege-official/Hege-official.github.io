@@ -38,6 +38,7 @@ class Episode:
     segments: list
     bed: list
     cues: list
+    intro: dict | None
 
 
 def _read_yaml(path):
@@ -100,6 +101,9 @@ def load_episode(path, voices):
     if not raw_segments:
         raise ConfigError(f"{path} 未包含任何 segments")
     segments = [resolve_segment(s, voices) for s in raw_segments]
+    intro = data.get("intro")
+    if intro is not None and not isinstance(intro, dict):
+        raise ConfigError(f"{path} 的 intro 必须是映射")
     return Episode(
         slug=data.get("slug") or Path(path).stem,
         title=data["title"],
@@ -113,4 +117,5 @@ def load_episode(path, voices):
         segments=segments,
         bed=list(data.get("bed") or []),
         cues=list(data.get("cues") or []),
+        intro=intro,
     )

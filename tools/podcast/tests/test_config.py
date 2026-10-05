@@ -77,6 +77,17 @@ class LoadEpisodeTest(unittest.TestCase):
         self.assertEqual(ep.date, "2026-10-05 09:00:00")
         self.assertEqual(ep.hosts, ["云阳"])
         self.assertEqual(len(ep.segments), 1)
+        self.assertIsNone(ep.intro)
+
+    def test_parses_intro(self):
+        path = self._write(
+            "title: 标题\ndate: 2026-10-05\n"
+            "intro:\n  file: stinger/x.mp3\n  fade_out: 0.5\n"
+            "segments:\n  - role: anchor\n    text: '嗨'\n"
+        )
+        ep = config.load_episode(path, VOICES)
+        self.assertEqual(ep.intro["file"], "stinger/x.mp3")
+        self.assertEqual(ep.intro["fade_out"], 0.5)
 
     def test_no_segments_raises(self):
         path = self._write("title: 标题\ndate: 2026-10-05\nsegments: []\n")

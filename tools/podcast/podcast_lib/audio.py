@@ -17,6 +17,8 @@ def _run(args):
         [ffmpeg_exe(), "-hide_banner", "-loglevel", "error", "-y", *[str(a) for a in args]],
         capture_output=True,
         text=True,
+        encoding="utf-8",
+        errors="replace",
     )
     if proc.returncode != 0:
         raise RuntimeError(f"ffmpeg 失败：\n{proc.stderr.strip()}")
@@ -30,6 +32,8 @@ def probe_duration(path) -> float:
         [ffmpeg_exe(), "-hide_banner", "-i", str(path)],
         capture_output=True,
         text=True,
+        encoding="utf-8",
+        errors="replace",
     )
     match = _DURATION_RE.search(proc.stderr)
     if not match:
@@ -102,6 +106,27 @@ def mix_episode(voice_track, out_path, work_dir, bed_specs=None, cues_specs=None
     _run([
         *inputs,
         "-filter_complex", ";".join(parts),
+        "-map", "[out]",
+        "-ar", str(sample_rate), "-ac", "1", "-b:a", "48k",
+        out_path,
+    ])
+
+
+def assemble_with_intro(program_path, out_path, intro_path, gain_db=0.0, fade_out=0.0, sample_rate=24000):
+    """把片头（归一化 + 可选淡出）与正片拼接为一条成品 MP3。"""
+    intro_duration = probe_duration(intro_path)
+    chain = [
+        "[0:a]loudnorm=I=-16:TP=-1.5:LRA=11",
+        f"volume={float(gain_db)}dB",
+    ]
+    if float(fade_out) > 0:
+        fade_start = max(0.0, intro_duration - float(fade_out))
+        chain.append(f"afade=t=out:st={fade_start:.3f}:d={float(fade_out)}")
+    graph = ",".join(chain) + "[pre];[pre][1:a]concat=n=2:v=0:a=1[out]"
+    _run([
+        "-i", str(intro_path),
+        "-i", str(program_path),
+        "-filter_complex", graph,
         "-map", "[out]",
         "-ar", str(sample_rate), "-ac", "1", "-b:a", "48k",
         out_path,

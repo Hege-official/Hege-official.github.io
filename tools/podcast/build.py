@@ -43,6 +43,21 @@ def resolve_bed(specs, assets_dir):
     return resolved
 
 
+def resolve_intro(spec, assets_dir):
+    if not spec:
+        return None
+    if not isinstance(spec, dict) or "file" not in spec:
+        raise ValueError(f"intro 必须是含 file 键的映射：{spec!r}")
+    path = Path(assets_dir) / spec["file"]
+    if not path.exists():
+        raise FileNotFoundError(f"片头不存在：{path}")
+    return {
+        "path": path,
+        "gain_db": float(spec.get("gain_db", 0)),
+        "fade_out": float(spec.get("fade_out", 0)),
+    }
+
+
 def resolve_cues(specs, assets_dir, segment_starts):
     resolved = []
     for spec in specs:
@@ -79,16 +94,29 @@ def build_episode(script_path, use_cache=True):
 
     segment_paths = [synth.synthesize(s, CACHE_DIR, use_cache=use_cache) for s in episode.segments]
     durations = [audio.probe_duration(p) for p in segment_paths]
-    starts = transcript.build_timeline(durations)
+    base_starts = transcript.build_timeline(durations)
 
     voice_track = WORK_DIR / f"{episode.slug}-voice.mp3"
     audio.concat_mp3(segment_paths, voice_track, WORK_DIR)
 
     bed = resolve_bed(episode.bed, ASSETS_DIR)
-    cues = resolve_cues(episode.cues, ASSETS_DIR, starts)
+    cues = resolve_cues(episode.cues, ASSETS_DIR, base_starts)
+    intro = resolve_intro(episode.intro, ASSETS_DIR)
 
     out_audio = AUDIO_OUT_DIR / f"{episode.slug}.mp3"
-    audio.mix_episode(voice_track, out_audio, WORK_DIR, bed, cues)
+    if intro:
+        program = WORK_DIR / f"{episode.slug}-program.mp3"
+        audio.mix_episode(voice_track, program, WORK_DIR, bed, cues)
+        audio.assemble_with_intro(
+            program, out_audio, intro["path"],
+            gain_db=intro["gain_db"], fade_out=intro["fade_out"],
+        )
+        intro_duration = audio.probe_duration(intro["path"])
+    else:
+        audio.mix_episode(voice_track, out_audio, WORK_DIR, bed, cues)
+        intro_duration = 0.0
+
+    starts = [intro_duration + s for s in base_starts]
 
     srt_paths = [synth.subtitles_for(p) for p in segment_paths]
     out_vtt = AUDIO_OUT_DIR / f"{episode.slug}.vtt"
@@ -111,7 +139,9 @@ def build_episode(script_path, use_cache=True):
         "related_post": episode.related_post,
         "publisher": episode.publisher,
     }
-    md = transcript.render_episode_md(meta, episode.segments, durations)
+    md = transcript.render_episode_md(
+        meta, episode.segments, durations, start_offset=intro_duration
+    )
     out_md = EPISODE_OUT_DIR / f"{str(episode.date)[:10]}-{episode.slug}.md"
     out_md.write_text(md, encoding="utf-8")
 

@@ -35,6 +35,11 @@ class ProbeDurationTest(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             audio.probe_duration(self.dir / "nope.mp3")
 
+    def test_non_ascii_path(self):
+        tone = self.dir / "新闻片头.mp3"
+        make_tone(tone, 440, 0.5)
+        self.assertAlmostEqual(audio.probe_duration(tone), 0.5, delta=0.15)
+
 
 class ConcatTest(unittest.TestCase):
     def setUp(self):
@@ -98,6 +103,28 @@ class MixEpisodeTest(unittest.TestCase):
             [{"path": cue, "start": 1.0, "gain_db": -10}],
         )
         self.assertAlmostEqual(audio.probe_duration(out), 2.0, delta=0.3)
+
+
+class AssembleWithIntroTest(unittest.TestCase):
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.dir = Path(self._tmp.name)
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def _tone(self, name, duration, freq=440):
+        path = self.dir / name
+        make_tone(path, freq, duration)
+        return path
+
+    def test_duration_is_intro_plus_program(self):
+        intro = self._tone("intro.mp3", 1.0, freq=660)
+        program = self._tone("program.mp3", 2.0, freq=440)
+        out = self.dir / "out.mp3"
+        audio.assemble_with_intro(program, out, intro, gain_db=0, fade_out=0.3)
+        self.assertTrue(out.exists())
+        self.assertAlmostEqual(audio.probe_duration(out), 3.0, delta=0.3)
 
 
 if __name__ == "__main__":

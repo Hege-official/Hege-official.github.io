@@ -61,6 +61,14 @@ class RenderEpisodeTest(unittest.TestCase):
         self.assertIn("**00:00｜主播**　甲", md)
         self.assertIn("**00:01｜嘉宾**　乙", md)
 
+    def test_start_offset_shifts_timestamps_and_duration(self):
+        meta = {"title": "第 1 期", "date": "2026-10-05", "audio": "/a.mp3"}
+        md = transcript.render_episode_md(
+            meta, [seg("主播", "甲")], [2.0], start_offset=9.0
+        )
+        self.assertIn("duration: 00:11", md)
+        self.assertIn("**00:09｜主播**　甲", md)
+
 
 SRT_SAMPLE = (
     "1\n00:00:00,100 --> 00:00:02,062\n各位听众，大家好。\n\n"

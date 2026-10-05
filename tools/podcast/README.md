@@ -27,6 +27,8 @@ python tools/podcast/build.py <slug> --no-cache
 python -m unittest discover -s tools/podcast/tests -t tools/podcast -v
 ```
 
+脚本可选 `intro` 字段配置片头预滚（播放完片头后主播才开口）；外部素材（含片头）放入 `tools/podcast/assets/` 并在 `CREDITS.md` 登记。详见 `docs/播客制作规范.md`。
+
 ## 产物
 
 - `assets/audio/podcast/<slug>.mp3`
