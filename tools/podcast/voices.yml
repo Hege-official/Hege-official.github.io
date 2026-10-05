@@ -1,0 +1,10 @@
+roles:
+  anchor:    { voice: zh-CN-YunyangNeural,  name: 主播 }
+  coanchor:  { voice: zh-CN-XiaoxiaoNeural, name: 主播 }
+  host:      { voice: zh-CN-XiaoxiaoNeural, name: 主持人 }
+  guest:     { voice: zh-CN-YunjianNeural,  name: 嘉宾 }
+  guest2:    { voice: zh-CN-XiaoyiNeural,   name: 嘉宾 }
+defaults:
+  rate: "+0%"
+  volume: "+0%"
+  pitch: "+0Hz"

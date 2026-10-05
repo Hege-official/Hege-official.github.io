@@ -37,3 +37,10 @@ _site
 
 # Agent scratch (superpowers ledgers, briefs, review packages)
 .superpowers/
+
+# Podcast 音视频生产（源与缓存不入库）
+tools/podcast/.cache/
+tools/podcast/assets/bgm/
+tools/podcast/assets/sfx/
+tools/podcast/assets/stinger/
+tools/podcast/**/__pycache__/
