@@ -99,7 +99,7 @@ segments:                     # 按顺序合成、拼接
 bed:                          # 铺底音乐（可多条）
   - file: bgm/news-bed.mp3
     gain_db: -22
-    duck_db: -10
+    duck: 0.85                # 闪避强度：0=不闪避，1=完全闪避
     fade_in: 1.5
     fade_out: 2.0
 
@@ -159,7 +159,7 @@ defaults:
 用 `imageio-ffmpeg` 提供的 ffmpeg，按 `filter_complex` 构建：
 
 1. 人声轨：各段 MP3 顺序 concat。
-2. `bed`：循环（`aloop`）并裁剪到人声总长，`volume` 施加 `gain_db`，两端 `afade` 淡入淡出；再以人声为 sidechain 走 `sidechaincompress` 实现自动闪避（`duck_db`）。
+2. `bed`：循环（`-stream_loop -1`）并裁剪到人声总长，`volume` 施加 `gain_db`，两端 `afade` 淡入淡出；再以人声为 sidechain 走 `sidechaincompress` 实现自动闪避，闪避强度由 `duck`（0–1）映射到其 `mix` 参数。
 3. `cues`：`adelay` 定位到目标时间，`volume` 施加 `gain_db`。
 4. `amix` 合并人声 + bed + cues；用 ffmpeg `loudnorm` 统一响度（目标 `I=-16`，播客常用）后输出 MP3（24kHz 单声道 48kbps）。
 
