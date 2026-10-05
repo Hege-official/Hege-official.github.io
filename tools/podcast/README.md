@@ -34,3 +34,8 @@ python -m unittest discover -s tools/podcast/tests -t tools/podcast -v
 - `assets/audio/podcast/<slug>.mp3`
 - `assets/audio/podcast/<slug>.vtt`（逐句字幕，WebVTT）
 - `_podcasts/YYYY-MM-DD-<slug>.md`（含逐字稿与时间轴）
+
+## 网站附产物
+
+- 单集发布到 `/podcast/<slug>/`，栏目页 `/podcast/`，RSS `/podcast.xml`（见 `docs/播客制作规范.md`）。
+- 生成播客封面：`python tools/podcast/gen_cover.py` → `assets/images/podcast-cover.png`。
