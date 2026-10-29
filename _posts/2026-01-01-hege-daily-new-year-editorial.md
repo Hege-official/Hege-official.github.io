@@ -2,7 +2,7 @@
 title: "凝心聚力 笃定前行——和各日报二〇二六年元旦社论"
 excerpt: "《和各日报》2026年元旦社论回顾2025年制度、开放、民生三条主线，号召全国人民在高质量发展道路上笃定前行。"
 header:
-  image: /assets/images/hegenews.png
+  image: /assets/images/covers/hege-daily-new-year-editorial.png
 publisher: "和各日报"
 date: 2026-01-01 08:00:00
 categories: [社论]

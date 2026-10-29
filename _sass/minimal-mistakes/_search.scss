@@ -6,6 +6,193 @@
   .archive__item-teaser {
     margin-bottom: 0.25em;
   }
+
+  // 搜索页不需要黑色标题横条，用政务风的标题块替代
+  #page-title {
+    display: block;
+    margin: 0 0 1.25rem;
+    padding: 0 0 0.6rem;
+    background: transparent;
+    border-bottom: 3px solid $hege-red;
+    color: $hege-navy;
+    font-size: $type-size-2;
+    letter-spacing: 0.04em;
+  }
+}
+
+/* 搜索框
+   ========================================================================== */
+
+.site-search {
+  max-width: 52rem;
+  margin: 0 auto;
+
+  &__label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: $type-size-6;
+    font-weight: bold;
+    letter-spacing: 0.12em;
+    color: $hege-muted;
+    text-transform: uppercase;
+  }
+  &__field {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  &__icon {
+    position: absolute;
+    left: 1.1rem;
+    color: $hege-navy;
+    font-size: 1.1em;
+    pointer-events: none;
+  }
+
+  &__input {
+    width: 100%;
+    margin: 0;
+    padding: 0.85rem 1rem 0.85rem 3rem;
+    border: 1px solid $hege-border;
+    border-left: 4px solid $hege-navy;
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(7, 21, 39, 0.05);
+    font-size: $type-size-4;
+    color: $hege-ink;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &::placeholder {
+      color: $hege-muted;
+      opacity: 0.75;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $hege-navy;
+      border-left-color: $hege-red;
+      box-shadow: 0 0 0 3px rgba(11, 31, 58, 0.12);
+    }
+  }
+
+  // 搜索页已经重排过，屏蔽主题对 .search-content .search-input 的透明化规则
+  @include breakpoint($large) {
+    &__input {
+      font-size: $type-size-4;
+    }
+  }
+}
+
+/* 搜索结果
+   ========================================================================== */
+
+// 用 .archive 提高优先级：主题有 `.archive .results` 一类的规则会覆盖单类选择器
+.layout--search .archive .results {
+  margin-top: 2.25rem;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
+  font-size: 1rem;
+
+  @include breakpoint($medium) {
+    font-size: 1.0625rem;
+  }
+
+  .results__found {
+    margin: 0 0 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid $hege-border;
+    color: $hege-muted;
+    font-size: $type-size-6;
+    letter-spacing: 0.03em;
+  }
+
+  .list__item {
+    margin-bottom: 0;
+  }
+
+  .results__item {
+    width: 100%;
+    margin-bottom: 0;
+    padding: 0.9rem 1rem;
+    border-left: 2px solid transparent;
+    transition: background-color 0.15s, border-color 0.15s;
+
+    &:hover {
+      background-color: $hege-surface;
+      border-left-color: $hege-red;
+    }
+  }
+
+  .results__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.25rem;
+    color: $hege-muted;
+    font-size: $type-size-7;
+  }
+
+  .results__tag {
+    padding: 0.1rem 0.45rem;
+    background-color: $hege-navy;
+    color: #fff;
+    letter-spacing: 0.08em;
+  }
+
+  .results__sep {
+    opacity: 0.5;
+  }
+
+  .archive__item-title {
+    margin: 0 0 0.3rem;
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.45;
+
+    @include breakpoint($medium) {
+      font-size: 1.25rem;
+    }
+
+    a {
+      color: $hege-navy;
+      text-decoration: none;
+
+      &:hover {
+        color: $hege-red;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .archive__item-excerpt {
+    margin: 0;
+    color: $hege-muted;
+    font-size: 0.9375rem;
+    line-height: 1.75;
+
+    @include breakpoint($medium) {
+      font-size: 1rem;
+    }
+  }
+
+  mark {
+    padding: 0 0.1em;
+    background-color: rgba(200, 169, 106, 0.35);
+    color: inherit;
+  }
+
+  .results__empty {
+    padding: 2rem 1rem;
+    border: 1px dashed $hege-border;
+    color: $hege-muted;
+    text-align: center;
+
+    p {
+      margin: 0;
+    }
+  }
 }
 
 .search__toggle {
@@ -35,6 +222,9 @@
   padding-top: 1em;
   padding-bottom: 1em;
 
+  // 顶栏展开的是深色覆盖层：输入框与结果都要反白，否则深底深字看不清
+  color: #e8edf5;
+
   &__inner-wrap {
     width: 100%;
     margin-inline: auto;
@@ -54,22 +244,44 @@
     background-color: transparent;
   }
 
+  // 带图标的搜索框容器
+  &__field {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  &__icon {
+    position: absolute;
+    left: 0;
+    color: $hege-gold;
+    font-size: 1.25rem;
+    pointer-events: none;
+  }
+
   .search-input {
     display: block;
+    width: 100%;
     margin-bottom: 0;
-    padding: 0;
+    padding: 0.5rem 0 0.5rem 2.5rem;
     border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
     outline: none;
     box-shadow: none;
     background-color: transparent;
-    font-size: $type-size-3;
+    color: #fff;
+    font-size: 22px;
 
-    @include breakpoint($large) {
-      font-size: $type-size-2;
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.5);
     }
 
-    @include breakpoint($x-large) {
-      font-size: $type-size-1;
+    &:focus {
+      border-bottom-color: $hege-gold;
+    }
+
+    @include breakpoint($large) {
+      font-size: 24px;
     }
   }
 
@@ -83,29 +295,97 @@
     }
   }
 
+  // 结果区：深色底 + 浅色字，单栏，不要两侧并排
+  .results {
+    max-width: 46rem;
+    margin-top: 1.5rem;
+    font-size: 15px;
+  }
+
   .results__found {
-    margin-top: 0.5em;
-    font-size: $type-size-6;
+    margin: 0 0 0.75rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+  }
+
+  .results__item {
+    width: 100%;
+    margin: 0;
+    padding: 0.7rem 0.9rem;
+    border-left: 2px solid transparent;
+    transition: background-color 0.15s, border-color 0.15s;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.06);
+      border-left-color: $hege-red;
+    }
+  }
+
+  .results__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.2rem;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 12px;
+  }
+
+  .results__tag {
+    padding: 0.05rem 0.4rem;
+    background-color: rgba(255, 255, 255, 0.14);
+    color: #fff;
+    letter-spacing: 0.08em;
+  }
+
+  .results__sep {
+    opacity: 0.4;
   }
 
   .archive__item {
-    margin-bottom: 2em;
-
-    @include breakpoint($large) {
-      width: 75%;
-    }
-
-    @include breakpoint($x-large) {
-      width: 50%;
-    }
+    margin-bottom: 0;
   }
 
   .archive__item-title {
-    margin-top: 0;
+    margin: 0 0 0.2rem;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.5;
+
+    a {
+      color: #fff;
+      text-decoration: none;
+
+      &:hover {
+        color: $hege-gold;
+        text-decoration: underline;
+      }
+    }
   }
 
   .archive__item-excerpt {
-    margin-bottom: 0;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  mark {
+    padding: 0 0.1em;
+    background-color: rgba(200, 169, 106, 0.4);
+    color: #fff;
+  }
+
+  .results__empty {
+    padding: 1.25rem 0.9rem;
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    text-align: center;
+
+    p {
+      margin: 0;
+    }
   }
 }
 

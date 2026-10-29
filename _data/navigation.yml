@@ -1,9 +1,8 @@
 # main links
+# 主菜单只放栏目；「全部文档」「意见建议」等入口收进三条杠（见 _includes/masthead.html）
 main:
   - title: "首页"
     url: /
-  - title: "要闻"
-    url: /archive/
   - title: "新闻"
     url: /news/
   - title: "公告"
@@ -12,5 +11,16 @@ main:
     url: /editorials/
   - title: "播客"
     url: /podcast/
+
+# 折叠菜单（三条杠）里的入口，桌面与移动端都从这里展开
+menu:
+  - title: "全部文档"
+    url: /archive/
+  - title: "内容分类"
+    url: /categories/
+  - title: "标签索引"
+    url: /tags/
+  - title: "站内搜索"
+    url: /search/
   - title: "意见建议"
     url: /feedback/

@@ -22,6 +22,52 @@
   margin-right: 0 !important;
 }
 
+/* 正文排版：主题在大屏把根字号放大到 22px，正文跟着涨到 23px 显得过大。
+   这里给正文单独定死字号与行宽，不依赖根字号。 */
+.layout--single .page__content {
+  max-width: 46rem;
+  font-size: 17px;
+  line-height: 1.85;
+
+  p {
+    margin-bottom: 1.1em;
+  }
+
+  li,
+  blockquote {
+    font-size: 17px;
+    line-height: 1.8;
+  }
+
+  blockquote {
+    padding-left: 1rem;
+    border-left: 3px solid $hege-border;
+    color: $hege-muted;
+  }
+
+  // 表格、代码块不受行宽限制
+  table {
+    font-size: 15px;
+  }
+
+  pre,
+  code {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 767px) {
+  .layout--single .page__content {
+    font-size: 16px;
+    line-height: 1.8;
+
+    li,
+    blockquote {
+      font-size: 16px;
+    }
+  }
+}
+
 /* 链接 */
 #main a {
   color: $hege-link;
@@ -734,25 +780,4 @@
   font-size: 0.9rem;
 }
 
-/* 搜索页：大搜索框与结果卡片 */
-.layout--search .archive > .search-input {
-  display: block;
-  width: 100%;
-  max-width: 720px;
-  margin: 1.5rem auto 2rem;
-  padding: 0.75rem 1rem;
-  font-size: 1.05rem;
-  border: 1px solid $hege-border;
-  border-radius: 0;
-  box-shadow: $box-shadow;
-}
-
-.layout--search .results {
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-.layout--search .results .search-result {
-  border-bottom: 1px solid $hege-border;
-  padding: 1rem 0;
-}
+/* 搜索页样式见 _search.scss（.site-search / .layout--search .archive .results） */

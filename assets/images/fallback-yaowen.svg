@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1638 500" width="1638" height="500" role="img" aria-label="要闻栏目封面">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b1f3a"/>
+      <stop offset="1" stop-color="#18345c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1638" height="500" fill="url(#g)"/>
+  <g stroke="#c43e32" stroke-width="3" opacity="0.3"><line x1="834" y1="454" x2="1213" y2="454"/><line x1="848" y1="424" x2="1213" y2="424"/><line x1="862" y1="394" x2="1213" y2="394"/><line x1="876" y1="364" x2="1213" y2="364"/><line x1="890" y1="334" x2="1213" y2="334"/><line x1="904" y1="304" x2="1213" y2="304"/><line x1="918" y1="274" x2="1213" y2="274"/></g>
+  <rect x="348" y="0" width="8" height="500" fill="#c43e32"/>
+  <rect x="366" y="74" width="8" height="352" fill="#f6f2e8"/>
+  <rect x="0" y="492" width="1638" height="8" fill="#c43e32"/>
+  <text x="446" y="112" font-family="Microsoft YaHei, SimHei, sans-serif" font-size="26" fill="#c43e32">要闻</text>
+  <line x1="446" y1="132" x2="538" y2="132" stroke="#c43e32" stroke-width="3"/>
+  <text x="446" y="420" font-family="Microsoft YaHei, SimHei, sans-serif" font-size="19" fill="#96a2b6">和各共和国政府新闻发言网</text>
+</svg>

@@ -1,11 +1,6 @@
 {% assign post = include.post %}
-{% if post.header.teaser %}
-  {% assign card_img = post.header.teaser %}
-{% elsif post.header.image %}
-  {% assign card_img = post.header.image %}
-{% else %}
-  {% assign card_img = '' %}
-{% endif %}
+{% capture card_img %}{% include cover_src.html post=post %}{% endcapture %}
+{% assign card_img = card_img | strip %}
 
 <article class="gov-card">
   <a class="gov-card__link" href="{{ post.url | relative_url }}">

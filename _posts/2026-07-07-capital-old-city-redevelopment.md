@@ -2,7 +2,7 @@
 title: "中央政会公告〔2026〕第7号：关于艺宫市旧城改造工程的公告"
 excerpt: "中央政会第7号公告明确首都艺宫市旧城改造范围、补偿安置方式与时间安排，签约期自8月8日起至10月8日。"
 header:
-  image: /assets/images/hegegovcoun.png
+  image: /assets/images/covers/capital-old-city-redevelopment.png
 date: 2026-07-07 09:00:00
 categories: [公告]
 tags: [公告, 国内, 艺宫, 建设]

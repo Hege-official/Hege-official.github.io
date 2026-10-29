@@ -2,7 +2,7 @@
 title: "就『竦峙』组织实施恐怖袭击案，和各国最高人民法院公布生效判决"
 excerpt: "和各国最高人民法院对金亦方组织『竦峙』恐怖袭击案缺席审理并作出生效判决，数罪并罚，决定执行无期徒刑、附加剥夺政治权利终身，并处没收全部财产。"
 header:
-  image: /assets/images/latelynews.png
+  image: /assets/images/covers/songzhi-terror-case-verdict.png
 date: 2026-08-14 09:00:00
 categories: [公告]
 tags: [公告, 国际, 法律, 安全]

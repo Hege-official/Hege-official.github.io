@@ -8,6 +8,7 @@ subtitles: /assets/audio/podcast/hege-news-ep1.vtt
 permalink: /podcast/hege-news-ep1/
 audio_bytes: 616124
 header:
+  image: /assets/images/covers/hege-news-ep1.png
   og_image: /assets/images/podcast-cover.png
 hosts:
 - 云阳

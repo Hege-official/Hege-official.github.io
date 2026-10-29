@@ -1,12 +1,20 @@
 <div class="search-content__inner-wrap">
   {%- assign search_provider = site.search_provider | default: "lunr" -%}
+  {%- comment -%}
+    搜索页自己已经有 #search / #results（见 _layouts/search.html），不要再输出一份，
+    否则 id 重复、结果会渲染两次。本文件经 include_cached 缓存、缓存键里没有
+    page，所以判断放在 _layouts/default.html 而不是这里。
+  {%- endcomment -%}
   {%- case search_provider -%}
   {%- when "lunr" -%}
   <form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
     <label class="sr-only" for="search">
       {{ site.data.ui-text[site.locale].search_label_text | default: 'Enter your search term...' }}
     </label>
-    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="{{ site.data.ui-text[site.locale].search_placeholder_text | default: 'Enter your search term...' }}" />
+    <div class="search-content__field">
+      <i class="fas fa-search search-content__icon" aria-hidden="true"></i>
+      <input type="search" id="search" class="search-input" autocomplete="off" tabindex="-1" placeholder="{{ site.data.ui-text[site.locale].search_placeholder_text | default: 'Enter your search term...' }}" />
+    </div>
   </form>
   <div id="results" class="results"></div>
   {%- when "google" -%}

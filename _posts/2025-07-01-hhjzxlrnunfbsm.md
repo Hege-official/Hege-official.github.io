@@ -2,7 +2,7 @@
 title: "HHJ主席离任NUN发表声明，NUN各成员国感谢了其做出的贡献"
 excerpt: "前我国NUN主席HHJ在离任NUN之际发表了声明《致N国联合组织的一封信》"
 header:
-  image: /assets/images/hegenews.png
+  image: /assets/images/covers/hhjzxlrnunfbsm.png
 
 author_profile: false
 date: 2025-07-01 08:50:10

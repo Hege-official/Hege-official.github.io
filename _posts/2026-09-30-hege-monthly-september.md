@@ -2,7 +2,7 @@
 title: "《和各月刊》2026年9月号：律令定方圆，更新不歇脚"
 excerpt: "九月号聚焦第18届全国动人代一次会议通过三部法律，并记录旧城改造签约、不良资产处置进展与各地秋收。"
 header:
-  image: /assets/images/hegegovcoun.png
+  image: /assets/images/covers/hege-monthly-september.png
 publisher: "和各月刊"
 date: 2026-09-30 10:00:00
 categories: [新闻]

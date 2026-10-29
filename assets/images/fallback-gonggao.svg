@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1638 500" width="1638" height="500" role="img" aria-label="公告栏目封面">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7a161a"/>
+      <stop offset="1" stop-color="#a81c1c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1638" height="500" fill="url(#g)"/>
+  <rect x="28" y="28" width="1582" height="444" fill="none" stroke="#d6b676" stroke-width="3" opacity="0.55"/><rect x="40" y="40" width="1558" height="420" fill="none" stroke="#d6b676" stroke-width="1" opacity="0.4"/><g fill="none" stroke="#d6b676"><circle cx="1093" cy="250" r="96" stroke-width="6" opacity="0.55"/><circle cx="1093" cy="250" r="80" stroke-width="2" opacity="0.35"/></g><polygon points="1093.0,221.2 1100.1,240.2 1120.4,241.1 1104.5,253.7 1109.9,273.3 1093.0,262.1 1076.1,273.3 1081.5,253.7 1065.6,241.1 1085.9,240.2" fill="#d6b676" opacity="0.6"/>
+  <rect x="348" y="0" width="8" height="500" fill="#d6b676"/>
+  <rect x="366" y="74" width="8" height="352" fill="#f6f2e8"/>
+  <rect x="0" y="492" width="1638" height="8" fill="#d6b676"/>
+  <text x="446" y="112" font-family="Microsoft YaHei, SimHei, sans-serif" font-size="26" fill="#d6b676">公告</text>
+  <line x1="446" y1="132" x2="538" y2="132" stroke="#d6b676" stroke-width="3"/>
+  <text x="446" y="420" font-family="Microsoft YaHei, SimHei, sans-serif" font-size="19" fill="#96a2b6">和各共和国政府新闻发言网</text>
+</svg>

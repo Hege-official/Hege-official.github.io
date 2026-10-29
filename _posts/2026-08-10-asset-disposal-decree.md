@@ -2,7 +2,7 @@
 title: "中央政会公告〔2026〕第8号：关于处置和各五大洲内不良资产的政令"
 excerpt: "为规范不良资产处置、优化国有资产配置，中央政会公布第8号政令，明确四类资产、五种处置方式与五阶段审批程序。"
 header:
-  image: /assets/images/hegegov1.png
+  image: /assets/images/covers/asset-disposal-decree.png
 date: 2026-08-10 09:00:00
 categories: [公告]
 tags: [公告, 国内, 经济, 行政]

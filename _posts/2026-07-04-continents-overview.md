@@ -2,7 +2,7 @@
 title: "和各各洲概述"
 excerpt: "和各国领土分布于本洲、祖洲、木摩大洲与金岭外洲四大洲，本文概述各洲的定位与下辖行政区。"
 header:
-  image: /assets/images/latelynews.png
+  image: /assets/images/covers/continents-overview.png
 date: 2026-07-04 09:10:00
 categories: [维护]
 tags: [地理, 疆域, 各洲]

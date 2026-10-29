@@ -1,0 +1,25 @@
+{%- comment -%}
+  封面兜底：没有 header.image 时，用一张与 tools/gen_article_cover.py 同风格、
+  带栏目配色的静态封面，保证新文章忘跑脚本也不会出现空白占位。
+  用法：{% include cover_src.html post=post %} —— 只输出裸 URL，
+  调用方不要再用 escape_once / jsonify 二次转义。
+{%- endcomment -%}
+{%- assign _post = include.post | default: page -%}
+{%- if _post.header.teaser -%}
+{{ _post.header.teaser | relative_url }}
+{%- elsif _post.header.image -%}
+{{ _post.header.image | relative_url }}
+{%- elsif _post.cover -%}
+{{ _post.cover | relative_url }}
+{%- else -%}
+{%- assign _cat = _post.categories | first | default: "" -%}
+{%- case _cat -%}
+{%- when "要闻" -%}{%- assign _fallback = "fallback-yaowen.svg" -%}
+{%- when "公告" -%}{%- assign _fallback = "fallback-gonggao.svg" -%}
+{%- when "社论" -%}{%- assign _fallback = "fallback-shelun.svg" -%}
+{%- when "维护" -%}{%- assign _fallback = "fallback-weihu.svg" -%}
+{%- when "播客" -%}{%- assign _fallback = "fallback-boke.svg" -%}
+{%- else -%}{%- assign _fallback = "fallback-news.svg" -%}
+{%- endcase -%}
+{{ '/assets/images/' | append: _fallback | relative_url }}
+{%- endif -%}

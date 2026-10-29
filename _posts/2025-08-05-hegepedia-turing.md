@@ -31,6 +31,8 @@ infobox_data:
     value: "图灵机、图灵测试、破解恩尼格玛密码机"
   - label: "荣誉"
     value: "大英帝国勋章 (OBE)"
+header:
+  image: /assets/images/covers/hegepedia-turing.png
 ---
 
 {% comment %} 

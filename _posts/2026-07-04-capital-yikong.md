@@ -2,7 +2,7 @@
 title: "首都艺宫"
 excerpt: "艺宫（Yikong）是和各国的首都，位于本洲核心区域，为直辖市建制，是国家政治、文化和国际交往中心。"
 header:
-  image: /assets/images/hegegovcoun.png
+  image: /assets/images/covers/capital-yikong.png
 date: 2026-07-04 09:00:00
 categories: [维护]
 tags: [地理, 首都, 艺宫]

@@ -35,7 +35,18 @@
           <span class="visually-hidden">{{ site.data.ui-text[site.locale].menu_label | default: "Toggle menu" }}</span>
           <div class="navicon"></div>
         </button>
-        <ul class="hidden-links hidden"></ul>
+        <ul class="hidden-links hidden">
+          {%- comment -%}
+            greedy-nav 自动收纳溢出项，但桌面宽屏下不会溢出。这里把导航之外的
+            入口（全部文档 / 分类 / 标签 / 搜索 / 意见）预先放进折叠菜单，
+            保证三条杠在任何宽度下都固定包含它们。
+          {%- endcomment -%}
+          {%- for link in site.data.navigation.menu -%}
+            <li class="masthead__menu-item{% if include.page_url == link.url %} selected{% endif %}">
+              <a href="{{ link.url | relative_url }}"{% if include.page_url == link.url %} aria-current="page"{% endif %}>{{ link.title }}</a>
+            </li>
+          {%- endfor -%}
+        </ul>
       </nav>
     </div>
   </div>

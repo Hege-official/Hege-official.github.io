@@ -2,7 +2,7 @@
 title: "全国动人代常委会《关于召开和各国全国大小动物人民代表大会第十六届会议的通知》"
 excerpt: "2025年新季度之际，和各国召开第十六届动人代会议，常委会向全国通告发布通知"
 header:
-  image: /assets/images/latelynews.png
+  image: /assets/images/covers/qgdrdcwhgyzk25.png
 
 author_profile: false
 date: 2025-08-01 08:50:10

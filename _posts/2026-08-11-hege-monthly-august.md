@@ -2,7 +2,7 @@
 title: "《和各月刊》2026年8月号：首都按下城市更新启动键"
 excerpt: "八月号聚焦艺宫旧城改造与五大洲不良资产处置，并收录政会部门简报、经济民生数据、省长市长信箱与社会万象。"
 header:
-  image: /assets/images/hegegovcoun.png
+  image: /assets/images/covers/hege-monthly-august.png
 publisher: "和各月刊"
 date: 2026-08-11 10:00:00
 categories: [新闻]

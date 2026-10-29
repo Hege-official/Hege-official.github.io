@@ -2,7 +2,7 @@
 title: "和各国科学技术"
 excerpt: "和各国在聚变能源、护盾场防护与信息技术等领域持续投入，坚持科技兴邦战略，为全国提供清洁能源与安全保障。"
 header:
-  image: /assets/images/hegegov1.png
+  image: /assets/images/covers/science-and-technology.png
 date: 2026-07-04 09:30:00
 categories: [维护]
 tags: [社会, 科技, 能源]

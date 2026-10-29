@@ -2,7 +2,7 @@
 title: "中央政会组成部门"
 excerpt: "中央政务委员会（中央政会）是和各共和国最高行政机关。本文依正典列出其十二个常设组成部门、协调协商机构与直属机构。"
 header:
-  image: /assets/images/hegegovcoun.png
+  image: /assets/images/covers/central-government-departments.png
 date: 2026-08-14 09:00:00
 categories: [维护]
 tags: [政治, 行政, 中央政会, 机构]
