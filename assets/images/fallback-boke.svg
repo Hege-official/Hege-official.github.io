@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1638 500" width="1638" height="500" role="img" aria-label="播客栏目封面">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#10223e"/>
+      <stop offset="1" stop-color="#1c3660"/>
+    </linearGradient>
+  </defs>
+  <rect width="1638" height="500" fill="url(#g)"/>
+  <g fill="none" stroke="#c43e32" opacity="0.35"><path d="M804 250 q42 -26 85 0 t85 0 t85 0 t85 0 t85 0 t85 0" stroke-width="2"/><path d="M804 250 q42 -40 85 0 t85 0 t85 0 t85 0 t85 0 t85 0" stroke-width="2"/><path d="M804 250 q42 -54 85 0 t85 0 t85 0 t85 0 t85 0 t85 0" stroke-width="2"/><path d="M804 250 q42 -68 85 0 t85 0 t85 0 t85 0 t85 0 t85 0" stroke-width="2"/><path d="M804 250 q42 -82 85 0 t85 0 t85 0 t85 0 t85 0 t85 0" stroke-width="2"/><path d="M804 250 q42 -96 85 0 t85 0 t85 0 t85 0 t85 0 t85 0" stroke-width="2"/></g>
+  <rect x="348" y="0" width="8" height="500" fill="#c43e32"/>
+  <rect x="366" y="74" width="8" height="352" fill="#f6f2e8"/>
+  <rect x="0" y="492" width="1638" height="8" fill="#c43e32"/>
+  <text x="446" y="112" font-family="Microsoft YaHei, SimHei, sans-serif" font-size="26" fill="#c43e32">播客</text>
+  <line x1="446" y1="132" x2="538" y2="132" stroke="#c43e32" stroke-width="3"/>
+  <text x="446" y="420" font-family="Microsoft YaHei, SimHei, sans-serif" font-size="19" fill="#96a2b6">和各共和国政府新闻发言网</text>
+</svg>

@@ -45,12 +45,23 @@ function escapeHtml(value) {
     .replace(/"/g, "&quot;");
 }
 
+// 在已转义的文本里安全地包 <mark>，避免关键词里的 < & 破坏标记
+function highlight(escaped, terms) {
+  var out = escaped;
+  for (var i = 0; i < terms.length; i++) {
+    var t = escapeHtml(terms[i]);
+    if (!t) continue;
+    var re = new RegExp(t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g");
+    out = out.replace(re, function (m) { return "\u0000" + m + "\u0001"; });
+  }
+  return out.replace(/\u0000/g, "<mark>").replace(/\u0001/g, "</mark>");
+}
+
 // 以关键词为中心截取摘要（中文无空格，不能按词截断）
-function makeSnippet(text, terms) {
-  var content = asText(text);
-  var max = 110;
+function makeSnippet(text, terms, max) {
+  var content = asText(text).replace(/\s+/g, " ").trim();
+  max = max || 120;
   if (!content) return "";
-  if (content.length <= max) return escapeHtml(content);
 
   var at = -1;
   for (var i = 0; i < terms.length; i++) {
@@ -58,32 +69,49 @@ function makeSnippet(text, terms) {
     if (pos >= 0 && (at < 0 || pos < at)) at = pos;
   }
 
-  var start = at > 40 ? at - 40 : 0;
+  var start = at > 30 ? at - 30 : 0;
   var snippet = content.slice(start, start + max);
-  return (start > 0 ? "…" : "") + escapeHtml(snippet) + (start + max < content.length ? "…" : "");
+  return (start > 0 ? "…" : "") +
+    highlight(escapeHtml(snippet), terms) +
+    (start + max < content.length ? "…" : "");
 }
 
-$(document).ready(function () {
-  var $input = $("input#search");
-  if (!$input.length) return;
+// 本脚本由 scripts.html 以普通 <script> 同步注入，而 jQuery 所在的
+// main.min.js 是 defer 加载——脚本执行时 $ 可能还不存在。这里不依赖 jQuery，
+// 等 DOM 就绪后直接绑定，避免 "ReferenceError: $ is not defined" 让搜索整体失效。
+function onSearchReady(fn) {
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", fn);
+  } else {
+    fn();
+  }
+}
+
+onSearchReady(function () {
+  // 搜索页的输入框在 _layouts/search.html 的 .archive 里，普通页面则在
+  // search/search_form.html 的 .search-content 里，取文档中唯一那个。
+  var input = document.getElementById("search");
+  var resultdiv = document.getElementById("results");
+  if (!input || !resultdiv) return;
 
   var timer = null;
 
-  $input.on("keyup", function () {
-    var value = $(this).val();
+  input.addEventListener("input", function () {
+    var value = input.value;
     var terms = HegeSearch.queryTerms(value);
-    var resultdiv = $("#results");
 
     if (timer) clearTimeout(timer);
     timer = setTimeout(function () {
       if (!value || !value.replace(/\s/g, "") || !terms.length) {
-        resultdiv.empty();
+        resultdiv.innerHTML = "";
         return;
       }
 
       var result = idx.query(function (q) {
         terms.forEach(function (term) {
-          q.term(term, { boost: 100 });
+          // REQUIRED：各查询片段都要命中（AND）。默认 OPTIONAL 是 OR 语义，
+          // 一个二元组撞上就能返回结果，"不存在的词啊" 也会因为 "在的" 命中而误报。
+          q.term(term, { boost: 100, presence: lunr.Query.presence.REQUIRED });
           // 西文补一个前缀通配，缓解词形差异；中文二元组无需通配
           if (!HegeSearch.isCJK(term.charAt(0))) {
             q.term(term, {
@@ -96,8 +124,8 @@ $(document).ready(function () {
       });
 
       var label = (result.length === 0)
-        ? "没有找到匹配记录"
-        : result.length + " 条记录匹配";
+        ? "没有找到与「" + value.trim() + "」相关的记录"
+        : "找到 " + result.length + " 条相关记录";
 
       var html = '<p class="results__found">' + escapeHtml(label) + "</p>";
 
@@ -106,18 +134,20 @@ $(document).ready(function () {
         var doc = store[ref];
         if (!doc) continue;
 
-        var teaser = doc.teaser
-          ? '<div class="archive__item-teaser"><img src="' + escapeHtml(doc.teaser) +
-            '" alt="" loading="lazy" decoding="async"></div>'
-          : "";
+        var meta = [];
+        var cats = asText(doc.categories);
+        if (cats) meta.push('<span class="results__tag">' + escapeHtml(cats) + "</span>");
+        if (doc.date) meta.push('<time class="results__date">' + escapeHtml(doc.date.slice(0, 10)) + "</time>");
 
         html +=
           '<div class="list__item">' +
-            '<article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">' +
+            '<article class="archive__item results__item" itemscope itemtype="https://schema.org/CreativeWork">' +
+              '<div class="results__meta">' + meta.join('<span class="results__sep">·</span>') + "</div>" +
               '<h2 class="archive__item-title" itemprop="headline">' +
-                '<a href="' + escapeHtml(doc.url) + '" rel="permalink">' + escapeHtml(doc.title) + "</a>" +
+                '<a href="' + escapeHtml(doc.url) + '" rel="permalink">' +
+                  highlight(escapeHtml(doc.title), terms) +
+                "</a>" +
               "</h2>" +
-              teaser +
               '<p class="archive__item-excerpt" itemprop="description">' +
                 makeSnippet(doc.excerpt, terms) +
               "</p>" +
@@ -125,7 +155,14 @@ $(document).ready(function () {
           "</div>";
       }
 
-      resultdiv.empty().append(html);
+      if (result.length === 0) {
+        html +=
+          '<div class="results__empty">' +
+            "<p>请换一个关键词试试，例如机构名、地名或法规名称。</p>" +
+          "</div>";
+      }
+
+      resultdiv.innerHTML = html;
     }, 120);
   });
 });

@@ -114,9 +114,7 @@
   <div class="gov-topbar__inner">
     <span class="gov-topbar__slogan">和各共和国政府新闻发言网 · 官方信息发布平台</span>
     <span class="gov-topbar__meta">
-      <time datetime="2026-10-05T22:50:37+08:00">2026年10月05日</time>
-      <a href="/search/">站内搜索</a>
-      <a href="/categories/">内容分类</a>
+      <time datetime="2026-10-29T23:06:06+08:00">2026年10月29日</time>
     </span>
   </div>
 </div>
@@ -141,13 +139,6 @@
                 
                 
               >首页</a>
-            </li><li class="masthead__menu-item">
-              <a
-                href="/archive/"
-                
-                
-                
-              >要闻</a>
             </li><li class="masthead__menu-item">
               <a
                 href="/news/"
@@ -176,13 +167,6 @@
                 
                 
               >播客</a>
-            </li><li class="masthead__menu-item">
-              <a
-                href="/feedback/"
-                
-                
-                
-              >意见建议</a>
             </li></ul>
         
         <button class="search__toggle" type="button">
@@ -194,7 +178,17 @@
           <span class="visually-hidden">切换菜单</span>
           <div class="navicon"></div>
         </button>
-        <ul class="hidden-links hidden"></ul>
+        <ul class="hidden-links hidden"><li class="masthead__menu-item">
+              <a href="/archive/">全部文档</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/">内容分类</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">标签索引</a>
+            </li><li class="masthead__menu-item">
+              <a href="/search/">站内搜索</a>
+            </li><li class="masthead__menu-item">
+              <a href="/feedback/">意见建议</a>
+            </li></ul>
       </nav>
     </div>
   </div>
@@ -219,8 +213,7 @@
   <div class="gov-hero">
     <a class="gov-hero__lead" href="/%E6%96%B0%E9%97%BB/hege-monthly-september/">
       
-        <picture><source srcset="/assets/images/hegegovcoun.webp" type="image/webp"><img src="/assets/images/hegegovcoun.png" alt="《和各月刊》2026年9月号：律令定方圆，更新不歇脚" width="1600" height="400" loading="eager" decoding="async" fetchpriority="high">
-</picture>
+        <img src="/assets/images/covers/hege-monthly-september.png" alt="《和各月刊》2026年9月号：律令定方圆，更新不歇脚" loading="eager" decoding="async" fetchpriority="high">
       
       <span class="gov-hero__body">
         <span class="gov-hero__cat">新闻</span>
@@ -271,11 +264,11 @@
         
 
 
+
 <article class="gov-card">
   <a class="gov-card__link" href="/%E6%96%B0%E9%97%BB/hege-monthly-september/">
     
-      <span class="gov-card__media"><picture><source srcset="/assets/images/hegegovcoun.webp" type="image/webp"><img src="/assets/images/hegegovcoun.png" alt="" width="1600" height="400" loading="lazy" decoding="async">
-</picture></span>
+      <span class="gov-card__media"><img src="/assets/images/covers/hege-monthly-september.png" alt="" loading="lazy" decoding="async"></span>
     
     <h3 class="gov-card__title">《和各月刊》2026年9月号：律令定方圆，更新不歇脚</h3>
     <p class="gov-card__excerpt">九月号聚焦第18届全国动人代一次会议通过三部法律，并记录旧城改造签约、不良资产处置进展与各地秋收。
@@ -288,11 +281,11 @@
 
 
 
+
 <article class="gov-card">
   <a class="gov-card__link" href="/%E6%96%B0%E9%97%BB/hege-monthly-august/">
     
-      <span class="gov-card__media"><picture><source srcset="/assets/images/hegegovcoun.webp" type="image/webp"><img src="/assets/images/hegegovcoun.png" alt="" width="1600" height="400" loading="lazy" decoding="async">
-</picture></span>
+      <span class="gov-card__media"><img src="/assets/images/covers/hege-monthly-august.png" alt="" loading="lazy" decoding="async"></span>
     
     <h3 class="gov-card__title">《和各月刊》2026年8月号：首都按下城市更新启动键</h3>
     <p class="gov-card__excerpt">八月号聚焦艺宫旧城改造与五大洲不良资产处置，并收录政会部门简报、经济民生数据、省长市长信箱与社会万象。
@@ -305,11 +298,11 @@
 
 
 
+
 <article class="gov-card">
   <a class="gov-card__link" href="/%E6%96%B0%E9%97%BB/hhjzxlrnunfbsm/">
     
-      <span class="gov-card__media"><picture><source srcset="/assets/images/hegenews.webp" type="image/webp"><img src="/assets/images/hegenews.png" alt="" width="1600" height="400" loading="lazy" decoding="async">
-</picture></span>
+      <span class="gov-card__media"><img src="/assets/images/covers/hhjzxlrnunfbsm.png" alt="" loading="lazy" decoding="async"></span>
     
     <h3 class="gov-card__title">HHJ主席离任NUN发表声明，NUN各成员国感谢了其做出的贡献</h3>
     <p class="gov-card__excerpt">前我国NUN主席HHJ在离任NUN之际发表了声明《致N国联合组织的一封信》
@@ -445,7 +438,10 @@
     <label class="sr-only" for="search">
       输入您要搜索的关键词...
     </label>
-    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="输入您要搜索的关键词..." />
+    <div class="search-content__field">
+      <i class="fas fa-search search-content__icon" aria-hidden="true"></i>
+      <input type="search" id="search" class="search-input" autocomplete="off" tabindex="-1" placeholder="输入您要搜索的关键词..." />
+    </div>
   </form>
   <div id="results" class="results"></div></div>
 

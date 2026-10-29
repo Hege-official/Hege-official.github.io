@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1638 500" width="1638" height="500" role="img" aria-label="维护栏目封面">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#14302c"/>
+      <stop offset="1" stop-color="#224a42"/>
+    </linearGradient>
+  </defs>
+  <rect width="1638" height="500" fill="url(#g)"/>
+  <g stroke="#c8a96a" opacity="0.24"><line x1="804" y1="0" x2="804" y2="500"/><line x1="834" y1="0" x2="834" y2="500"/><line x1="864" y1="0" x2="864" y2="500"/><line x1="894" y1="0" x2="894" y2="500"/><line x1="924" y1="0" x2="924" y2="500"/><line x1="954" y1="0" x2="954" y2="500"/><line x1="984" y1="0" x2="984" y2="500"/><line x1="1014" y1="0" x2="1014" y2="500"/><line x1="1044" y1="0" x2="1044" y2="500"/><line x1="1074" y1="0" x2="1074" y2="500"/><line x1="1104" y1="0" x2="1104" y2="500"/><line x1="1134" y1="0" x2="1134" y2="500"/><line x1="1164" y1="0" x2="1164" y2="500"/><line x1="1194" y1="0" x2="1194" y2="500"/><line x1="1224" y1="0" x2="1224" y2="500"/><line x1="804" y1="0" x2="1243" y2="0"/><line x1="804" y1="30" x2="1243" y2="30"/><line x1="804" y1="60" x2="1243" y2="60"/><line x1="804" y1="90" x2="1243" y2="90"/><line x1="804" y1="120" x2="1243" y2="120"/><line x1="804" y1="150" x2="1243" y2="150"/><line x1="804" y1="180" x2="1243" y2="180"/><line x1="804" y1="210" x2="1243" y2="210"/><line x1="804" y1="240" x2="1243" y2="240"/><line x1="804" y1="270" x2="1243" y2="270"/><line x1="804" y1="300" x2="1243" y2="300"/><line x1="804" y1="330" x2="1243" y2="330"/><line x1="804" y1="360" x2="1243" y2="360"/><line x1="804" y1="390" x2="1243" y2="390"/><line x1="804" y1="420" x2="1243" y2="420"/><line x1="804" y1="450" x2="1243" y2="450"/><line x1="804" y1="480" x2="1243" y2="480"/><line x1="804" y1="510" x2="1243" y2="510"/></g><g stroke="#c8a96a" opacity="0.55"><line x1="864" y1="500" x2="1054" y2="0"/><line x1="919" y1="500" x2="1109" y2="0"/><line x1="974" y1="500" x2="1164" y2="0"/></g>
+  <rect x="348" y="0" width="8" height="500" fill="#c8a96a"/>
+  <rect x="366" y="74" width="8" height="352" fill="#f6f2e8"/>
+  <rect x="0" y="492" width="1638" height="8" fill="#c8a96a"/>
+  <text x="446" y="112" font-family="Microsoft YaHei, SimHei, sans-serif" font-size="26" fill="#c8a96a">维护</text>
+  <line x1="446" y1="132" x2="538" y2="132" stroke="#c8a96a" stroke-width="3"/>
+  <text x="446" y="420" font-family="Microsoft YaHei, SimHei, sans-serif" font-size="19" fill="#96a2b6">和各共和国政府新闻发言网</text>
+</svg>
