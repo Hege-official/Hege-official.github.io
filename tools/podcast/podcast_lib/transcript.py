@@ -137,10 +137,10 @@ def _represent_str(dumper, data):
 _FrontMatterDumper.add_representer(str, _represent_str)
 
 
-def render_episode_md(meta, segments, durations, start_offset=0.0) -> str:
+def render_episode_md(meta, segments, durations, start_offset=0.0, end_padding=0.0) -> str:
     base_starts = build_timeline(durations)
     starts = [float(start_offset) + s for s in base_starts]
-    total = (starts[-1] + float(durations[-1])) if durations else 0.0
+    total = (starts[-1] + float(durations[-1]) + float(end_padding)) if durations else 0.0
     front = dict(meta)
     front["duration"] = format_timestamp(total)
     front["transcript"] = True

@@ -127,5 +127,49 @@ class AssembleWithIntroTest(unittest.TestCase):
         self.assertAlmostEqual(audio.probe_duration(out), 3.0, delta=0.3)
 
 
+class AssembleWithBookendsTest(unittest.TestCase):
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.dir = Path(self._tmp.name)
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def _tone(self, name, duration, freq=440):
+        path = self.dir / name
+        make_tone(path, freq, duration)
+        return path
+
+    def test_intro_program_outro(self):
+        intro = self._tone("intro.mp3", 1.0, freq=660)
+        program = self._tone("program.mp3", 2.0, freq=440)
+        outro = self._tone("outro.mp3", 1.0, freq=330)
+        out = self.dir / "out.mp3"
+        audio.assemble_with_bookends(
+            program, out,
+            intro={"path": intro, "gain_db": 0, "fade_out": 0.2, "gap": 0},
+            outro={"path": outro, "gain_db": 0, "fade_out": 0.2, "gap": 0},
+        )
+        self.assertTrue(out.exists())
+        self.assertAlmostEqual(audio.probe_duration(out), 4.0, delta=0.3)
+
+    def test_gap_extends_duration(self):
+        program = self._tone("program.mp3", 2.0, freq=440)
+        outro = self._tone("outro.mp3", 1.0, freq=330)
+        out = self.dir / "out.mp3"
+        audio.assemble_with_bookends(
+            program, out,
+            outro={"path": outro, "gain_db": 0, "gap": 0.5},
+        )
+        self.assertAlmostEqual(audio.probe_duration(out), 3.5, delta=0.3)
+
+    def test_outro_only(self):
+        program = self._tone("program.mp3", 2.0, freq=440)
+        outro = self._tone("outro.mp3", 1.0, freq=330)
+        out = self.dir / "out.mp3"
+        audio.assemble_with_bookends(program, out, intro=None, outro={"path": outro})
+        self.assertAlmostEqual(audio.probe_duration(out), 3.0, delta=0.3)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -68,6 +68,33 @@ class ResolveIntroTest(unittest.TestCase):
             build.resolve_intro({"gain_db": -3}, self.dir)
 
 
+class ResolveOutroTest(unittest.TestCase):
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.dir = Path(self._tmp.name)
+        (self.dir / "stinger").mkdir()
+        (self.dir / "stinger" / "outro.mp3").write_bytes(b"x")
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def test_none_when_absent(self):
+        self.assertIsNone(build.resolve_outro(None, self.dir))
+
+    def test_resolves_defaults(self):
+        spec = build.resolve_outro({"file": "stinger/outro.mp3"}, self.dir)
+        self.assertEqual(spec["gap"], 0.0)
+        self.assertTrue(spec["path"].exists())
+
+    def test_keeps_gap(self):
+        spec = build.resolve_outro({"file": "stinger/outro.mp3", "gap": 0.5}, self.dir)
+        self.assertEqual(spec["gap"], 0.5)
+
+    def test_missing_file_raises(self):
+        with self.assertRaises(FileNotFoundError):
+            build.resolve_outro({"file": "stinger/nope.mp3"}, self.dir)
+
+
 class ResolveCuesTest(unittest.TestCase):
     def setUp(self):
         self._tmp = tempfile.TemporaryDirectory()
@@ -141,7 +168,7 @@ class BuildMetaTest(unittest.TestCase):
             slug="demo", title="标题", date="2026-10-05 09:00:00",
             episode_type="播报", excerpt="简介", publisher="和各政府网",
             related_post="/公告/x/", hosts=["云阳"], guests=[],
-            segments=[], bed=[], cues=[], intro=None, episode=None,
+            segments=[], bed=[], cues=[], intro=None, outro=None, episode=None,
         )
         values.update(overrides)
         return config.Episode(**values)

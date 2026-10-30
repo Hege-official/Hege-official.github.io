@@ -97,12 +97,64 @@ def mix_episode(voice_track, out_path, work_dir, bed_specs=None, cues_specs=None
         index += 1
 
     if len(mix_labels) == 1:
-        parts.append("[0:a]loudnorm=I=-16:TP=-1.5:LRA=11[out]")
+        parts.append("[0:a]loudnorm=I=-16:TP=-1.5:LRA=11,alimiter=limit=0.71:level=0[out]")
     else:
         joined = "".join(f"[{label}]" for label in mix_labels)
         parts.append(f"{joined}amix=inputs={len(mix_labels)}:duration=first:normalize=0[mixed]")
-        parts.append("[mixed]loudnorm=I=-16:TP=-1.5:LRA=11[out]")
+        parts.append("[mixed]loudnorm=I=-16:TP=-1.5:LRA=11,alimiter=limit=0.71:level=0[out]")
 
+    _run([
+        *inputs,
+        "-filter_complex", ";".join(parts),
+        "-map", "[out]",
+        "-ar", str(sample_rate), "-ac", "1", "-b:a", "48k",
+        out_path,
+    ])
+
+
+def assemble_with_bookends(program_path, out_path, intro=None, outro=None, sample_rate=24000):
+    """把片头、正片、片尾拼成一条成品 MP3。
+
+    intro/outro 为 {path, gain_db, fade_out, gap} 或 None；gap 是该段与正片之间的静音秒数。
+    """
+    specs = []
+    if intro:
+        specs.append(("intro", intro))
+    specs.append(("program", None))
+    if outro:
+        specs.append(("outro", outro))
+
+    inputs = []
+    parts = []
+    labels = []
+    index = 0
+    for kind, spec in specs:
+        if kind == "program":
+            inputs += ["-i", str(program_path)]
+        else:
+            inputs += ["-i", str(spec["path"])]
+        label = f"{kind}{index}"
+        if kind == "program":
+            parts.append(f"[{index}:a]anull[{label}]")
+        else:
+            duration = probe_duration(spec["path"])
+            chain = [
+                f"[{index}:a]loudnorm=I=-16:TP=-1.5:LRA=11",
+                f"volume={float(spec.get('gain_db', 0))}dB",
+            ]
+            fade_out = float(spec.get("fade_out", 0))
+            if fade_out > 0:
+                chain.append(f"afade=t=out:st={max(0.0, duration - fade_out):.3f}:d={fade_out}")
+            gap = float(spec.get("gap", 0))
+            if gap > 0:
+                chain.append(f"adelay={int(round(gap * 1000))}:all=1")
+            parts.append(",".join(chain) + f"[{label}]")
+        labels.append(label)
+        index += 1
+
+    joined = "".join(f"[{label}]" for label in labels)
+    parts.append(f"{joined}concat=n={len(labels)}:v=0:a=1[cat]")
+    parts.append("[cat]alimiter=limit=0.71:level=0[out]")
     _run([
         *inputs,
         "-filter_complex", ";".join(parts),
@@ -114,20 +166,8 @@ def mix_episode(voice_track, out_path, work_dir, bed_specs=None, cues_specs=None
 
 def assemble_with_intro(program_path, out_path, intro_path, gain_db=0.0, fade_out=0.0, sample_rate=24000):
     """把片头（归一化 + 可选淡出）与正片拼接为一条成品 MP3。"""
-    intro_duration = probe_duration(intro_path)
-    chain = [
-        "[0:a]loudnorm=I=-16:TP=-1.5:LRA=11",
-        f"volume={float(gain_db)}dB",
-    ]
-    if float(fade_out) > 0:
-        fade_start = max(0.0, intro_duration - float(fade_out))
-        chain.append(f"afade=t=out:st={fade_start:.3f}:d={float(fade_out)}")
-    graph = ",".join(chain) + "[pre];[pre][1:a]concat=n=2:v=0:a=1[out]"
-    _run([
-        "-i", str(intro_path),
-        "-i", str(program_path),
-        "-filter_complex", graph,
-        "-map", "[out]",
-        "-ar", str(sample_rate), "-ac", "1", "-b:a", "48k",
-        out_path,
-    ])
+    return assemble_with_bookends(
+        program_path, out_path,
+        intro={"path": intro_path, "gain_db": gain_db, "fade_out": fade_out},
+        sample_rate=sample_rate,
+    )

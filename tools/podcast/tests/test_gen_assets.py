@@ -24,6 +24,7 @@ class GenAssetsTest(unittest.TestCase):
         created = gen_assets.generate(self.dir)
         expected = {
             "stinger/open.mp3", "stinger/close.mp3",
+            "stinger/interview-open.mp3", "stinger/interview-close.mp3",
             "sfx/transition.mp3", "bgm/news-bed.mp3",
         }
         names = {p.relative_to(self.dir).as_posix() for p in created}

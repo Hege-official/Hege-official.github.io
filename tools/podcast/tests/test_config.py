@@ -88,6 +88,25 @@ class LoadEpisodeTest(unittest.TestCase):
         ep = config.load_episode(path, VOICES)
         self.assertEqual(ep.intro["file"], "stinger/x.mp3")
         self.assertEqual(ep.intro["fade_out"], 0.5)
+        self.assertIsNone(ep.outro)
+
+    def test_parses_outro(self):
+        path = self._write(
+            "title: 标题\ndate: 2026-10-05\n"
+            "outro:\n  file: stinger/y.mp3\n  gap: 0.5\n"
+            "segments:\n  - role: anchor\n    text: '嗨'\n"
+        )
+        ep = config.load_episode(path, VOICES)
+        self.assertEqual(ep.outro["file"], "stinger/y.mp3")
+        self.assertEqual(ep.outro["gap"], 0.5)
+
+    def test_outro_must_be_mapping(self):
+        path = self._write(
+            "title: 标题\ndate: 2026-10-05\noutro: stinger/y.mp3\n"
+            "segments:\n  - role: anchor\n    text: '嗨'\n"
+        )
+        with self.assertRaises(config.ConfigError):
+            config.load_episode(path, VOICES)
 
     def test_episode_optional(self):
         path = self._write(

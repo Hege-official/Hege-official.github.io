@@ -49,6 +49,23 @@ def _blip(out_path, freq=880.0, duration=0.2):
     ])
 
 
+def _signature(notes, out_path, total, decay=3.2):
+    """带衰减包络的复合音型（可重叠），用于节目专属标识音。"""
+    terms = []
+    for freq, start, length, amp in notes:
+        end = round(start + length, 3)
+        terms.append(
+            f"{amp}*sin(2*PI*{freq}*t)*exp(-{decay}*max(0,t-{start}))"
+            f"*gte(t,{start})*lte(t,{end})"
+        )
+    expr = "+".join(terms)
+    _run([
+        "-f", "lavfi", "-i", f"aevalsrc='{expr}':sample_rate=24000:duration={total}",
+        "-af", f"lowpass=f=8000,alimiter=limit=0.9,afade=t=out:st={total - 0.3:.2f}:d=0.3",
+        "-ar", "24000", "-ac", "1", "-b:a", "48k", out_path,
+    ])
+
+
 def _bed(out_path):
     _run([
         "-f", "lavfi", "-i", "sine=frequency=110:duration=8",
@@ -64,6 +81,8 @@ def generate(base_dir):
     created = [
         base / "stinger" / "open.mp3",
         base / "stinger" / "close.mp3",
+        base / "stinger" / "interview-open.mp3",
+        base / "stinger" / "interview-close.mp3",
         base / "sfx" / "transition.mp3",
         base / "bgm" / "news-bed.mp3",
     ]
@@ -71,6 +90,18 @@ def generate(base_dir):
         path.parent.mkdir(parents=True, exist_ok=True)
     _arpeggio([(523.25, 0.3), (659.25, 0.3), (783.99, 0.55)], base / "stinger" / "open.mp3")
     _arpeggio([(783.99, 0.3), (659.25, 0.3), (523.25, 0.55)], base / "stinger" / "close.mp3")
+    _signature([
+        (440.00, 0.00, 2.6, 0.30),
+        (554.37, 0.18, 2.6, 0.26),
+        (659.25, 0.36, 2.6, 0.24),
+        (880.00, 0.54, 1.9, 0.14),
+    ], base / "stinger" / "interview-open.mp3", 2.9)
+    _signature([
+        (659.25, 0.00, 2.4, 0.26),
+        (554.37, 0.22, 2.4, 0.26),
+        (440.00, 0.44, 2.4, 0.30),
+        (220.00, 0.44, 2.4, 0.20),
+    ], base / "stinger" / "interview-close.mp3", 2.6)
     _blip(base / "sfx" / "transition.mp3")
     _bed(base / "bgm" / "news-bed.mp3")
     return created

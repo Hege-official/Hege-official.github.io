@@ -10,6 +10,8 @@
 | --- | --- |
 | `stinger/open.mp3` | 上行琶音（523/659/784 Hz） |
 | `stinger/close.mp3` | 下行琶音（784/659/523 Hz） |
+| `stinger/interview-open.mp3` | 访谈标识音：A–C♯–E 上行音型＋高八度泛音（440/554/659/880 Hz，带指数衰减包络） |
+| `stinger/interview-close.mp3` | 访谈收尾音：E–C♯–A 下行音型＋低八度垫底（659/554/440/220 Hz，带指数衰减包络） |
 | `sfx/transition.mp3` | 880 Hz 短促提示音 |
 | `bgm/news-bed.mp3` | 110/165 Hz 低通铺底 |
 

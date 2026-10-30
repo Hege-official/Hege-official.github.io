@@ -45,17 +45,26 @@ def resolve_bed(specs, assets_dir):
 
 
 def resolve_intro(spec, assets_dir):
+    return _resolve_bookend(spec, assets_dir, "intro", "片头")
+
+
+def resolve_outro(spec, assets_dir):
+    return _resolve_bookend(spec, assets_dir, "outro", "片尾")
+
+
+def _resolve_bookend(spec, assets_dir, key, label):
     if not spec:
         return None
     if not isinstance(spec, dict) or "file" not in spec:
-        raise ValueError(f"intro 必须是含 file 键的映射：{spec!r}")
+        raise ValueError(f"{key} 必须是含 file 键的映射：{spec!r}")
     path = Path(assets_dir) / spec["file"]
     if not path.exists():
-        raise FileNotFoundError(f"片头不存在：{path}")
+        raise FileNotFoundError(f"{label}不存在：{path}")
     return {
         "path": path,
         "gain_db": float(spec.get("gain_db", 0)),
         "fade_out": float(spec.get("fade_out", 0)),
+        "gap": float(spec.get("gap", 0)),
     }
 
 
@@ -126,19 +135,23 @@ def build_episode(script_path, use_cache=True):
     bed = resolve_bed(episode.bed, ASSETS_DIR)
     cues = resolve_cues(episode.cues, ASSETS_DIR, base_starts)
     intro = resolve_intro(episode.intro, ASSETS_DIR)
+    outro = resolve_outro(episode.outro, ASSETS_DIR)
 
     out_audio = AUDIO_OUT_DIR / f"{episode.slug}.mp3"
-    if intro:
+    if intro or outro:
         program = WORK_DIR / f"{episode.slug}-program.mp3"
         audio.mix_episode(voice_track, program, WORK_DIR, bed, cues)
-        audio.assemble_with_intro(
-            program, out_audio, intro["path"],
-            gain_db=intro["gain_db"], fade_out=intro["fade_out"],
-        )
-        intro_duration = audio.probe_duration(intro["path"])
+        audio.assemble_with_bookends(program, out_audio, intro=intro, outro=outro)
+        intro_duration = audio.probe_duration(intro["path"]) if intro else 0.0
+        if intro:
+            intro_duration += float(intro["gap"])
+        end_padding = 0.0
+        if outro:
+            end_padding = audio.probe_duration(outro["path"]) + float(outro["gap"])
     else:
         audio.mix_episode(voice_track, out_audio, WORK_DIR, bed, cues)
         intro_duration = 0.0
+        end_padding = 0.0
 
     starts = [intro_duration + s for s in base_starts]
 
@@ -153,7 +166,7 @@ def build_episode(script_path, use_cache=True):
 
     meta = build_meta(episode, out_audio)
     md = transcript.render_episode_md(
-        meta, episode.segments, durations, start_offset=intro_duration
+        meta, episode.segments, durations, start_offset=intro_duration, end_padding=end_padding
     )
     out_md = EPISODE_OUT_DIR / f"{str(episode.date)[:10]}-{episode.slug}.md"
     out_md.write_text(md, encoding="utf-8")

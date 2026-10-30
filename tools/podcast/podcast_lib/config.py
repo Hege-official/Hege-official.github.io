@@ -39,6 +39,7 @@ class Episode:
     bed: list
     cues: list
     intro: dict | None
+    outro: dict | None
     episode: int | None
 
 
@@ -105,6 +106,9 @@ def load_episode(path, voices):
     intro = data.get("intro")
     if intro is not None and not isinstance(intro, dict):
         raise ConfigError(f"{path} 的 intro 必须是映射")
+    outro = data.get("outro")
+    if outro is not None and not isinstance(outro, dict):
+        raise ConfigError(f"{path} 的 outro 必须是映射")
     episode = data.get("episode")
     if episode is not None:
         if isinstance(episode, bool) or not isinstance(episode, int):
@@ -123,5 +127,6 @@ def load_episode(path, voices):
         bed=list(data.get("bed") or []),
         cues=list(data.get("cues") or []),
         intro=intro,
+        outro=outro,
         episode=episode,
     )
